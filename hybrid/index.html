@@ -1,0 +1,2361 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"></head><body>
+<title>KARGOS Hybrid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* KARGOS Hybrid is a deliberately single, light look: white ground,
+   near-black ink, safety orange for paid placement and "today", blue for
+   actions. Every colour is set explicitly so the host theme never shows. */
+:root{
+  color-scheme:light;
+  --ink:#111315;
+  --ink-2:#3C4043;
+  --sub:#5B6066;
+  --faint:#8A8F95;
+  --line:#E3E4E6;
+  --line-2:#CFD1D4;
+  --soft:#F6F6F4;
+  --bg:#FFFFFF;
+  --night:#05080F;
+  --blue:#1A56DB;
+  --blue-2:#1646B8;
+  --blue-soft:#EEF3FE;
+  --orange:#F25A0F;
+  --orange-ink:#B33C09;
+  --orange-soft:#FFF1E8;
+  --green:#0E7A4F;
+  --green-soft:#E6F4EC;
+  --amber:#A15C07;
+  --amber-soft:#FDF1DD;
+  --red:#B42318;
+  --red-soft:#FDECEA;
+  --display:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:28px}
+.lbl{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.mono{font-family:var(--mono)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* nav — thin, with one industrial detail */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;font-size:14px}
+.topnav .coord{font:500 11px var(--mono);letter-spacing:.1em;color:var(--faint)}
+.topnav .r{display:flex;align-items:center;gap:24px}
+.topnav .r a.l:hover{text-decoration:underline;text-underline-offset:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;font:500 14px var(--body);padding:9px 20px;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--blue)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-2)}
+.btn-line{border-color:var(--line-2);background:#fff;color:var(--ink)}
+.btn-line:hover{border-color:var(--ink)}
+.btn-sm{padding:7px 14px;font-size:13px}
+
+/* hero — Google page on a faint blueprint grid */
+.hero{position:relative;min-height:calc(100vh - 110px);max-height:780px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 28px 60px;
+  background-image:linear-gradient(#F2F2F0 1px,transparent 1px),linear-gradient(90deg,#F2F2F0 1px,transparent 1px);background-size:48px 48px;background-position:center}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 62% at 50% 46%,#fff 55%,rgba(255,255,255,0) 100%);pointer-events:none}
+.hero > *{position:relative;z-index:1}
+/* The suggestion list hangs below the bar and must sit over the filter
+   chips and the sponsor strip, which come later in the page at the same
+   z-index. */
+.hero > .search{z-index:30}
+.logo{display:flex;align-items:center;gap:16px}
+.logo .word{display:flex;font:800 96px/.85 var(--display);letter-spacing:.005em;text-transform:uppercase;color:var(--ink)}
+.logo .word span{display:inline-block}
+.tagline{margin:16px 0 30px;font-size:17px;color:var(--sub)}
+.search{position:relative;width:100%;max-width:660px;display:flex;align-items:center;gap:10px;height:56px;padding:0 6px 0 18px;border:1px solid #DFE1E5;border-radius:999px;background:#fff;transition:box-shadow .15s,border-color .15s}
+.search:hover,.search:focus-within{box-shadow:0 1px 6px rgba(32,33,36,.18);border-color:transparent}
+.search > svg{flex:none}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font:500 12px var(--mono);letter-spacing:.02em;white-space:nowrap;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip small{color:var(--faint);font-size:10px}
+.search input{flex:1;min-width:0;border:0;outline:0;font:400 16px var(--body);background:transparent}
+.search input::placeholder{color:#9AA0A6}
+.icon-btn{width:40px;height:40px;border:0;border-radius:50%;background:none;display:grid;place-items:center;cursor:pointer;color:var(--sub)}
+.icon-btn:hover{background:var(--soft)}
+.search .btn-blue{height:44px;padding:0 24px;font-size:15px}
+.filters{display:flex;justify-content:center;gap:8px;margin-top:22px;flex-wrap:wrap}
+.f{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border:1px solid var(--line-2);border-radius:8px;background:#fff;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);cursor:pointer;transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
+.f:hover{border-color:var(--ink)}
+.f i{width:8px;height:8px;border-radius:2px;flex:none}
+.f[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.try{margin-top:22px;font-size:13.5px;color:var(--sub)}
+.try button{border:0;background:none;padding:0;color:var(--ink);border-bottom:1.5px solid var(--orange)}
+.try button:hover{color:var(--orange-ink)}
+
+/* section heads — numbered because the home page reads top to bottom */
+section{padding:34px 0}
+.head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.head .no{font:500 11.5px var(--mono);color:var(--faint)}
+.head h2{font:800 30px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.head .rule{flex:1;height:1px;background:var(--line)}
+.head a{font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.head a:hover{color:var(--ink)}
+.head a.ad{color:var(--orange-ink)}
+.sp{display:inline-flex;align-items:center;gap:6px;font:600 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--orange-ink);white-space:nowrap}
+.sp::before{content:"";width:6px;height:6px;background:var(--orange);border-radius:1px}
+
+/* spotlight */
+.spot{position:relative;display:grid;grid-template-columns:1.25fr 1fr;border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff}
+.spot::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:repeating-linear-gradient(-45deg,var(--ink) 0 6px,var(--orange) 6px 12px)}
+.spot-l{padding:34px 36px 32px 44px}
+.who{display:flex;align-items:center;gap:12px}
+.av{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font:800 17px var(--display);color:#fff;flex:none;letter-spacing:.02em}
+.who b{display:block;font:500 15px var(--body)}
+.who small{font:500 11px var(--mono);letter-spacing:.06em;color:var(--sub);text-transform:uppercase}
+.who .sp{margin-left:auto}
+.spot h3{margin:24px 0 10px;font:800 48px/.92 var(--display);text-transform:uppercase}
+.spot h3 em{font-style:normal;color:var(--orange)}
+.spot p{font-size:15px;line-height:1.6;color:var(--sub);max-width:480px}
+.ctas{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.spot-r{background:var(--soft);border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.route{padding:30px 30px 24px}
+.rl{display:flex;align-items:center;gap:14px}
+.rl .p b{display:block;font:800 40px/.85 var(--display)}
+.rl .p small{font:500 10px var(--mono);letter-spacing:.12em;color:var(--faint);text-transform:uppercase}
+.rl .ln{flex:1;position:relative;height:2px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 12px)}
+.rl .ln::after{content:"";position:absolute;top:-5px;left:0;width:12px;height:12px;border-radius:2px;background:var(--orange);animation:sail 5s ease-in-out infinite alternate}
+.rl .ln span{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font:500 10.5px var(--mono);letter-spacing:.1em;color:var(--sub);white-space:nowrap}
+@keyframes sail{to{left:calc(100% - 12px)}}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.facts div{padding:14px 18px;border-left:1px solid var(--line)}
+.facts div:first-child{border-left:0;padding-left:30px}
+.facts small{display:block;font:500 10px var(--mono);letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+.facts b{display:block;margin-top:4px;font:800 21px var(--display);text-transform:uppercase;font-variant-numeric:tabular-nums}
+
+/* featured */
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.card{border:1px solid var(--line-2);border-radius:12px;padding:18px;display:flex;flex-direction:column;background:#fff;transition:transform .12s,box-shadow .12s,border-color .12s}
+.card:hover{border-color:var(--ink);transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+.card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+.card h4{font:800 23px/.95 var(--display);text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.vf{width:14px;height:14px;flex:none}
+.card .ty{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub);margin-top:5px}
+.card .desc{font-size:13.5px;line-height:1.5;color:var(--ink-2);margin:12px 0 16px;flex:1}
+.card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:12px;border-top:1px dashed var(--line-2);font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
+.card .meta b{color:var(--blue);font-weight:600}
+.card.slot{border:1.5px dashed var(--orange);background:var(--orange-soft);justify-content:center;gap:8px}
+.card.slot:hover{box-shadow:4px 4px 0 var(--orange);border-style:solid}
+.card.slot .plus{font:800 44px/.8 var(--display);color:var(--orange)}
+.card.slot b{font:800 23px/.95 var(--display);text-transform:uppercase}
+.card.slot p{font-size:13px;color:#7A4A2B;line-height:1.5}
+.card.slot span{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--orange-ink)}
+
+/* categories */
+.cats{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
+.cat{padding:16px 18px;border-left:1px solid var(--line-2);display:flex;flex-direction:column;gap:18px;transition:background .15s,color .15s}
+.cat:first-child{border-left:0}
+.cat .n{font:500 11px var(--mono);color:var(--faint)}
+.cat b{display:block;font:800 21px/.95 var(--display);text-transform:uppercase}
+.cat small{font:500 10.5px var(--mono);letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
+.cat:hover{background:var(--ink);color:#fff}
+.cat:hover .n,.cat:hover small{color:var(--orange)}
+.cat.soon small{color:var(--orange-ink)}
+
+/* directory — light manifest */
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.manifest{border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
+.mrow{display:grid;grid-template-columns:62px 1fr 96px 60px;align-items:center;border-top:1px solid var(--line);font:500 12px var(--mono);color:var(--sub)}
+.mrow:first-child{border-top:0}
+.mrow > *{padding:10px 14px}
+.mrow.h{background:var(--soft);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.mrow .nm{display:flex;align-items:center;gap:10px;font:500 14px var(--body);color:var(--ink)}
+.mrow .nm i{width:10px;height:10px;border-radius:2px;flex:none}
+.mrow .go{text-align:right;color:var(--ink)}
+.mrow:not(.h):hover{background:var(--soft)}
+.mrow:not(.h):hover .go{color:var(--orange-ink)}
+
+/* carriers — container tiles, quiet */
+.grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.box{position:relative;border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:#fff;padding:12px 12px 12px 22px;transition:border-color .15s}
+.box::before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--c);background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 6px)}
+.box b{display:block;font:800 21px/1 var(--display);text-transform:uppercase}
+.box small{font:500 10px var(--mono);letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
+.box .cl{display:flex;justify-content:space-between;margin-top:12px;font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.box .cl a{color:var(--blue);opacity:0;transition:opacity .15s}
+.box:hover{border-color:var(--ink)}
+.box:hover .cl a,.box .cl a:focus-visible{opacity:1}
+
+/* providers */
+.prov{margin-top:40px;background:var(--soft);border-top:1px solid var(--line)}
+.prov::before{content:"";display:block;height:6px;background:repeating-linear-gradient(-45deg,var(--ink) 0 8px,var(--orange) 8px 16px)}
+.prov .wrap{padding-top:60px;padding-bottom:72px}
+.prov-top{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:end;margin-bottom:40px}
+.prov-top h2{margin-top:10px;font:800 64px/.88 var(--display);text-transform:uppercase;text-wrap:balance}
+.prov-top h2 span{color:var(--orange)}
+.prov-top p{font-size:16px;line-height:1.6;color:var(--sub)}
+.nums{display:flex;margin-top:20px;border:1px solid var(--line-2);border-radius:10px;background:#fff;overflow:hidden}
+.nums div{flex:1;padding:10px 16px;border-left:1px solid var(--line-2);min-width:0}
+.nums div:first-child{border-left:0}
+.nums b{display:block;font:800 28px/1 var(--display);font-variant-numeric:tabular-nums}
+.nums small{font:500 10px var(--mono);letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tier{background:#fff;border:1px solid var(--line-2);border-radius:14px;padding:26px;display:flex;flex-direction:column}
+.tier .tn{display:flex;justify-content:space-between;align-items:center}
+.tier .price{margin:14px 0 4px;font:800 44px/.9 var(--display);text-transform:uppercase}
+.tier .price small{font:500 12px var(--mono);letter-spacing:.06em;color:var(--faint)}
+.tier .pd{font-size:13.5px;color:var(--sub);min-height:40px}
+.tier ul{list-style:none;margin:18px 0 24px;border-top:1px solid var(--line)}
+.tier li{padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink-2);display:flex;gap:10px}
+.tier li::before{content:"";flex:none;width:6px;height:6px;margin-top:6px;background:var(--orange);border-radius:1px}
+.tier .btn{margin-top:auto}
+.tier.pop{border:1.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.tier.pop .tag{font:600 10px var(--mono);letter-spacing:.1em;background:var(--orange);color:#fff;padding:3px 8px;border-radius:4px}
+
+footer{background:var(--ink);color:#9AA0A6;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:22px;padding-bottom:22px;flex-wrap:wrap;gap:12px}
+footer .fl{display:flex;align-items:center;gap:10px;color:#fff;font:800 24px var(--display);letter-spacing:.02em}
+footer .links{display:flex;gap:24px;flex-wrap:wrap}
+footer a:hover{color:#fff}
+
+/* ===========================================================
+   PAID PLACEMENT UNITS
+   Every sponsor here is an invented company. The real container
+   lines are never labelled sponsored, featured or paid.
+   =========================================================== */
+.sstrip{position:relative;display:flex;align-items:stretch;margin-top:40px;width:min(760px,100%);
+  border:1px solid var(--line-2);border-radius:14px;overflow:hidden;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:0 1px 2px rgba(17,19,21,.05),0 14px 34px -18px rgba(17,19,21,.30)}
+@supports not (backdrop-filter:blur(2px)){.sstrip{background:#fff}}
+.sstrip__edge{width:4px;flex:none;background:var(--sc,var(--orange));transition:background .45s ease}
+.sstrip__tag{position:absolute;left:18px;top:10px;z-index:2;font:700 8.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--orange-ink)}
+.sstrip__view{position:relative;flex:1;min-width:0;height:88px}
+.sstrip__item{position:absolute;inset:0;display:flex;align-items:center;gap:14px;padding:26px 16px 14px 18px;text-align:left;
+  opacity:0;transform:translateY(38%);transition:opacity .42s var(--ease),transform .42s var(--ease);pointer-events:none}
+.sstrip__item.is-on{opacity:1;transform:none;pointer-events:auto}
+.sstrip__av{width:42px;height:42px;flex:none;border-radius:9px;display:grid;place-items:center;font:800 17px var(--display);color:#fff;letter-spacing:.02em}
+.sstrip__txt{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.sstrip__nm{font:800 20px/1 var(--display);text-transform:uppercase;letter-spacing:.01em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sstrip__pitch{font:400 13px var(--body);color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sstrip__route{flex:none;display:flex;flex-direction:column;gap:2px;padding-left:16px;border-left:1px solid var(--line);font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.sstrip__route b{font:800 16px/1 var(--display);letter-spacing:.02em;color:var(--ink)}
+.sstrip__cta{flex:none;display:inline-flex;align-items:center;height:34px;padding:0 16px;border-radius:999px;background:var(--blue);color:#fff;font:500 13px var(--body);white-space:nowrap}
+.sstrip__item:hover .sstrip__cta{background:var(--blue-2)}
+.sstrip__ui{position:absolute;right:14px;top:9px;z-index:2;display:flex;align-items:center;gap:8px}
+.sstrip__dots{display:flex;gap:4px}
+.sstrip__dots i{width:12px;height:3px;border-radius:2px;background:var(--line-2);transition:background .3s,width .3s}
+.sstrip__dots i.on{background:var(--orange);width:20px}
+.sstrip__pause{width:22px;height:22px;display:grid;place-items:center;padding:0;border:0;border-radius:5px;background:transparent;color:var(--faint);font:700 8px var(--mono);letter-spacing:.06em}
+.sstrip__pause:hover{background:var(--soft);color:var(--ink)}
+.sstrip__bar{position:absolute;left:0;right:0;bottom:0;height:2px;overflow:hidden}
+.sstrip__bar i{display:block;height:100%;width:0;background:var(--sc,var(--orange));transition:background .45s ease}
+.sstrip__bar i.run{animation:sfill 6s linear forwards}
+@keyframes sfill{from{width:0}to{width:100%}}
+
+/* suggestions, sponsored first */
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:60;background:#fff;
+  border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:0 18px 44px -12px rgba(17,19,21,.32);text-align:left}
+.sugg .grp{padding:9px 16px 5px;font:500 9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);background:#fff}
+.sugg button{display:flex;width:100%;align-items:center;gap:12px;padding:10px 16px;background:none;border:0;text-align:left;font:inherit}
+.sugg button + button{border-top:1px solid var(--line)}
+.sugg button:hover,.sugg button[aria-selected="true"]{background:var(--soft)}
+.sugg .code{font:500 11px var(--mono);color:var(--sub);flex:none;width:52px}
+.sugg .nm{font:500 14.5px var(--body);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sugg .nm small{display:block;font:500 10.5px var(--mono);letter-spacing:.05em;color:var(--faint);text-transform:uppercase}
+.sugg .kind{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);flex:none}
+.sugg .av{width:28px;height:28px;border-radius:6px;font-size:12px}
+.sugg .ad{background:var(--orange-soft)}
+.sugg .ad:hover,.sugg .ad[aria-selected="true"]{background:#FFE7D8}
+.sugg .ad .nm small{color:#7A4A2B}
+.sugg .ad .kind{color:var(--orange-ink);border:1px solid currentColor;border-radius:3px;padding:2px 5px;font-weight:600}
+
+/* spotlight entrance */
+.spot.armed{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.spot.armed.in{opacity:1;transform:none}
+.spot h3 .ln{display:block;overflow:hidden}
+.spot.armed h3 .ln > span{display:block;transform:translateY(100%);transition:transform .55s var(--ease)}
+.spot.armed.in h3 .ln > span{transform:none}
+.spot.armed.in h3 .ln:nth-child(2) > span{transition-delay:90ms}
+.spot.armed.in{animation:spulse 1.5s ease-out .35s 1}
+@keyframes spulse{0%{box-shadow:0 0 0 0 rgba(242,90,15,0)}35%{box-shadow:0 0 0 7px rgba(242,90,15,.20)}100%{box-shadow:0 0 0 14px rgba(242,90,15,0)}}
+
+/* corner card */
+.nudge{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;width:min(330px,calc(100vw - 40px));
+  display:flex;gap:12px;align-items:flex-start;padding:14px 14px 14px 16px;background:#fff;
+  border:1px solid var(--line-2);border-left:3px solid var(--orange);border-radius:12px;box-shadow:0 16px 44px -14px rgba(17,19,21,.34);
+  opacity:0;transform:translateY(14px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.nudge.in{opacity:1;transform:none}
+.nudge .av{width:34px;height:34px;border-radius:7px;font-size:14px}
+.nudge__b{min-width:0;flex:1}
+.nudge__b .sp{margin-bottom:3px}
+.nudge__b b{display:block;font:600 14px var(--body)}
+.nudge__b p{margin:2px 0 10px;font-size:12.5px;line-height:1.45;color:var(--sub)}
+.nudge__x{position:absolute;top:6px;right:6px;width:28px;height:28px;display:grid;place-items:center;border:0;background:none;color:var(--faint);font-size:15px;line-height:1;border-radius:6px}
+.nudge__x:hover{background:var(--soft);color:var(--ink)}
+
+/* sticky search pill on the home page */
+.stick{position:fixed;left:0;right:0;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:rgba(255,255,255,.88);
+  backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
+  border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform .3s var(--ease)}
+.stick.in{transform:none}
+.stick__in{display:flex;align-items:center;gap:12px;height:58px}
+.stick__mark{display:flex;align-items:center;gap:8px;font:800 20px var(--display);text-transform:uppercase;flex:none}
+.stick__f{flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:38px;padding:0 6px 0 14px;border:1px solid var(--line-2);border-radius:999px;background:#fff}
+.stick__f input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:400 14px var(--body)}
+.stick__f .btn-blue{height:30px;padding:0 16px;font-size:13px}
+.stick__ad{flex:none;display:flex;align-items:center;gap:8px;padding:5px 10px;border:1px solid var(--line-2);border-radius:999px;font:500 11px var(--mono);letter-spacing:.04em;color:var(--sub)}
+.stick__ad:hover{border-color:var(--orange);color:var(--ink)}
+.stick__ad i{width:8px;height:8px;border-radius:2px;background:var(--orange);flex:none}
+
+/* ===========================================================
+   THE INTRO: the port wakes up, then the light spreads out
+   from the search bar. Nothing here blocks the field: the veil
+   ignores the pointer, the bar is typable from the first frame,
+   and any key, click, scroll or touch jumps to the end.
+   =========================================================== */
+.veil{position:fixed;z-index:90;pointer-events:none;left:50%;top:50%;width:0;height:0;border-radius:999px;display:none;
+  box-shadow:inset 0 0 70px 34px var(--night),0 0 0 400vmax var(--night)}
+.intro .veil{display:block}
+.veil.grow{transition:left 1s cubic-bezier(.62,0,.22,1),top 1s cubic-bezier(.62,0,.22,1),width 1s cubic-bezier(.62,0,.22,1),height 1s cubic-bezier(.62,0,.22,1),border-radius 1s ease}
+.veil.fade{transition:opacity .28s ease;opacity:0}
+.intro .hero > .logo,.intro .hero > .tagline,.intro .hero > .search{z-index:95}
+.intro .logo .word{color:#fff}
+.intro .tagline{color:rgba(255,255,255,.7)}
+.intro.lit .logo .word{color:var(--ink);transition:color .7s ease .1s}
+.intro.lit .tagline{color:var(--sub);transition:color .7s ease .1s}
+.cable{position:absolute;left:35px;bottom:50%;width:2px;height:100vh;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.6));transform-origin:bottom;transform:scaleY(0);pointer-events:none;display:none}
+.intro .cable{display:block}
+.play .cable{animation:cable-in .22s ease-out .18s forwards,cable-out .3s ease-in .92s forwards}
+@keyframes cable-in{to{transform:scaleY(1)}}
+@keyframes cable-out{to{transform:scaleY(0);opacity:0}}
+.play .logo > svg{opacity:0;transform:translateY(-52vh);animation:drop .56s cubic-bezier(.45,.02,.3,1) .2s forwards,bounce .22s ease-out .76s}
+@keyframes drop{0%{opacity:0;transform:translateY(-52vh)}12%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes bounce{0%{transform:translateY(0)}45%{transform:translateY(-9px)}100%{transform:translateY(0)}}
+.play .logo .word span{opacity:0;transform:rotateX(-92deg);transform-origin:50% 0;backface-visibility:hidden;animation:flip .26s cubic-bezier(.2,.75,.3,1) forwards;animation-delay:calc(.6s + var(--i) * .055s)}
+@keyframes flip{to{opacity:1;transform:none}}
+.play .tagline{opacity:0;animation:fadein .45s ease-out 1s forwards}
+@keyframes fadein{to{opacity:1}}
+.hero > .hair{position:absolute;left:50%;top:50%;width:0;height:2px;background:#fff;transform:translate(-50%,-50%);border-radius:2px;opacity:0;pointer-events:none;z-index:96;display:none}
+.intro .hero > .hair{display:block}
+.play .hero > .hair{animation:hair-draw .22s ease-out 1s forwards,hair-go .18s ease-in 1.22s forwards}
+@keyframes hair-draw{from{width:0;opacity:1}to{width:86%;opacity:1}}
+@keyframes hair-go{to{width:100%;opacity:0}}
+.play .hero > .search{opacity:0;transform:scaleX(.06);animation:unroll .34s cubic-bezier(.2,.8,.25,1) 1.16s forwards;box-shadow:0 0 0 7px rgba(255,255,255,.08),0 22px 60px -14px rgba(0,0,0,.72)}
+@keyframes unroll{0%{transform:scaleX(.06);opacity:0}25%{opacity:1}100%{transform:none;opacity:1}}
+.play .hero > .search > *:not(.trace):not(.sugg){opacity:0;animation:fadein .24s ease-out 1.42s forwards}
+.trace{position:absolute;left:-1px;top:-1px;width:calc(100% + 2px);height:calc(100% + 2px);pointer-events:none;overflow:visible;display:none}
+.intro .trace{display:block}
+.trace rect{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 6px rgba(242,90,15,.8))}
+.play .trace rect{animation:trace .55s cubic-bezier(.5,0,.3,1) 1.5s forwards}
+.intro.lit .trace{opacity:0;transition:opacity .9s ease .35s}
+@keyframes trace{to{stroke-dashoffset:0}}
+/* what the light reaches, loading in as it arrives */
+.intro .topnav,.intro .hero > .filters,.intro .hero > .try,.intro .hero > .sstrip{opacity:0}
+.intro.lit .topnav{animation:rise .6s var(--ease) .25s forwards}
+.intro.lit .hero > .filters{animation:rise .6s var(--ease) .3s forwards}
+.intro.lit .hero > .try{animation:rise .6s var(--ease) .42s forwards}
+.intro.lit .hero > .sstrip{animation:rise .7s var(--ease) .55s forwards}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.skip{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:97;display:none;
+  font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.62);background:none;border:1px solid rgba(255,255,255,.24);border-radius:999px;padding:8px 16px}
+.skip:hover{color:#fff;border-color:#fff}
+.intro .skip{display:block}
+.intro.lit .skip{opacity:0;transition:opacity .3s}
+
+/* ===========================================================
+   APP PAGES: results, company, companies
+   =========================================================== */
+.apph{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);border-bottom:1px solid var(--line)}
+.apph__in{display:flex;align-items:center;gap:18px;min-height:68px;padding-block:10px}
+.apph__mark{display:flex;align-items:center;gap:9px;font:800 22px var(--display);text-transform:uppercase;letter-spacing:.02em;flex:none}
+.apph__nav{display:flex;gap:20px;font-size:14px;flex:none}
+.apph__nav a{color:var(--sub)}
+.apph__nav a:hover,.apph__nav a[aria-current="page"]{color:var(--ink)}
+.apph__nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--orange);text-decoration-thickness:2px;text-underline-offset:6px}
+.qbar{position:relative;flex:1;min-width:0;max-width:760px;display:flex;align-items:stretch;height:50px;border:1px solid var(--line-2);border-radius:999px;background:#fff;padding:4px 4px 4px 8px;transition:box-shadow .15s,border-color .15s}
+.qbar:focus-within{border-color:transparent;box-shadow:0 1px 8px rgba(32,33,36,.2)}
+.qseg{display:flex;flex-direction:column;justify-content:center;padding:0 14px;border-right:1px solid var(--line);min-width:0;flex:none}
+.qseg > span{font:500 9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);line-height:1.2}
+.qseg select,.qseg input{border:0;outline:0;background:transparent;font:500 14px var(--body);color:var(--ink);padding:0;min-width:0;-webkit-appearance:none;appearance:none;cursor:pointer}
+.qseg input{cursor:text}
+.qseg select{padding-right:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235B6066' stroke-width='1.5'/%3E%3C/svg%3E") right center no-repeat}
+.qseg--to{flex:1}
+.qseg--when{border-right:0}
+.qbar .btn-blue{height:40px;padding:0 20px;align-self:center}
+
+.page{padding-block:28px 64px}
+.rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.lane{display:flex;align-items:center;gap:16px;font:800 clamp(44px,6vw,76px)/.85 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.lane svg{flex:none;color:var(--orange)}
+.lane small{display:block;font:500 11px var(--mono);letter-spacing:.12em;color:var(--faint);margin-top:6px}
+.rsub{margin-top:12px;font-size:15px;color:var(--sub)}
+.rsub b{color:var(--ink);font-weight:600}
+.sample{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+
+/* filter bar: across the top, never down the side */
+.fbar{position:sticky;top:calc(69px + env(safe-area-inset-top,0px));z-index:40;margin-top:22px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-block:1px solid var(--line)}
+.fbar__in{display:flex;align-items:center;gap:10px;padding-block:10px;overflow-x:auto;scrollbar-width:none}
+.fbar__in::-webkit-scrollbar{display:none}
+.fbar .lbl{flex:none}
+.fsep{width:1px;height:24px;background:var(--line-2);flex:none}
+.fsel{flex:none;height:32px;border:1px solid var(--line-2);border-radius:8px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235B6066' stroke-width='1.5'/%3E%3C/svg%3E") right 10px center no-repeat;
+  padding:0 28px 0 12px;font:500 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);-webkit-appearance:none;appearance:none;cursor:pointer}
+.fsel:hover{border-color:var(--ink)}
+.fsel.on{background-color:var(--ink);color:#fff;border-color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E")}
+.fgrow{flex:1 0 8px}
+.fclear{flex:none;border:0;background:none;font:600 12px var(--body);color:var(--blue);text-decoration:underline;text-underline-offset:3px;padding:0 4px}
+
+/* departures calendar strip */
+.cal{margin-top:22px;border:1px solid var(--line-2);border-radius:14px;background:#fff;overflow:hidden}
+.cal__head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:18px 20px 4px}
+.cal__head b{font:800 26px/1 var(--display);text-transform:uppercase}
+.cal__head span{font-size:14px;color:var(--sub)}
+.cal__head .cal__hint{margin-left:auto;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.cal__scroll{overflow-x:auto;padding:8px 12px 0}
+.cal__grid{display:grid;grid-template-columns:repeat(var(--n),minmax(40px,1fr));min-width:calc(var(--n) * 40px)}
+.cal__day{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 2px 12px;border:0;background:none;border-radius:10px;transition:background .15s}
+.cal__day:hover:not(:disabled){background:var(--soft)}
+.cal__day:disabled{cursor:default}
+.cal__stack{height:92px;width:100%;display:flex;flex-direction:column-reverse;align-items:center;gap:3px}
+.cal__stack i{display:block;width:62%;max-width:34px;height:8px;border-radius:2px;flex:none}
+.cal__stack em{font:500 10px var(--mono);font-style:normal;color:var(--sub)}
+.cal__wd{font:500 10px var(--mono);letter-spacing:.12em;color:var(--faint)}
+.cal__dn{font:800 22px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.cal__day.is-empty .cal__dn{color:#B5B8BC}
+.cal__day.is-today::before{content:"TODAY";position:absolute;top:0;left:50%;transform:translateX(-50%);font:600 8.5px var(--mono);letter-spacing:.14em;color:var(--orange-ink)}
+.cal__day.is-today .cal__dn{color:var(--orange-ink)}
+.cal__day.is-mon{box-shadow:inset 1px 0 0 var(--line)}
+.cal__day.is-on{background:var(--ink)}
+.cal__day.is-on:hover{background:var(--ink)}
+.cal__day.is-on .cal__dn,.cal__day.is-on .cal__wd,.cal__day.is-on em{color:#fff}
+.cal__legend{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap;padding:12px 20px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-2)}
+.cal__legend span{display:inline-flex;align-items:center;gap:7px}
+.cal__legend i{width:10px;height:10px;border-radius:2px;flex:none}
+.cal__legend small{font:500 11px var(--mono);color:var(--faint)}
+
+.rrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px}
+.rchip{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid var(--line-2);border-radius:999px;background:#fff;font-size:13px;color:var(--ink);transition:border-color .15s,background .15s}
+.rchip:hover{border-color:var(--ink)}
+.rchip small{font:500 11px var(--mono);color:var(--faint)}
+.rchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.rchip[aria-pressed="true"] small{color:#C9CCD0}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--amber)}
+.dot.d{background:var(--green)}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}
+.tab{height:42px;padding:0 18px;border:1px solid var(--line-2);border-radius:999px;background:#fff;font:600 14px var(--body);display:inline-flex;align-items:center;gap:8px;transition:border-color .15s}
+.tab:hover{border-color:var(--ink)}
+.tab small{font:500 13px var(--mono);color:var(--faint)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab[aria-selected="true"] small{color:#C9CCD0}
+
+/* provider cards */
+.pcs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px;align-items:start}
+.pc{position:relative;border:1px solid var(--line-2);border-radius:14px;background:#fff;overflow:hidden;transition:border-color .15s,box-shadow .15s,transform .15s}
+.pc::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--fc)}
+.pc:hover{border-color:var(--ink);box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px)}
+.pc.is-ad{border-color:var(--orange)}
+.pc.is-ad::before{height:5px;background:repeating-linear-gradient(-45deg,var(--ink) 0 6px,var(--orange) 6px 12px)}
+.pc.is-ad:hover{box-shadow:4px 4px 0 var(--orange)}
+.pc__top{display:flex;align-items:flex-start;gap:12px;padding:20px 18px 0}
+.pc__id{min-width:0;flex:1}
+.pc__id a{display:block;font:800 23px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.pc__id a:hover{color:var(--blue)}
+.pc__id small{display:block;margin-top:5px;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.badge{flex:none;font:600 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:5px;background:var(--soft);color:var(--ink);white-space:nowrap}
+.badge.feat{background:#FFF4CC;color:#6B4E00}
+.pc__pitch{padding:10px 18px 16px;font-size:14px;line-height:1.45;color:var(--ink-2);border-bottom:1px solid var(--line)}
+.sl{list-style:none}
+.sl li + li{border-top:1px solid var(--line)}
+.srow{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:4px 12px;align-items:start;padding:14px 12px 14px 18px}
+.srow__open{display:contents;cursor:pointer}
+.srow__date{font:600 13px var(--mono);font-variant-numeric:tabular-nums;padding-top:3px}
+.srow__date small{display:block;font-weight:500;font-size:11px;color:var(--faint);margin-top:2px}
+.srow__main{min-width:0;display:flex;flex-direction:column;gap:7px;text-align:left;border:0;background:none;padding:0}
+.srow__main:hover .vsl{color:var(--blue)}
+.vsl{font:600 16px var(--body);display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.vsl i{font:500 10.5px var(--mono);font-style:normal;color:var(--faint);letter-spacing:.06em}
+.vsl em{font:500 12px var(--mono);font-style:normal;color:var(--sub);margin-left:auto}
+.tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:5px;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.tag.r{padding:0;color:var(--ink);font-weight:600}
+.tag.dir{background:var(--green-soft);color:var(--green)}
+.tag.via{background:var(--amber-soft);color:var(--amber)}
+.tag.dir::before,.tag.via::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.tag.t{border:1px solid var(--line-2);color:var(--ink-2)}
+.cut{font:500 12px var(--mono);color:var(--sub)}
+.cut.u{color:var(--red);font-weight:600}
+.cmpx{display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:2px;font:500 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);cursor:pointer}
+.cmpx input{width:18px;height:18px;accent-color:var(--ink);cursor:pointer}
+.pc__more{display:block;width:100%;padding:11px 18px;border:0;border-top:1px dashed var(--line-2);background:#fff;text-align:left;font:600 13px var(--body);color:var(--blue)}
+.pc__more:hover{background:var(--soft)}
+.pc__foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;background:var(--soft);border-top:1px solid var(--line)}
+.pc__foot b{display:block;font:800 26px/1 var(--display);text-transform:uppercase}
+.pc__foot small{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.pc__acts{display:flex;gap:8px}
+
+.empty{margin-top:18px;border:1.5px dashed var(--line-2);border-radius:14px;padding:44px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.empty b{font:800 28px/1 var(--display);text-transform:uppercase}
+.empty p{font-size:14.5px;color:var(--sub);max-width:52ch;line-height:1.5}
+.empty .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+/* compare tray */
+.tray{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:14px;
+  padding:8px 8px 8px 18px;background:var(--ink);color:#fff;border-radius:16px;box-shadow:0 18px 44px -12px rgba(17,19,21,.5);max-width:calc(100vw - 32px)}
+.tray__n{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#C9CCD0;flex:none}
+.tray ul{display:flex;gap:6px;list-style:none;min-width:0;overflow-x:auto}
+.tray li{display:flex;align-items:center;gap:8px;padding:5px 6px 5px 5px;background:rgba(255,255,255,.08);border-radius:10px;flex:none}
+.tray li .av{width:26px;height:26px;border-radius:6px;font-size:11px}
+.tray li b{display:block;font:600 12.5px var(--body)}
+.tray li small{font:500 10px var(--mono);color:#C9CCD0}
+.tray li button{width:22px;height:22px;border:0;border-radius:6px;background:none;color:#C9CCD0}
+.tray li button:hover{background:rgba(255,255,255,.14);color:#fff}
+.tray .btn-blue:disabled{opacity:.45;cursor:default}
+
+/* dialogs */
+dialog{border:0;padding:0;color:var(--ink);background:#fff}
+dialog::backdrop{background:rgba(5,8,15,.5)}
+.sheet{margin:0 0 0 auto;width:min(480px,100%);height:100%;max-height:100%;max-width:100%}
+.sheet[open]{animation:slidein .32s var(--ease)}
+@keyframes slidein{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.sh{display:flex;flex-direction:column;min-height:100%}
+.sh__top{display:flex;align-items:center;gap:12px;padding:20px 20px 16px;border-bottom:1px solid var(--line)}
+.sh__top .av{width:44px;height:44px}
+.sh__t{flex:1;min-width:0}
+.sh__t b{display:block;font:800 26px/1 var(--display);text-transform:uppercase}
+.sh__t small{font:500 11px var(--mono);letter-spacing:.06em;color:var(--sub)}
+.x{width:36px;height:36px;border:1px solid var(--line-2);border-radius:50%;background:#fff;font-size:14px;flex:none}
+.x:hover{border-color:var(--ink)}
+.sh__body{padding:18px 20px 24px;display:flex;flex-direction:column;gap:18px}
+.cutbox{border-radius:12px;padding:14px 16px;background:var(--soft);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cutbox.u{background:var(--red-soft)}
+.cutbox b{display:block;font:800 24px/1 var(--display);text-transform:uppercase}
+.cutbox small{font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+.cutbox .left{font:600 13px var(--mono);text-align:right}
+.cutbox.u .left{color:var(--red)}
+.legs{list-style:none;position:relative}
+.legs li{position:relative;display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:start;padding-bottom:16px}
+.legs li::before{content:"";position:absolute;left:10px;top:14px;bottom:-2px;width:2px;background:repeating-linear-gradient(180deg,var(--line-2) 0 4px,transparent 4px 8px)}
+.legs li:last-child::before{display:none}
+.legs .n{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink);background:#fff;position:relative;z-index:1}
+.legs li.o .n,.legs li.d .n{background:var(--ink)}
+.legs li.d .n{background:var(--orange);border-color:var(--orange)}
+.legs b{display:block;font-weight:600;font-size:15px}
+.legs small{font:500 11px var(--mono);color:var(--sub);letter-spacing:.04em}
+.legs .when{font:500 12px var(--mono);text-align:right;color:var(--ink-2)}
+.rates{border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
+.rates div{display:flex;justify-content:space-between;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
+.rates div:first-child{border-top:0;background:var(--soft);font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+.rates strong{font:800 20px/1 var(--display);font-variant-numeric:tabular-nums}
+.qform{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qform label{display:flex;flex-direction:column;gap:5px;font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.qform input,.qform select{height:40px;border:1px solid var(--line-2);border-radius:8px;padding:0 10px;font:400 14px var(--body);color:var(--ink);background:#fff;text-transform:none;letter-spacing:0}
+.qform .full{grid-column:1 / -1}
+.note{font-size:13px;line-height:1.5;color:var(--sub)}
+.note.ok{padding:12px 14px;border-radius:10px;background:var(--green-soft);color:var(--green)}
+.sh__foot{margin-top:auto;display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--line);background:#fff;position:sticky;bottom:0}
+.sh__foot .btn{flex:1}
+
+.cmpd{margin:auto;width:min(980px,calc(100% - 32px));max-height:calc(100% - 48px);border-radius:16px}
+.cmpd .sh__top{position:sticky;top:0;background:#fff;z-index:2}
+.cmpt{overflow-x:auto}
+.cmpt table{width:100%;border-collapse:collapse;min-width:620px}
+.cmpt th,.cmpt td{padding:12px 16px;border-top:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+.cmpt th{width:150px;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sub);background:var(--soft)}
+.cmpt td small{display:block;font:500 11px var(--mono);color:var(--faint);margin-top:3px}
+.cmpt td.best{background:var(--green-soft)}
+.cmpt td.best::after{content:"Best";display:inline-block;margin-top:6px;font:600 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.cmpt thead td{border-top:0}
+.cmpt thead b{display:block;font:800 22px/1 var(--display);text-transform:uppercase}
+
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translate(-50%,-140%);z-index:120;padding:11px 18px;border-radius:12px;background:var(--ink);color:#fff;font-size:14px;box-shadow:0 14px 34px -12px rgba(17,19,21,.5);transition:transform .3s var(--ease);max-width:calc(100vw - 32px)}
+.toast{visibility:hidden}
+.toast.in{transform:translate(-50%,0);visibility:visible}
+
+/* company profile */
+.cohero{position:relative;background:var(--soft);border-bottom:1px solid var(--line);
+  background-image:linear-gradient(#EDEDEA 1px,transparent 1px),linear-gradient(90deg,#EDEDEA 1px,transparent 1px);background-size:48px 48px}
+.cohero::before{content:"";display:block;height:6px;background:var(--fc)}
+.cohero.is-ad::before{background:repeating-linear-gradient(-45deg,var(--ink) 0 8px,var(--orange) 8px 16px)}
+.cohero__in{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:32px;padding-block:34px 30px;align-items:start}
+.back{display:inline-flex;align-items:center;gap:6px;font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:18px}
+.back:hover{color:var(--ink)}
+.coid{display:flex;gap:18px;align-items:center}
+.coid .av{width:76px;height:76px;border-radius:14px;font-size:32px}
+.coid h1{font:800 clamp(40px,6vw,68px)/.86 var(--display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.coid p{margin-top:8px;font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sub)}
+.cobadges{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+.cobadges .badge{background:#fff;border:1px solid var(--line-2)}
+.cobadges .badge.v{background:var(--blue-soft);border-color:transparent;color:var(--blue)}
+.cobadges .badge.ad{background:var(--orange-soft);border-color:transparent;color:var(--orange-ink)}
+.copitch{margin-top:18px;font-size:19px;line-height:1.45;max-width:58ch;color:var(--ink-2)}
+.contact{background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:5px 5px 0 var(--ink)}
+.contact .who b{font-weight:600}
+.contact .reply{display:flex;justify-content:space-between;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub);padding-top:10px;border-top:1px dashed var(--line-2)}
+.contact .reply b{color:var(--green)}
+.contact .btn{width:100%}
+.costats{margin-top:0}
+.sec{padding-block:36px 0}
+.sec .head{margin-bottom:16px}
+.sched{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+.month{border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:#fff}
+.month__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.month__head b{font:800 22px/1 var(--display);text-transform:uppercase}
+.month__key{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink-2)}
+.month__key span{display:inline-flex;align-items:center;gap:6px}
+.month__key i{width:9px;height:9px;border-radius:2px}
+.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.mgrid .dow{padding:8px 10px;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);background:var(--soft);border-bottom:1px solid var(--line)}
+.mday{min-height:94px;padding:8px 8px 10px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0;transition:background .12s}
+.mday:nth-child(7n){border-right:0}
+.mday:hover{background:var(--soft)}
+.mday .d{display:flex;justify-content:space-between;align-items:baseline;font:800 18px/1 var(--display);font-variant-numeric:tabular-nums}
+.mday .d small{font:500 9.5px var(--mono);letter-spacing:.08em;color:var(--faint)}
+.mday .ev{display:flex;align-items:center;gap:5px;font:500 10.5px var(--mono);color:var(--ink-2);white-space:nowrap;overflow:hidden;min-width:0}
+.mday .ev i{width:6px;height:6px;border-radius:2px;flex:none}
+.mday .more{font:500 10px var(--mono);color:var(--faint)}
+.mday.past{background:#FBFBFA}
+.mday.past .d,.mday.past .ev{opacity:.5}
+.mday.today{box-shadow:inset 0 0 0 2px var(--orange)}
+.mday.on{background:var(--ink);color:#fff}
+.mday.on .ev,.mday.on .d small,.mday.on .more{color:#E5E7EA;opacity:1}
+.mday.on .d{opacity:1}
+.dayp{border:1px solid var(--line-2);border-radius:14px;background:#fff;overflow:hidden;position:sticky;top:90px}
+.dayp__h{padding:16px 18px;border-bottom:1px solid var(--line);background:var(--soft)}
+.dayp__h b{display:block;font:800 26px/1 var(--display);text-transform:uppercase}
+.dayp__h small{font:500 11px var(--mono);letter-spacing:.08em;color:var(--sub);text-transform:uppercase}
+.dep{list-style:none}
+.dep li + li{border-top:1px solid var(--line)}
+.dep button{display:grid;grid-template-columns:58px minmax(0,1fr);gap:4px 12px;width:100%;padding:14px 18px;border:0;background:none;text-align:left}
+.dep button:hover{background:var(--soft)}
+.dep .tm{font:800 22px/1 var(--display);font-variant-numeric:tabular-nums}
+.dep .tm small{display:block;font:500 9.5px var(--mono);letter-spacing:.1em;color:var(--faint);margin-top:3px}
+.dep .v b{display:block;font-weight:600;font-size:15px}
+.dep .v small{display:block;font:500 11px var(--mono);color:var(--sub);margin-top:2px}
+.dep .tags{grid-column:2;margin-top:4px}
+.st{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:5px;font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.st.gone{background:var(--soft);color:var(--sub)}
+.st.open{background:var(--green-soft);color:var(--green)}
+.st.soon{background:var(--red-soft);color:var(--red)}
+.st.shut{background:var(--amber-soft);color:var(--amber)}
+.dayp .none{padding:22px 18px;font-size:14px;color:var(--sub);line-height:1.5}
+.board{border:1px solid var(--line-2);border-radius:14px;overflow:hidden;background:#fff}
+.board__tabs{display:flex;gap:6px;padding:12px;border-bottom:1px solid var(--line);background:var(--soft);flex-wrap:wrap}
+.board__tabs .tab{height:36px;font-size:13px}
+.board__scroll{overflow-x:auto}
+.board table{width:100%;border-collapse:collapse;min-width:760px}
+.board th{padding:10px 14px;text-align:left;font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--line)}
+.board td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+.board tr:last-child td{border-bottom:0}
+.board tbody tr{cursor:pointer;transition:background .12s}
+.board tbody tr:hover{background:var(--soft)}
+.board td.m{font:500 13px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.board td b{font-weight:600}
+.board td small{display:block;font:500 11px var(--mono);color:var(--faint)}
+.svcs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.svc{border:1px solid var(--line-2);border-radius:14px;background:#fff;padding:18px;display:flex;flex-direction:column;gap:14px}
+.svc__h{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.svc__h b{font:800 22px/1 var(--display);text-transform:uppercase;display:flex;align-items:center;gap:9px}
+.svc__h b i{width:10px;height:10px;border-radius:2px}
+.svc__h small{font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.rot{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px}
+.rot__p{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px;text-align:center}
+.rot__p b{font:800 20px/1 var(--display)}
+.rot__p small{font:500 10px var(--mono);color:var(--faint)}
+.rot__p i{width:12px;height:12px;border-radius:3px;border:2px solid var(--ink);background:#fff}
+.rot__p:first-child i{background:var(--ink)}
+.rot__p:last-child i{background:var(--orange);border-color:var(--orange)}
+.rot__ln{flex:1 0 18px;height:2px;margin-top:5px;background:repeating-linear-gradient(90deg,var(--ink) 0 5px,transparent 5px 10px)}
+.svc__f{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);padding-top:12px;border-top:1px dashed var(--line-2)}
+.svc__f span b{display:block;font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.lanes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.lanec{border:1px solid var(--line-2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;background:#fff;text-align:left;transition:border-color .15s,box-shadow .15s,transform .15s}
+.lanec:hover{border-color:var(--ink);box-shadow:3px 3px 0 var(--ink);transform:translate(-1px,-1px)}
+.lanec b{font:800 24px/1 var(--display);text-transform:uppercase}
+.lanec span{font-size:13px;color:var(--ink-2)}
+.lanec small{font:500 10.5px var(--mono);letter-spacing:.06em;color:var(--sub);text-transform:uppercase}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+
+/* companies directory */
+.dhead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.dhead h1{font:800 clamp(44px,6vw,72px)/.86 var(--display);text-transform:uppercase}
+.dhead p{margin-top:10px;color:var(--sub);font-size:15px}
+.dsearch{display:flex;align-items:center;gap:10px;height:46px;width:min(380px,100%);padding:0 16px;border:1px solid var(--line-2);border-radius:999px;background:#fff}
+.dsearch:focus-within{border-color:var(--ink)}
+.dsearch input{flex:1;min-width:0;border:0;outline:0;font:400 15px var(--body);background:transparent}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
+  .sstrip__bar i.run{width:100%}
+}
+
+@media (max-width:1100px){
+  .pcs,.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lanes,.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sched{grid-template-columns:minmax(0,1fr)}
+  .dayp{position:static}
+  .apph__nav{display:none}
+}
+@media (max-width:1000px){
+  .grid5{grid-template-columns:repeat(3,1fr)}
+  .grid6,.cats{grid-template-columns:repeat(3,1fr)}
+  .cat:nth-child(4){border-left:0}.cat:nth-child(n+4){border-top:1px solid var(--line-2)}
+  .spot{grid-template-columns:1fr}.spot-r{border-left:0;border-top:1px solid var(--line)}
+  .cols2,.prov-top,.tiers{grid-template-columns:1fr}
+  .cohero__in{grid-template-columns:minmax(0,1fr)}
+  .svcs{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .stick__ad{display:none}
+  .apph__in{flex-wrap:wrap;gap:10px}
+  .qbar{order:3;flex:1 1 100%;max-width:none}
+  .fbar{position:static}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .head a,.head .rule{display:none}.head h2{font-size:26px}
+  .try{margin-top:26px}
+  .topnav{padding:12px 16px}.topnav .coord,.topnav .hide{display:none}
+  .logo .word{font-size:64px}.logo > svg{width:50px;height:50px}
+  .cable{left:24px}
+  .search .chip,.search .icon-btn{display:none}.search .btn-blue{padding:0 16px}
+  .grid5,.grid6,.cats{grid-template-columns:1fr 1fr}
+  .cat{border-left:0!important;border-top:1px solid var(--line-2)}.cat:nth-child(2n){border-left:1px solid var(--line-2)!important}.cat:nth-child(-n+2){border-top:0}
+  .spot-l{padding:26px 22px 26px 30px}.spot h3{font-size:36px}
+  .facts{grid-template-columns:1fr 1fr}
+  .prov-top h2{font-size:46px}
+  .hero{min-height:auto;padding:48px 16px}
+  .sstrip__view{height:auto;min-height:104px}
+  .sstrip__item{flex-wrap:wrap;padding:26px 14px 16px}
+  .sstrip__route{display:none}
+  .sstrip__cta{margin-left:56px}
+  .nudge{right:12px;left:12px;width:auto}
+  .stick__mark{display:none}
+  .mrow{grid-template-columns:52px 1fr 70px 30px}
+  .pcs,.dgrid,.lanes,.grid4{grid-template-columns:minmax(0,1fr)}
+  .qseg{padding:0 10px}
+  .qseg--from{max-width:118px}
+  .qseg--when{display:none}
+  .qbar .btn-blue{padding:0 14px}
+  .lane{gap:10px}.lane svg{width:34px}
+  .nums{flex-wrap:wrap}.nums div{flex:1 1 45%;border-top:1px solid var(--line-2)}
+  .mday{min-height:62px;padding:6px 5px}
+  .mday .ev span{display:none}
+  .mday .d small{display:none}
+  .mgrid .dow{padding:6px 5px}
+  .sheet{margin:auto 0 0;height:90%;width:100%;border-radius:16px 16px 0 0}
+  .qform{grid-template-columns:1fr}
+  .tray{left:12px;right:12px;transform:none;padding-left:12px}
+  .tray__n{display:none}
+  .coid .av{width:56px;height:56px;font-size:24px}
+}
+</style>
+
+<div class="veil" id="veil" aria-hidden="true"></div>
+<button class="skip" id="skip" type="button">Skip intro</button>
+
+<!-- ============================ HOME ============================ -->
+<div id="vHome">
+<nav class="topnav" aria-label="Main">
+  <span class="coord">24°50′N 66°58′E · KARACHI</span>
+  <div class="r">
+    <a class="l hide" href="#companies">Companies</a>
+    <a class="l hide" href="#results">Routes</a>
+    <a class="l" href="#providers">For providers</a>
+    <button class="btn btn-ink" type="button" data-signin>Sign in</button>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="logo" aria-label="KARGOS">
+    <span class="cable" aria-hidden="true"></span>
+    <svg width="72" height="72" viewBox="0 0 104 104" aria-hidden="true">
+      <rect x="4" y="4" width="96" height="96" rx="18" fill="#111315"/>
+      <rect x="16" y="16" width="72" height="72" rx="8" fill="#F25A0F"/>
+      <g fill="#111315" opacity=".22"><rect x="24" y="16" width="3" height="72"/><rect x="77" y="16" width="3" height="72"/></g>
+      <path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/>
+    </svg>
+    <div class="word" id="word" aria-hidden="true">KARGOS</div>
+  </div>
+  <p class="tagline">Search Pakistan's shipping industry in one place.</p>
+
+  <span class="hair" aria-hidden="true"></span>
+  <form class="search" id="homeSearch" role="search">
+    <svg class="trace" id="trace" aria-hidden="true"><rect pathLength="1"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA0A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <button class="chip" type="button" id="fromChip" title="Change where the cargo loads"></button>
+    <input id="q" placeholder="Add destination, service or company" aria-label="Destination, service or company"
+           autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="sugg" aria-autocomplete="list">
+    <button class="icon-btn" type="button" id="homeFilters" aria-label="Open every sailing with these filters"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg></button>
+    <button class="btn btn-blue" type="submit">Search</button>
+    <div class="sugg" id="sugg" hidden role="listbox" aria-label="Suggestions"></div>
+  </form>
+
+  <div class="filters" id="homeF"></div>
+  <p class="try">Try <button type="button" data-try="PKKHI|CNSHA">Karachi to Shanghai</button>, <button type="button" data-try="PKBQM|SAJED">Port Qasim to Jeddah</button> or <button type="button" data-try="PKGWD|UZTAS">Gwadar to Tashkent</button></p>
+
+  <div class="sstrip" id="sstrip" aria-label="Sponsored lines">
+    <span class="sstrip__edge" aria-hidden="true"></span>
+    <span class="sstrip__tag">Sponsored</span>
+    <div class="sstrip__view" id="sview"></div>
+    <div class="sstrip__ui">
+      <span class="sstrip__dots" id="sdots" aria-hidden="true"></span>
+      <button class="sstrip__pause" id="spause" type="button" aria-pressed="false" aria-label="Pause sponsored rotation">II</button>
+    </div>
+    <span class="sstrip__bar" aria-hidden="true"><i id="sbar"></i></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <div class="head" id="spotlight"><span class="no">01</span><h2>Spotlight</h2><div class="rule"></div><a class="ad" href="#providers">Book this slot →</a></div>
+    <div id="spotSlot"></div>
+  </section>
+
+  <section>
+    <div class="head"><span class="no">02</span><h2>Featured providers</h2><div class="rule"></div><a class="ad" href="#providers">Get featured →</a></div>
+    <div class="grid5" id="featSlot"></div>
+  </section>
+
+  <section>
+    <div class="head"><span class="no">03</span><h2>Browse by service</h2><div class="rule"></div></div>
+    <div class="cats" id="catSlot"></div>
+  </section>
+
+  <section>
+    <div class="head"><span class="no">04</span><h2>On KARGOS</h2><div class="rule"></div><a href="#companies" id="allCount">View all →</a></div>
+    <div class="cols2" id="manSlot"></div>
+  </section>
+
+  <section>
+    <div class="head"><span class="no">05</span><h2>Lines serving Pakistan</h2><div class="rule"></div><a class="ad" href="#providers">Represent a line? Claim →</a></div>
+    <div class="grid6">
+      <div class="box" style="--c:#42B0D5"><b>Maersk</b><small>Copenhagen · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#202124"><b>MSC</b><small>Geneva · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#E2001A"><b>CMA CGM</b><small>Marseille · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#0A4D9A"><b>COSCO</b><small>Shanghai · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#F07D00"><b>Hapag-Lloyd</b><small>Hamburg · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#C4007A"><b>ONE</b><small>Singapore · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#00813F"><b>Evergreen</b><small>Taipei · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#00857C"><b>HMM</b><small>Seoul · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#1F3A93"><b>Yang Ming</b><small>Keelung · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#D4102A"><b>OOCL</b><small>Hong Kong · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#003A70"><b>Wan Hai</b><small>Taipei · Intra-Asia</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#E0A100"><b>PIL</b><small>Singapore · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+    </div>
+  </section>
+</main>
+
+<section class="prov" id="providers">
+  <div class="wrap">
+    <div class="prov-top">
+      <div>
+        <span class="lbl">06 · For lines, NVOCCs and forwarders</span>
+        <h2>Be the first name shippers <span>see.</span></h2>
+      </div>
+      <div>
+        <p>Every search on KARGOS starts on this page. Featured providers appear right below the search bar, in front of exporters and importers looking for a route.</p>
+        <div class="nums">
+          <div><b>12K</b><small>Monthly searches</small></div>
+          <div><b>3.4×</b><small>Profile views</small></div>
+          <div><b>05</b><small>Featured slots</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tn"><span class="lbl">Directory</span></div>
+        <div class="price">Free</div>
+        <p class="pd">Claim your listing and get found by name.</p>
+        <ul><li>Company profile and contact</li><li>Services and routes</li><li>Appears in search results</li></ul>
+        <button class="btn btn-line" type="button" data-plan="Directory">Claim listing</button>
+      </div>
+      <div class="tier pop">
+        <div class="tn"><span class="lbl" style="color:var(--ink)">Featured</span><span class="tag">5 SLOTS</span></div>
+        <div class="price">PKR 25K<small> / MONTH</small></div>
+        <p class="pd">A card in the Featured row, right under the search bar.</p>
+        <ul><li>Homepage featured card</li><li>Verified badge and reply time</li><li>Boosted in matching searches</li><li>Quotes sent to WhatsApp or email</li></ul>
+        <button class="btn btn-ink" type="button" data-plan="Featured">Get featured →</button>
+      </div>
+      <div class="tier">
+        <div class="tn"><span class="lbl">Spotlight</span></div>
+        <div class="price">PKR 60K<small> / MONTH</small></div>
+        <p class="pd">The large Spotlight banner. Three sponsors rotate.</p>
+        <ul><li>Everything in Featured</li><li>Spotlight banner</li><li>Route and schedule showcase</li><li>Monthly lead report</li></ul>
+        <button class="btn btn-line" type="button" data-plan="Spotlight">Book Spotlight</button>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============================ APP PAGES ============================ -->
+<div id="vResults" hidden></div>
+<div id="vCompany" hidden></div>
+<div id="vCompanies" hidden></div>
+
+<footer>
+  <div class="wrap">
+    <a class="fl" href="#">
+      <svg width="24" height="24" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#F25A0F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>
+      KARGOS
+    </a>
+    <div class="links"><a href="#companies">Companies</a><a href="#results">Routes</a><a href="#providers">Advertise</a><button type="button" data-contact style="border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit">Contact</button></div>
+    <div>© 2026 · Karachi · Companies and sailings are sample data</div>
+  </div>
+</footer>
+
+<div class="stick" id="stick" aria-hidden="true">
+  <div class="wrap stick__in">
+    <a class="stick__mark" href="#" tabindex="-1">KARGOS</a>
+    <form class="stick__f" id="stickForm" role="search">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9AA0A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="stickQ" aria-label="Search destination or company" placeholder="Karachi to Jebel Ali" tabindex="-1" autocomplete="off">
+      <button class="btn btn-blue" type="submit" tabindex="-1">Search</button>
+    </form>
+    <a class="stick__ad" href="#co-GL" tabindex="-1"><i></i>Gulfstar Lines, sponsored</a>
+  </div>
+</div>
+
+<aside class="nudge" id="nudge" hidden aria-label="Sponsored message">
+  <button class="nudge__x" id="nudgex" type="button" aria-label="Dismiss">&#10005;</button>
+  <span class="av" style="background:#1E3A8A">GL</span>
+  <div class="nudge__b">
+    <span class="sp">Sponsored</span>
+    <b>Gulfstar Lines</b>
+    <p id="nudgeTxt">Weekly direct reefer, Karachi to Jebel Ali in 4 days.</p>
+    <a class="btn btn-blue btn-sm" href="#co-GL">See sailings</a>
+  </div>
+</aside>
+
+<div class="tray" id="tray" hidden></div>
+<dialog class="sheet" id="sheet" aria-label="Sailing"></dialog>
+<dialog class="cmpd" id="cmp" aria-label="Compare sailings"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+
+/* ===========================================================
+   UTILITIES
+   =========================================================== */
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+function plural(n, one, many) { return n + " " + (n === 1 ? one : (many || one + "s")); }
+function norm(s) { return String(s || "").toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim(); }
+var REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+var DAY = 864e5;
+var NOW = new Date();
+var TODAY = (function () { var d = new Date(); d.setHours(0, 0, 0, 0); return d; })();
+function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function dayDiff(a, b) { var x = new Date(a), y = new Date(b); x.setHours(0,0,0,0); y.setHours(0,0,0,0); return Math.round((y - x) / DAY); }
+function pad(n) { return String(n).padStart(2, "0"); }
+function fmtD(d) { return pad(d.getDate()) + " " + MON[d.getMonth()]; }
+function fmtWD(d) { return WD[d.getDay()] + " " + fmtD(d); }
+function hm(d) { return pad(d.getHours()) + ":" + pad(d.getMinutes()); }
+function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+function sc(code) { return code.slice(2); }
+function untilLabel(d) {
+  var h = Math.round((d - NOW) / 36e5);
+  if (h < 1) return "under an hour";
+  if (h < 48) return plural(h, "hour");
+  return plural(Math.round(h / 24), "day");
+}
+function setTimeStr(d, t) { var x = new Date(d); var p = t.split(":"); x.setHours(+p[0], +p[1], 0, 0); return x; }
+
+/* ===========================================================
+   DATA
+   Ports, terminals and LOCODEs are real. Companies, vessels,
+   rotations, times, cut-offs and rates are sample data, and the
+   interface says so wherever they appear.
+   =========================================================== */
+var PORTS = [
+  ["PKKHI","Karachi","Pakistan","Pakistan",["khi","karachi port","kpt","keamari"]],
+  ["PKBQM","Port Qasim","Pakistan","Pakistan",["qasim","bin qasim","pqa","bqm"]],
+  ["PKGWD","Gwadar","Pakistan","Pakistan",["gwadar port","gwd"]],
+  ["AEJEA","Jebel Ali","UAE","Gulf",["dubai","jebel","uae","jea"]],
+  ["QAHMD","Hamad","Qatar","Gulf",["doha","qatar","hamad port"]],
+  ["IQUQR","Umm Qasr","Iraq","Gulf",["basra","basrah","iraq"]],
+  ["OMSLL","Salalah","Oman","Gulf",["oman","sll"]],
+  ["INMUN","Mundra","India","Indian Ocean",["india","kutch"]],
+  ["SAJED","Jeddah","Saudi Arabia","Red Sea",["jiddah","ksa","saudi","jed"]],
+  ["EGPSD","Port Said","Egypt","Red Sea",["egypt","suez","said"]],
+  ["TRMER","Mersin","Turkey","Mediterranean",["turkey","turkiye"]],
+  ["LKCMB","Colombo","Sri Lanka","Indian Ocean",["sri lanka","cmb","lanka"]],
+  ["BDCGP","Chittagong","Bangladesh","Indian Ocean",["chattogram","ctg","bangladesh"]],
+  ["SGSIN","Singapore","Singapore","Far East",["sin","spore"]],
+  ["MYPKG","Port Klang","Malaysia","Far East",["klang","malaysia"]],
+  ["CNNGB","Ningbo","China","Far East",["ningbo zhoushan","ngb"]],
+  ["CNSHA","Shanghai","China","Far East",["sha","yangshan"]],
+  ["NLRTM","Rotterdam","Netherlands","Europe",["rtm","holland","netherlands"]],
+  ["DEHAM","Hamburg","Germany","Europe",["germany","ham"]],
+  ["GBFXT","Felixstowe","United Kingdom","Europe",["uk","england","britain","fxt"]],
+  ["KEMBA","Mombasa","Kenya","East Africa",["kenya","mba"]],
+  ["USNYC","New York","United States","US East Coast",["nyc","newark","new jersey"]],
+  ["USHOU","Houston","United States","US East Coast",["texas","hou"]],
+  ["UZTAS","Tashkent","Uzbekistan","Central Asia",["uzbekistan","toshkent","tas"]],
+  ["KZALA","Almaty","Kazakhstan","Central Asia",["kazakhstan","alma ata"]]
+].map(function (r) { return { code: r[0], name: r[1], country: r[2], region: r[3], aliases: r[4] }; });
+var PORT = {};
+PORTS.forEach(function (p) { PORT[p.code] = p; });
+var PK = ["PKKHI", "PKBQM", "PKGWD"];
+var TERMINALS = ["KICT", "SAPT", "KGTL", "QICT", "GPT"];
+
+/* wd: weekday of departure. etd: time the vessel sails. cut: days before
+   ETD the gate closes, at cutH. color: the service's own mark on calendars. */
+var SERVICES = [
+  { id:"GFX", name:"Gulf Express", op:"GL", wd:2, etd:"21:00", cut:2, cutH:"18:00", term:"KICT", mode:"sea", color:"#1A56DB",
+    cargo:["Dry","Reefer","DG"], vessels:["Northern Meridian","Indus Meridian","Indus Crest"], vb:212, br:"W",
+    rot:[["PKKHI",0],["AEJEA",4],["QAHMD",6],["IQUQR",9]] },
+  { id:"AJS", name:"Jebel Ali Shuttle", op:"AR", wd:2, etd:"19:30", cut:2, cutH:"17:00", term:"SAPT", mode:"sea", color:"#0E7A4F",
+    cargo:["Dry","Reefer"], vessels:["Arabian Crest","Arabian Pearl"], vb:126, br:"W",
+    rot:[["PKKHI",0],["AEJEA",5]] },
+  { id:"CFD", name:"Colombo Feeder", op:"MF", wd:1, etd:"23:00", cut:2, cutH:"18:00", term:"KGTL", mode:"sea", color:"#0F766E",
+    cargo:["Dry","Reefer"], vessels:["Indus Harbour","Indus Tide"], vb:88, br:"E",
+    rot:[["PKKHI",0],["LKCMB",4],["BDCGP",9]] },
+  { id:"RSL", name:"Red Sea Link", op:"OE", wd:0, etd:"18:00", cut:2, cutH:"16:00", term:"QICT", mode:"sea", color:"#B4123E",
+    cargo:["Dry","OOG","DG"], vessels:["Gulf Horizon","Arabian Star","Sea Falcon"], vb:116, br:"E",
+    rot:[["PKBQM",0],["OMSLL",4],["SAJED",9],["EGPSD",13],["TRMER",17]] },
+  { id:"GLP", name:"Gulf Loop", op:"AR", wd:4, etd:"20:00", cut:2, cutH:"12:00", term:"KGTL", mode:"sea", color:"#8A5A00",
+    cargo:["Dry","OOG"], vessels:["Sea Falcon","Desert Wind"], vb:29, br:"E",
+    rot:[["PKKHI",0],["INMUN",2],["AEJEA",6]] },
+  { id:"CHD", name:"China Direct", op:"OE", wd:1, etd:"16:30", cut:3, cutH:"16:00", term:"QICT", mode:"sea", color:"#C2410C",
+    cargo:["Dry","Reefer"], vessels:["Gulf Falcon","Makran Bay"], vb:54, br:"E",
+    rot:[["PKBQM",0],["CNNGB",16],["CNSHA",18]] },
+  { id:"FEP", name:"Far East Pendulum", op:"GL", wd:3, etd:"22:30", cut:3, cutH:"17:00", term:"SAPT", mode:"sea", color:"#6D28D9",
+    cargo:["Dry","Reefer","DG"], vessels:["Karakoram Star","Hunza Crest","Kirthar Bay"], vb:75, br:"W",
+    rot:[["PKKHI",0],["LKCMB",5],["SGSIN",10],["MYPKG",11],["CNNGB",17],["CNSHA",19]] },
+  { id:"AFE", name:"Africa East", op:"MF", wd:5, etd:"20:30", cut:2, cutH:"17:00", term:"KGTL", mode:"sea", color:"#4D7C0F",
+    cargo:["Dry"], vessels:["Clifton Dawn","Manora Light"], vb:41, br:"S",
+    rot:[["PKKHI",0],["OMSLL",4],["KEMBA",11]] },
+  { id:"EUD", name:"Europe Direct", op:"OE", wd:4, etd:"14:00", cut:3, cutH:"16:00", term:"QICT", mode:"sea", color:"#1E3A8A",
+    cargo:["Dry","Reefer","OOG"], vessels:["Qasim Voyager","Indus Valley","Sindh Spirit"], vb:302, br:"W",
+    rot:[["PKBQM",0],["OMSLL",4],["EGPSD",11],["NLRTM",21],["DEHAM",23],["GBFXT",25]] },
+  { id:"TAT", name:"Transatlantic", op:"OE", wd:6, etd:"17:00", cut:3, cutH:"16:00", term:"QICT", mode:"sea", color:"#285A84",
+    cargo:["Dry","OOG"], vessels:["Atlantic Qasim","Ravi Express"], vb:18, br:"W",
+    rot:[["PKBQM",0],["EGPSD",12],["USNYC",28],["USHOU",33]] },
+  { id:"GGL", name:"Gwadar Gulf", op:"MF", wd:6, etd:"10:00", cut:2, cutH:"14:00", term:"GPT", mode:"sea", color:"#0891B2",
+    cargo:["Dry","DG"], vessels:["Gwadar Link","Makran Coast"], vb:63, br:"W",
+    rot:[["PKGWD",0],["AEJEA",3],["QAHMD",5]] },
+  { id:"CIS", name:"CIS Overland", op:"PX", wd:1, etd:"06:00", cut:2, cutH:"12:00", term:"GPT", mode:"road", color:"#B93815",
+    cargo:["Dry","OOG"], vessels:["TIR convoy"], vb:140, br:"N",
+    rot:[["PKGWD",0],["UZTAS",9],["KZALA",13]] },
+  { id:"TIR", name:"Karachi–Tashkent TIR", op:"PX", wd:3, etd:"07:00", cut:2, cutH:"12:00", term:"SAPT", mode:"road", color:"#86299E",
+    cargo:["Dry"], vessels:["TIR convoy"], vb:220, br:"N",
+    rot:[["PKKHI",0],["UZTAS",11]] }
+];
+var SVC = {};
+SERVICES.forEach(function (s) { SVC[s.id] = s; });
+
+/* sponsor: pays for the Spotlight, strip and suggestion slot.
+   featured: pays for a card in the Featured row. Both are invented. */
+var FIRMS = [
+  { id:"GL", name:"Gulfstar Lines", short:"Gulfstar", type:"Shipping line", color:"#1E3A8A", sponsor:true,
+    pitch:"Weekly direct reefer and dry to the Gulf", cargo:["Dry","Reefer","DG"], svcs:["GFX","FEP"], verified:true,
+    since:2009, boxes:"4,200 TEU", offices:["Karachi","Dubai"], reply:"~2 hrs",
+    about:"A regional operator running two weekly strings out of Karachi: one into the upper Gulf, one east to the Far East." },
+  { id:"IB", name:"Indus Bridge Logistics", short:"Indus Bridge", type:"NVOCC", color:"#6D28D9", sponsor:true, featured:true,
+    pitch:"Own-box reefer and dry on Gulf lanes", cargo:["Dry","Reefer","DG"], svcs:["GFX","RSL","AJS","GLP"], verified:true,
+    since:2016, boxes:"900 TEU own", offices:["Karachi"], reply:"~3 hrs",
+    about:"Buys slots across four services and ships on its own boxes, so equipment is available at short notice." },
+  { id:"OE", name:"Oceanic Express", short:"Oceanic Express", type:"Shipping line", color:"#0B5CAD", featured:true,
+    pitch:"Red Sea, Europe, China and US East from QICT", cargo:["Dry","Reefer","OOG","DG"], svcs:["RSL","CHD","EUD","TAT"], verified:true,
+    since:1998, boxes:"11,500 TEU", offices:["Port Qasim","Jeddah","Rotterdam"], reply:"~4 hrs",
+    about:"The long-haul carrier on this coast: four strings, all loading at QICT, reaching Europe and the US East Coast." },
+  { id:"SL", name:"Sea Link Consolidators", short:"Sea Link", type:"NVOCC", color:"#86299E",
+    pitch:"LCL groupage every week to the Gulf and East Africa", cargo:["Dry","LCL","Reefer"], svcs:["GFX","AFE","GGL","AJS"], verified:false,
+    since:2019, boxes:"LCL only", offices:["Karachi"], reply:"~1 day",
+    about:"A groupage house: one weekly consolidation to the Gulf and a second to Mombasa." },
+  { id:"MF", name:"Meridian Feeder", short:"Meridian Feeder", type:"Shipping line", color:"#0F766E",
+    pitch:"Feeders linking Karachi and Gwadar to the Oman hubs", cargo:["Dry","Reefer","DG"], svcs:["CFD","AFE","GGL"], verified:true,
+    since:2011, boxes:"2,400 TEU", offices:["Karachi","Gwadar","Salalah"], reply:"~5 hrs",
+    about:"Feeder tonnage into Salalah and Colombo, plus the only weekly string calling Gwadar." },
+  { id:"CM", name:"Crescent Marine Cargo", short:"Crescent Marine", type:"NVOCC", color:"#B4123E", sponsor:true, featured:true,
+    pitch:"Cold-chain specialist for fruit and seafood", cargo:["Dry","Reefer","DG"], svcs:["GFX","FEP","CFD","GLP","AJS"], verified:true,
+    since:2007, boxes:"640 reefers own", offices:["Karachi","Lahore"], reply:"~2 hrs",
+    about:"Reefer first: pre-trip inspection at the terminal, genset hire for inland moves, and DG handling alongside." },
+  { id:"AR", name:"Arabian Routes", short:"Arabian Routes", type:"Shipping line", color:"#166534",
+    pitch:"Five-day direct shuttle to Jebel Ali out of SAPT", cargo:["Dry","Reefer","OOG"], svcs:["AJS","GLP"], verified:true,
+    since:2014, boxes:"1,800 TEU", offices:["Karachi","Sharjah"], reply:"~3 hrs",
+    about:"Built around one fast shuttle, SAPT to Jebel Ali in five days, with a slower Mundra loop behind it." },
+  { id:"PX", name:"Pak Express Carriers", short:"Pak Express", type:"NVOCC", color:"#B93815",
+    pitch:"Project and out-of-gauge cargo, plus TIR to Central Asia", cargo:["Dry","OOG"], svcs:["CIS","TIR","RSL","TAT"], verified:false,
+    since:2012, boxes:"Flatrack fleet", offices:["Karachi","Quetta","Tashkent"], reply:"~1 day",
+    about:"Heavy lift and out-of-gauge: by sea where it fits, by TIR road convoy where it does not." },
+  { id:"BL", name:"Bayline Freight", short:"Bayline", type:"Forwarder", color:"#8A5A00", featured:true,
+    pitch:"Door delivery into Central Asia, customs handled", cargo:["Dry","OOG"], svcs:["CIS","TIR","GGL","RSL"], verified:true,
+    since:2015, boxes:"Arranged per job", offices:["Karachi","Tashkent"], reply:"~6 hrs",
+    about:"Door-to-door into Uzbekistan and Kazakhstan, with transit paperwork arranged on both sides of the border." },
+  { id:"SF", name:"Saddar Forwarding", short:"Saddar", type:"Forwarder", color:"#4D7C0F",
+    pitch:"Documentation and inland haulage for exporters", cargo:["Dry","Reefer","LCL"], svcs:["EUD","FEP","CHD","GFX"], verified:true,
+    since:2004, boxes:"Arranged per job", offices:["Karachi","Faisalabad","Sialkot"], reply:"~4 hrs",
+    about:"Works the textile corridor: upcountry collection, filing, and booking onto the long-haul strings." },
+  { id:"KC", name:"Keamari Customs Services", short:"Keamari Customs", type:"Customs agent", color:"#285A84",
+    pitch:"WeBOC filing and examination cover at KICT and SAPT", cargo:["Dry","Reefer","DG"], svcs:["GFX","AJS","FEP"], verified:true,
+    since:2001, boxes:"Arranged per job", offices:["Karachi"], reply:"~2 hrs",
+    about:"Clearing agent on the Keamari side, attending examination and handling refunds and rebates." },
+  { id:"QA", name:"Qasim Clearing Agency", short:"Qasim Clearing", type:"Customs agent", color:"#5B6066",
+    pitch:"Clearance at Port Qasim, DG and bonded a speciality", cargo:["Dry","DG","OOG"], svcs:["RSL","CHD","EUD","TAT"], verified:false,
+    since:2010, boxes:"Arranged per job", offices:["Port Qasim"], reply:"~1 day",
+    about:"Port Qasim only, with dangerous goods declarations and bonded warehouse movements in house." }
+];
+var FIRM = {};
+FIRMS.forEach(function (f) { FIRM[f.id] = f; f.paid = !!(f.sponsor || f.featured); });
+var SPONSORS = FIRMS.filter(function (f) { return f.sponsor; });
+
+var TYPES = [
+  { key:"all", label:"All", match:null },
+  { key:"line", label:"Lines", match:"Shipping line", plural:"Shipping lines" },
+  { key:"nvocc", label:"NVOCCs", match:"NVOCC", plural:"NVOCCs" },
+  { key:"fwd", label:"Forwarders", match:"Forwarder", plural:"Forwarders" },
+  { key:"cust", label:"Customs", match:"Customs agent", plural:"Customs agents" }
+];
+var CARGO = [
+  { key:"Reefer", color:"#0E9384" }, { key:"DG", color:"#D93025" },
+  { key:"OOG", color:"#F25A0F" }, { key:"LCL", color:"#8E24AA" }
+];
+var VF = '<svg class="vf" viewBox="0 0 16 16" aria-label="Verified"><circle cx="8" cy="8" r="8" fill="#1A56DB"/><path d="M4.8 8.3l2.1 2.1 4.3-4.6" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>';
+var MARK = '<svg width="30" height="30" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#111315"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#F25A0F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>';
+
+/* ===========================================================
+   THE SAILINGS
+   Generated from the weekly rotations around today, three weeks
+   back and eight forward, so the calendars never go stale.
+   =========================================================== */
+var SAILS = [];
+SERVICES.forEach(function (s) {
+  var first = addDays(TODAY, -21);
+  while (first.getDay() !== s.wd) first = addDays(first, 1);
+  for (var w = 0; w < 12; w++) {
+    var base = addDays(first, 7 * w);
+    var dates = s.rot.map(function (r) { return addDays(base, r[1]); });
+    SAILS.push({
+      id: s.id + "-" + w, svc: s, w: w,
+      vessel: s.vessels[w % s.vessels.length],
+      voy: s.mode === "road" ? "T" + (s.vb + w) : (s.vb + 2 * w) + s.br,
+      dates: dates,
+      etd: setTimeStr(dates[0], s.etd),
+      cut: setTimeStr(addDays(dates[0], -s.cut), s.cutH)
+    });
+  }
+});
+
+var ROW = {};
+/* One row per provider per sailing: a vessel sold by three companies is
+   three offers, which is how a shipper shops for it. */
+function rowsFor(q) {
+  var out = [];
+  SAILS.forEach(function (dep) {
+    var s = dep.svc, o = s.rot[0][0];
+    if (q.from && o !== q.from) return;
+    if (dep.dates[0] < q.a || dep.dates[0] > q.b) return;
+    if (q.bookable && dep.cut < NOW) return;
+    var j = s.rot.length - 1;
+    if (q.to) {
+      j = -1;
+      for (var k = 1; k < s.rot.length; k++) if (s.rot[k][0] === q.to) { j = k; break; }
+      if (j < 0) return;
+    }
+    var via = s.rot.slice(1, j).map(function (r) { return r[0]; });
+    FIRMS.forEach(function (f) {
+      if (q.firm && f.id !== q.firm) return;
+      if (f.svcs.indexOf(s.id) < 0) return;
+      var r = {
+        key: dep.id + "-" + j + "-" + f.id, dep: dep, firm: f, svc: s, j: j,
+        vessel: dep.vessel, voy: dep.voy, from: o, to: s.rot[j][0],
+        etd: dep.etd, eta: dep.dates[j], days: s.rot[j][1],
+        via: via, direct: via.length === 0, term: s.term, cut: dep.cut,
+        cargo: f.cargo.filter(function (c) { return c === "LCL" || s.cargo.indexOf(c) > -1; })
+      };
+      ROW[r.key] = r;
+      out.push(r);
+    });
+  });
+  return out;
+}
+
+function lanesOf(svcIds) {
+  var m = {};
+  svcIds.forEach(function (id) {
+    var s = SVC[id];
+    for (var j = 1; j < s.rot.length; j++) {
+      var k = s.rot[0][0] + ">" + s.rot[j][0];
+      var d = s.rot[j][1];
+      if (!m[k]) m[k] = { a: s.rot[0][0], b: s.rot[j][0], days: d, direct: j === 1, svcs: [] };
+      m[k].days = Math.min(m[k].days, d);
+      m[k].direct = m[k].direct || j === 1;
+      m[k].svcs.push(id);
+    }
+  });
+  return Object.keys(m).map(function (k) { return m[k]; }).sort(function (x, y) { return x.days - y.days; });
+}
+
+function rates(r) {
+  var base = 280 + r.days * 58 + (r.direct ? 60 : 0);
+  var rd = function (n) { return Math.round(n / 25) * 25; };
+  return { d20: rd(base), d40: rd(base * 1.62), r40: rd(base * 2.35) };
+}
+function money(n) { return "$" + n.toLocaleString("en-US"); }
+function quotesOnly(f) { return f.type === "Forwarder" || f.type === "Customs agent"; }
+
+/* ===========================================================
+   STATE
+   =========================================================== */
+var S = {
+  from: "", to: "", win: 21,
+  cargo: [], direct: false, term: "", maxDays: 0,
+  sort: "best", type: "all", day: null, route: null,
+  open: {}, picks: []
+};
+var C = { id: "", day: null, tab: "up" };
+var D = { type: "all", q: "", cargo: "" };
+
+function clearFilters() {
+  S.cargo = []; S.direct = false; S.term = ""; S.maxDays = 0; S.day = null; S.route = null;
+}
+function activeFilters() {
+  return S.cargo.length + (S.direct ? 1 : 0) + (S.term ? 1 : 0) + (S.maxDays ? 1 : 0) + (S.day ? 1 : 0) + (S.route ? 1 : 0);
+}
+function routeKey(r) { return r.direct ? "direct" : r.via.join(">"); }
+function pass(r, skip) {
+  if (S.cargo.length && !S.cargo.every(function (c) { return r.cargo.indexOf(c) > -1; })) return false;
+  if (S.direct && !r.direct) return false;
+  if (S.term && r.term !== S.term) return false;
+  if (S.maxDays && r.days > S.maxDays) return false;
+  if (!skip.route && S.route && routeKey(r) !== S.route) return false;
+  if (!skip.day && S.day && iso(r.etd) !== S.day) return false;
+  if (!skip.type && S.type !== "all") {
+    var t = TYPES.filter(function (x) { return x.key === S.type; })[0];
+    if (t && r.firm.type !== t.match) return false;
+  }
+  return true;
+}
+
+/* ===========================================================
+   FINDING THINGS BY NAME
+   =========================================================== */
+function portScore(p, t) {
+  if (!t) return 0;
+  var n = norm(p.name), c = p.code.toLowerCase();
+  if (c === t || sc(c) === t) return 100;
+  if (n === t) return 95;
+  if (n.indexOf(t) === 0) return 80;
+  if (p.aliases.some(function (a) { return a === t; })) return 75;
+  if (p.aliases.some(function (a) { return a.indexOf(t) === 0; })) return 60;
+  if (norm(p.country).indexOf(t) === 0) return 45;
+  if (n.indexOf(t) > -1) return 35;
+  return 0;
+}
+function matchPorts(text, pkOnly) {
+  var t = norm(text);
+  return PORTS.filter(function (p) { return !pkOnly || PK.indexOf(p.code) > -1; })
+    .map(function (p) { return { p: p, s: portScore(p, t) }; })
+    .filter(function (x) { return x.s > 0; })
+    .sort(function (a, b) { return b.s - a.s; })
+    .map(function (x) { return x.p; });
+}
+function matchFirms(text) {
+  var t = norm(text);
+  if (!t) return [];
+  return FIRMS.filter(function (f) {
+    return norm(f.name).indexOf(t) > -1 || f.id.toLowerCase() === t ||
+      f.svcs.some(function (id) { return norm(SVC[id].name).indexOf(t) > -1; });
+  });
+}
+/* The paid row is picked by what was typed: a sponsor who actually serves
+   the port, region or cargo. If none does, the slot stays empty rather than
+   selling a shipper a company that cannot carry the box. */
+function sponsorFor(text) {
+  var t = norm(text);
+  if (!t) return SPONSORS[0];
+  for (var i = 0; i < SPONSORS.length; i++) {
+    var f = SPONSORS[i];
+    var dests = lanesOf(f.svcs).map(function (l) { return PORT[l.b]; });
+    var hit = dests.some(function (p) { return portScore(p, t) >= 45 || norm(p.region).indexOf(t) === 0; }) ||
+      f.cargo.some(function (c) { return norm(c) === t || (t.length > 2 && norm(c).indexOf(t) === 0); });
+    if (hit) return f;
+  }
+  return null;
+}
+function sponsorLane(f) {
+  var want = { GL: "PKKHI>AEJEA", IB: "PKKHI>QAHMD", CM: "PKKHI>LKCMB" }[f.id];
+  var ls = lanesOf(f.svcs);
+  return ls.filter(function (l) { return l.a + ">" + l.b === want; })[0] || ls[0];
+}
+
+/* ===========================================================
+   ROUTER
+   Views live behind plain #tokens: #results, #companies, #co-GL.
+   Search state stays in the page.
+   =========================================================== */
+var VIEW = "";
+var VIEWKEY = "";
+function go(h) {
+  if (location.hash === "#" + h || (h === "" && location.hash === "")) route();
+  else location.hash = h;
+}
+function route() {
+  var h = decodeURIComponent(location.hash.slice(1));
+  var v = "home";
+  if (h === "results") v = "results";
+  else if (h === "companies") v = "companies";
+  else if (/^co-[A-Z]{2}$/.test(h) && FIRM[h.slice(3)]) v = "company";
+
+  var key = v + (v === "company" ? h : "");
+  var changed = key !== VIEWKEY;
+  VIEW = v; VIEWKEY = key;
+
+  $("#vHome").hidden = v !== "home";
+  $("#vResults").hidden = v !== "results";
+  $("#vCompany").hidden = v !== "company";
+  $("#vCompanies").hidden = v !== "companies";
+  $("#stick").hidden = v !== "home";
+  if (v !== "home") $("#nudge").hidden = true;
+  $$("dialog[open]").forEach(function (d) { d.close(); });
+
+  if (v === "results") { if (changed) showResults(); else renderResults(); }
+  else if (v === "company") { if (changed) { C.id = h.slice(3); C.day = null; C.tab = "up"; } renderCompany(); }
+  else if (v === "companies") renderCompanies();
+  else renderHomeState();
+
+  renderTray();
+
+  if (v === "home" && h && document.getElementById(h)) {
+    document.getElementById(h).scrollIntoView({ behavior: REDUCE ? "auto" : "smooth", block: "start" });
+  } else if (changed) {
+    window.scrollTo(0, 0);
+  }
+  document.title = v === "results" ? "KARGOS — " + laneText()
+    : v === "company" ? "KARGOS — " + FIRM[C.id].name
+    : v === "companies" ? "KARGOS — Companies" : "KARGOS Hybrid";
+}
+addEventListener("hashchange", route);
+
+function runSearch() {
+  S.day = null; S.route = null; S.open = {};
+  go("results");
+}
+
+/* ===========================================================
+   SHARED PIECES
+   =========================================================== */
+function apph(active) {
+  var fromOpts = [["", "All Pakistan"]].concat(PK.map(function (c) { return [c, PORT[c].name]; }));
+  return '<header class="apph"><div class="wrap apph__in">' +
+    '<a class="apph__mark" href="#" aria-label="KARGOS home">' + MARK + "<span>KARGOS</span></a>" +
+    '<form class="qbar" id="qbar" role="search" autocomplete="off">' +
+      '<label class="qseg qseg--from"><span>From</span><select id="qFrom" aria-label="Load port">' +
+        fromOpts.map(function (o) { return '<option value="' + o[0] + '"' + (S.from === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") +
+      "</select></label>" +
+      '<div class="qseg qseg--to"><span>To</span><input id="qTo" placeholder="Anywhere, a port or a company" aria-label="Destination or company" spellcheck="false" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="qSugg" aria-autocomplete="list" value="' + esc(S.to ? PORT[S.to].name : "") + '"></div>' +
+      '<label class="qseg qseg--when"><span>Sailing</span><select id="qWhen" aria-label="Sailing window">' +
+        [[7, "This week"], [21, "Next 3 weeks"], [42, "Next 6 weeks"]].map(function (o) {
+          return '<option value="' + o[0] + '"' + (S.win === o[0] ? " selected" : "") + ">" + o[1] + "</option>";
+        }).join("") + "</select></label>" +
+      '<button class="btn btn-blue" type="submit">Search</button>' +
+      '<div class="sugg" id="qSugg" hidden role="listbox" aria-label="Suggestions"></div>' +
+    "</form>" +
+    '<nav class="apph__nav" aria-label="Main">' +
+      '<a href="#companies"' + (active === "companies" ? ' aria-current="page"' : "") + ">Companies</a>" +
+      '<a href="#results"' + (active === "results" ? ' aria-current="page"' : "") + ">Routes</a>" +
+      '<a href="#providers">Advertise</a>' +
+    "</nav></div></header>";
+}
+function syncQ() {
+  var f = $("#qFrom"), t = $("#qTo"), w = $("#qWhen");
+  if (f) f.value = S.from;
+  if (t && document.activeElement !== t) t.value = S.to ? PORT[S.to].name : "";
+  if (w) w.value = String(S.win);
+}
+function av(f, cls) { return '<span class="av' + (cls ? " " + cls : "") + '" style="background:' + f.color + '">' + f.id + "</span>"; }
+function viaText(r) {
+  if (r.direct) return "Direct";
+  if (r.via.length > 2) return "Via " + plural(r.via.length, "call");
+  return "Via " + r.via.map(sc).join(" ");
+}
+function coCard(f, fact) {
+  return '<a class="card" href="#co-' + f.id + '">' +
+    '<div class="top">' + av(f) + (f.paid ? '<span class="sp">Sponsored</span>' : '<span class="lbl">Since ' + f.since + "</span>") + "</div>" +
+    "<h4>" + esc(f.short) + (f.verified ? " " + VF : "") + "</h4>" +
+    '<div class="ty">' + esc(f.type) + " · " + esc(f.offices[0]) + "</div>" +
+    '<p class="desc">' + esc(f.pitch) + ".</p>" +
+    '<div class="meta"><span>' + esc(fact || plural(lanesOf(f.svcs).length, "lane")) + "</span><b>Profile →</b></div></a>";
+}
+var toastT = null;
+function toast(msg) {
+  var t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("in");
+  clearTimeout(toastT);
+  toastT = setTimeout(function () { t.classList.remove("in"); }, 3800);
+}
+
+/* ===========================================================
+   HOME
+   =========================================================== */
+function renderHome() {
+  /* spotlight: Gulfstar's next direct sailing to Jebel Ali, from the data */
+  var gl = FIRM.GL;
+  var next = rowsFor({ from: "PKKHI", to: "AEJEA", a: TODAY, b: addDays(TODAY, 28), bookable: true, firm: "GL" })
+    .filter(function (r) { return r.direct; }).sort(function (a, b) { return a.etd - b.etd; })[0];
+  $("#spotSlot").innerHTML =
+    '<article class="spot">' +
+      '<div class="spot-l">' +
+        '<div class="who">' + av(gl) + "<div><b>" + gl.name + "</b><small>Shipping line · Karachi</small></div>" +
+          '<span class="sp">Sponsored</span></div>' +
+        '<h3><span class="ln"><span>Weekly direct reefer</span></span><span class="ln"><span>to the Gulf. <em>' + (next ? next.days : 4) + " days.</em></span></span></h3>" +
+        "<p>Own-fleet reefer and dry from KICT to Jebel Ali, Hamad and Umm Qasr, sailing every " + WD[SVC.GFX.wd] + " at " + SVC.GFX.etd + ".</p>" +
+        '<div class="ctas">' + (next ? '<button class="btn btn-blue" type="button" data-quote="' + next.key + '">Request a quote</button>' : "") +
+          '<a class="btn btn-line" href="#co-GL">View profile</a></div>' +
+      "</div>" +
+      '<div class="spot-r"><div class="route"><div class="rl">' +
+        '<div class="p"><b>KHI</b><small>Karachi</small></div>' +
+        '<div class="ln"><span>DIRECT · ' + (next ? next.days : 4) + " DAYS</span></div>" +
+        '<div class="p" style="text-align:right"><b>JEA</b><small>Jebel Ali</small></div>' +
+      "</div></div>" +
+      '<div class="facts">' +
+        "<div><small>Next sailing</small><b>" + (next ? fmtWD(next.etd) : "—") + "</b></div>" +
+        "<div><small>Cut-off</small><b>" + (next ? WD[next.cut.getDay()] + " " + hm(next.cut) : "—") + "</b></div>" +
+        "<div><small>Replies</small><b>" + gl.reply + "</b></div>" +
+      "</div></div></article>";
+
+  $("#featSlot").innerHTML = FIRMS.filter(function (f) { return f.featured; }).map(function (f) {
+    var l = lanesOf(f.svcs)[0];
+    return coCard(f, l ? sc(l.a) + " → " + sc(l.b) + " · " + l.days + "d" : "");
+  }).join("") +
+    '<a class="card slot" href="#providers"><div class="plus">+</div><b>Your company here</b>' +
+    "<p>Slot 05 is open. Be seen by every shipper who searches.</p><span>Get featured →</span></a>";
+
+  var cats = TYPES.slice(1).map(function (t, i) {
+    var n = FIRMS.filter(function (f) { return f.type === t.match; }).length;
+    return '<a class="cat" href="#companies" data-dtype="' + t.key + '"><span class="n">/0' + (i + 1) + "</span><div><b>" + t.plural + "</b><small>" + n + " listed</small></div></a>";
+  });
+  cats.push('<a class="cat soon" href="#providers"><span class="n">/05</span><div><b>Trucking</b><small>Listings opening</small></div></a>');
+  cats.push('<a class="cat soon" href="#providers"><span class="n">/06</span><div><b>Warehousing</b><small>Listings opening</small></div></a>');
+  $("#catSlot").innerHTML = cats.join("");
+
+  var short = { "Shipping line": "Line", "NVOCC": "NVOCC", "Forwarder": "Forwarder", "Customs agent": "Customs" };
+  var col = function (list, start) {
+    return '<div class="manifest"><div class="mrow h"><span>No.</span><span>Provider</span><span>Type</span><span></span></div>' +
+      list.map(function (f, i) {
+        return '<a class="mrow" href="#co-' + f.id + '"><span>K-' + pad(start + i + 1).padStart(3, "0") + "</span>" +
+          '<span class="nm"><i style="background:' + f.color + '"></i>' + esc(f.name) + "</span><span>" + short[f.type] + '</span><span class="go">→</span></a>';
+      }).join("") + "</div>";
+  };
+  $("#manSlot").innerHTML = col(FIRMS.slice(0, 6), 0) + col(FIRMS.slice(6), 6);
+  $("#allCount").textContent = "View all " + FIRMS.length + " →";
+
+  /* sponsor strip */
+  $("#sview").innerHTML = SPONSORS.map(function (f, i) {
+    var l = sponsorLane(f);
+    return '<a class="sstrip__item' + (i === 0 ? " is-on" : "") + '" href="#co-' + f.id + '"' + (i === 0 ? "" : ' tabindex="-1" aria-hidden="true"') + ">" +
+      '<span class="sstrip__av" style="background:' + f.color + '">' + f.id + "</span>" +
+      '<span class="sstrip__txt"><span class="sstrip__nm">' + esc(f.name) + '</span><span class="sstrip__pitch">' + esc(f.pitch) + "</span></span>" +
+      '<span class="sstrip__route">' + plural(l.days, "day") + (l.direct ? ", direct" : ", weekly") + "<b>" + sc(l.a) + " → " + sc(l.b) + "</b></span>" +
+      '<span class="sstrip__cta">See sailings</span></a>';
+  }).join("");
+  $("#sdots").innerHTML = SPONSORS.map(function (_, i) { return "<i" + (i === 0 ? ' class="on"' : "") + "></i>"; }).join("");
+
+  var gfx = lanesOf(["GFX"])[0];
+  $("#nudgeTxt").textContent = "Weekly direct reefer, Karachi to Jebel Ali in " + plural(gfx.days, "day") + ".";
+
+  /* the wordmark, one element per letter so the board can flip them */
+  $("#word").innerHTML = "KARGOS".split("").map(function (ch, i) { return '<span style="--i:' + i + '">' + ch + "</span>"; }).join("");
+  renderHomeState();
+}
+function renderHomeState() {
+  $("#fromChip").innerHTML = (S.from ? esc(PORT[S.from].name.toUpperCase()) : "KARACHI, ALL PORTS") + " <small>▾</small>";
+  $("#fromChip").setAttribute("aria-label", "Loading from " + (S.from ? PORT[S.from].name : "any Pakistani port") + ". Press to change.");
+  $("#homeF").innerHTML = CARGO.map(function (c) {
+    return '<button type="button" class="f" data-cargo="' + c.key + '" aria-pressed="' + (S.cargo.indexOf(c.key) > -1) + '"><i style="background:' + c.color + '"></i>' + c.key + "</button>";
+  }).join("") + '<button type="button" class="f" data-direct aria-pressed="' + S.direct + '"><i style="background:#F25A0F"></i>Direct only</button>';
+}
+
+/* spotlight entrance */
+function armSpot() {
+  var spot = $(".spot");
+  if (!spot || REDUCE || !("IntersectionObserver" in window)) return;
+  spot.classList.add("armed");
+  var so = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting && e.boundingClientRect.top > 0) return;
+      e.target.classList.add("in");
+      so.unobserve(e.target);
+    });
+  }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
+  so.observe(spot);
+  setTimeout(function () { spot.classList.add("in"); }, 4000);
+}
+
+/* sponsor strip rotation: one scheduler driven by flags, so a missed
+   pointerleave can never freeze it */
+var strip = { at: 0, playing: !REDUCE, held: false, tick: null };
+function stripShow(n) {
+  var items = $$("#sview .sstrip__item");
+  items.forEach(function (el, i) {
+    var on = i === n;
+    el.classList.toggle("is-on", on);
+    el.setAttribute("tabindex", on ? "0" : "-1");
+    if (on) el.removeAttribute("aria-hidden"); else el.setAttribute("aria-hidden", "true");
+  });
+  $$("#sdots i").forEach(function (d, i) { d.classList.toggle("on", i === n); });
+  $("#sstrip").style.setProperty("--sc", SPONSORS[n].color);
+  strip.at = n;
+}
+function stripBar() {
+  var bar = $("#sbar");
+  bar.classList.remove("run");
+  void bar.offsetWidth;
+  if (strip.playing && !strip.held) bar.classList.add("run");
+}
+function stripSchedule() {
+  clearTimeout(strip.tick);
+  strip.tick = setTimeout(function () {
+    if (strip.playing && !strip.held && VIEW === "home") { stripShow((strip.at + 1) % SPONSORS.length); stripBar(); }
+    stripSchedule();
+  }, 6000);
+}
+function initStrip() {
+  var el = $("#sstrip"), pause = $("#spause");
+  pause.addEventListener("click", function () {
+    strip.playing = !strip.playing;
+    pause.setAttribute("aria-pressed", strip.playing ? "false" : "true");
+    pause.textContent = strip.playing ? "II" : ">";
+    pause.setAttribute("aria-label", (strip.playing ? "Pause" : "Resume") + " sponsored rotation");
+    stripBar();
+  });
+  var hold = function (v) { strip.held = v; if (v) $("#sbar").classList.remove("run"); else stripBar(); };
+  el.addEventListener("pointerenter", function () { hold(true); });
+  el.addEventListener("pointerleave", function () { hold(false); });
+  el.addEventListener("focusin", function () { hold(true); });
+  el.addEventListener("focusout", function () { setTimeout(function () { if (!el.contains(document.activeElement)) hold(false); }, 0); });
+  stripShow(0);
+  if (REDUCE) pause.hidden = true; else { stripBar(); stripSchedule(); }
+}
+
+/* ===========================================================
+   SUGGESTIONS (home bar and the results bar share this)
+   =========================================================== */
+var SUGG = { q: "sugg", qTo: "qSugg" };
+function buildSugg(input) {
+  var box = document.getElementById(SUGG[input.id]);
+  var text = input.value;
+  var t = norm(text);
+  var html = "";
+  var sp = sponsorFor(text);
+  if (sp) {
+    var l = sponsorLane(sp);
+    html += '<button type="button" role="option" aria-selected="false" class="ad" data-sg="firm:' + sp.id + '">' + av(sp) +
+      '<span class="nm"><b>' + esc(sp.name) + "</b><small>" + sc(l.a) + " → " + sc(l.b) + " · " + plural(l.days, "day") + (l.direct ? " direct" : "") + "</small></span>" +
+      '<span class="kind">Sponsored</span></button>';
+  }
+  var ports = t ? matchPorts(text).slice(0, 5) : ["AEJEA", "CNSHA", "SAJED", "NLRTM", "UZTAS"].map(function (c) { return PORT[c]; });
+  if (ports.length) {
+    html += '<div class="grp">' + (t ? "Ports" : "Popular destinations") + "</div>";
+    html += ports.map(function (p) {
+      var pk = PK.indexOf(p.code) > -1;
+      return '<button type="button" role="option" aria-selected="false" data-sg="port:' + p.code + '">' +
+        '<span class="code">' + p.code + '</span><span class="nm">' + esc(p.name) + "<small>" + esc(p.country) + "</small></span>" +
+        '<span class="kind">' + (pk ? "Load port" : esc(p.region)) + "</span></button>";
+    }).join("");
+  }
+  var firms = matchFirms(text).filter(function (f) { return !sp || f.id !== sp.id; }).slice(0, 3);
+  if (firms.length) {
+    html += '<div class="grp">Companies</div>' + firms.map(function (f) {
+      return '<button type="button" role="option" aria-selected="false" data-sg="firm:' + f.id + '">' + av(f) +
+        '<span class="nm">' + esc(f.name) + "<small>" + esc(f.type) + "</small></span>" +
+        '<span class="kind">Profile</span></button>';
+    }).join("");
+  }
+  if (!html) { closeSugg(input); return; }
+  box.innerHTML = html;
+  box.hidden = false;
+  input.setAttribute("aria-expanded", "true");
+}
+function closeSugg(input) {
+  var box = document.getElementById(SUGG[input.id]);
+  if (box) box.hidden = true;
+  input.setAttribute("aria-expanded", "false");
+}
+function pickSugg(val, input) {
+  var bits = val.split(":");
+  closeSugg(input);
+  input.blur();
+  if (bits[0] === "firm") { go("co-" + bits[1]); return; }
+  if (PK.indexOf(bits[1]) > -1) { S.from = bits[1]; input.value = ""; }
+  else S.to = bits[1];
+  runSearch();
+}
+function submitText(text) {
+  var t = norm(text);
+  if (!t) { runSearch(); return; }
+  var parts = t.split(/ to /);
+  if (parts.length === 2) {
+    var o = matchPorts(parts[0], true)[0], d = matchPorts(parts[1])[0];
+    if (o || d) {
+      if (o) S.from = o.code;
+      if (d && PK.indexOf(d.code) < 0) S.to = d.code;
+      runSearch(); return;
+    }
+  }
+  var p = matchPorts(text)[0];
+  if (p) {
+    if (PK.indexOf(p.code) > -1) S.from = p.code; else S.to = p.code;
+    runSearch(); return;
+  }
+  var f = matchFirms(text)[0];
+  if (f) { go("co-" + f.id); return; }
+  S.to = "";
+  toast("Nothing matched “" + text.trim() + "”. Showing every destination instead.");
+  runSearch();
+}
+
+/* ===========================================================
+   RESULTS
+   =========================================================== */
+function laneText() {
+  return (S.from ? PORT[S.from].name : "Pakistan") + " to " + (S.to ? PORT[S.to].name : "anywhere");
+}
+function showResults() {
+  $("#vResults").innerHTML = apph("results") + '<div id="rTop"></div><main class="wrap page" id="rMain" style="padding-top:0"></main>';
+  renderResults();
+}
+function sortCards(groups) {
+  var ids = Object.keys(groups);
+  var key = {
+    best: function (id) {
+      var l = groups[id], f = FIRM[id];
+      var s = Math.min.apply(null, l.map(function (r) { return dayDiff(TODAY, r.etd) + r.days - (r.direct ? 1 : 0); }));
+      return (f.sponsor ? -1000 : 0) + (f.featured ? -500 : 0) + s - (f.verified ? 1 : 0);
+    },
+    soon: function (id) { return Math.min.apply(null, groups[id].map(function (r) { return +r.etd; })); },
+    fast: function (id) { return Math.min.apply(null, groups[id].map(function (r) { return r.days; })) * 1e13 + Math.min.apply(null, groups[id].map(function (r) { return +r.etd; })); },
+    cut: function (id) { return Math.min.apply(null, groups[id].map(function (r) { return +r.cut; })); }
+  }[S.sort];
+  return ids.sort(function (a, b) { return key(a) - key(b); });
+}
+function sortRows(list) {
+  var l = list.slice();
+  if (S.sort === "fast") l.sort(function (a, b) { return a.days - b.days || a.etd - b.etd; });
+  else if (S.sort === "cut") l.sort(function (a, b) { return a.cut - b.cut; });
+  else l.sort(function (a, b) { return a.etd - b.etd || a.days - b.days; });
+  return l;
+}
+
+function renderResults() {
+  syncQ();
+  var a = TODAY, b = addDays(TODAY, S.win - 1);
+  var found = rowsFor({ from: S.from, to: S.to, a: a, b: b, bookable: true });
+  var base = found.filter(function (r) { return pass(r, { route: 1, day: 1, type: 1 }); });
+  var typed = base.filter(function (r) { return pass(r, { route: 1, day: 1 }); });
+  var calRows = typed.filter(function (r) { return pass(r, { day: 1 }); });
+  var rows = calRows.filter(function (r) { return pass(r, {}); });
+
+  var firmsIn = {};
+  rows.forEach(function (r) { firmsIn[r.firm.id] = 1; });
+  var nFirms = Object.keys(firmsIn).length;
+
+  /* heading */
+  var fromCode = S.from ? sc(S.from) : "PAK";
+  var toCode = S.to ? sc(S.to) : "ANY";
+  var arrow = '<svg width="64" height="20" viewBox="0 0 64 20" aria-hidden="true"><path d="M2 10h52" stroke="currentColor" stroke-width="3" stroke-dasharray="5 6" stroke-linecap="round"/><path d="M50 3l9 7-9 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var top = '<div class="wrap" style="padding-top:28px"><div class="rhead"><div>' +
+    '<h1 class="lane"><span>' + fromCode + "<small>" + esc(S.from ? PORT[S.from].name : "Karachi · Qasim · Gwadar") + "</small></span>" + arrow +
+    "<span>" + toCode + "<small>" + esc(S.to ? PORT[S.to].name + ", " + PORT[S.to].country : "Every destination") + "</small></span></h1>" +
+    '<p class="rsub"><b>' + plural(nFirms, "provider") + "</b> · " + plural(rows.length, "bookable offer") + " · " +
+      ({ 7: "this week", 21: "next 3 weeks", 42: "next 6 weeks" }[S.win]) + '. <span class="sample">Sample data</span></p>' +
+    "</div></div></div>";
+
+  /* filter bar, across the top */
+  var fsel = function (id, cur, opts, label) {
+    return '<select class="fsel' + (cur ? " on" : "") + '" id="' + id + '" aria-label="' + label + '">' +
+      opts.map(function (o) { return '<option value="' + o[0] + '"' + (String(cur) === String(o[0]) ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>";
+  };
+  var fbar = '<div class="fbar"><div class="wrap fbar__in" role="group" aria-label="Filters">' +
+    '<span class="lbl">Cargo</span>' +
+    CARGO.map(function (c) {
+      return '<button type="button" class="f" data-cargo="' + c.key + '" aria-pressed="' + (S.cargo.indexOf(c.key) > -1) + '"><i style="background:' + c.color + '"></i>' + c.key + "</button>";
+    }).join("") +
+    '<span class="fsep"></span>' +
+    '<button type="button" class="f" data-direct aria-pressed="' + S.direct + '"><i style="background:var(--green)"></i>Direct only</button>' +
+    fsel("fTerm", S.term, [["", "Any terminal"]].concat(TERMINALS.map(function (t) { return [t, t]; })), "Terminal") +
+    fsel("fMax", S.maxDays, [[0, "Any transit"], [5, "Up to 5 days"], [10, "Up to 10 days"], [20, "Up to 20 days"]], "Transit time") +
+    (activeFilters() ? '<button type="button" class="fclear" data-clear>Clear ' + activeFilters() + "</button>" : "") +
+    '<span class="fgrow"></span><span class="lbl">Sort</span>' +
+    fsel("fSort", "", [["best", "Best match"], ["soon", "Soonest"], ["fast", "Fastest"], ["cut", "Cut-off first"]], "Sort").replace('value="' + S.sort + '"', 'value="' + S.sort + '" selected') +
+    "</div></div>";
+  $("#rTop").innerHTML = top + fbar;
+
+  var main = "";
+
+  if (!found.length) {
+    main += '<div class="empty" style="margin-top:28px"><b>Nothing sails this lane in the window</b>' +
+      "<p>None of the services listed on KARGOS call " + esc(laneText()) + " with a cut-off still open. Try a longer window or every destination.</p>" +
+      '<div class="row">' + (S.win < 42 ? '<button class="btn btn-ink" type="button" data-win="42">Next 6 weeks</button>' : "") +
+      (S.to ? '<button class="btn btn-line" type="button" data-anywhere>Every destination</button>' : "") + "</div></div>";
+    $("#rMain").innerHTML = main;
+    return;
+  }
+
+  /* departures calendar */
+  var days = [];
+  for (var i = 0; i < S.win; i++) days.push(addDays(a, i));
+  var legendCount = {};
+  calRows.forEach(function (r) { legendCount[r.firm.id] = (legendCount[r.firm.id] || 0) + 1; });
+  var legendIds = Object.keys(legendCount).sort(function (x, y) { return legendCount[y] - legendCount[x]; });
+  main += '<section class="cal" aria-label="Departures by day">' +
+    '<div class="cal__head"><b>' + plural(calRows.length, "offer") + "</b><span>" + fmtD(a) + " to " + fmtD(b) + "</span>" +
+      '<span class="cal__hint">' + (S.day ? "Showing " + fmtWD(new Date(S.day + "T00:00")) + " · press again for all" : "Press a day to see only its sailings") + "</span></div>" +
+    '<div class="cal__scroll"><div class="cal__grid" style="--n:' + S.win + '">' +
+    days.map(function (d) {
+      var k = iso(d);
+      var list = calRows.filter(function (r) { return iso(r.etd) === k; })
+        .sort(function (x, y) { return legendCount[y.firm.id] - legendCount[x.firm.id]; });
+      var on = S.day === k;
+      var bars = list.slice(0, 6).map(function (r) { return '<i style="background:' + r.firm.color + '"></i>'; }).join("") +
+        (list.length > 6 ? "<em>+" + (list.length - 6) + "</em>" : "");
+      return '<button type="button" class="cal__day' + (list.length ? "" : " is-empty") + (k === iso(TODAY) ? " is-today" : "") +
+        (d.getDay() === 1 ? " is-mon" : "") + (on ? " is-on" : "") + '" data-day="' + k + '"' +
+        (list.length || on ? "" : " disabled") + ' aria-pressed="' + on + '" aria-label="' + fmtWD(d) + ", " + plural(list.length, "offer") + '">' +
+        '<span class="cal__stack">' + bars + "</span>" +
+        '<span class="cal__wd">' + WD[d.getDay()].toUpperCase() + '</span><span class="cal__dn">' + pad(d.getDate()) + "</span></button>";
+    }).join("") + "</div></div>" +
+    '<div class="cal__legend">' + legendIds.slice(0, 6).map(function (id) {
+      return '<span><i style="background:' + FIRM[id].color + '"></i>' + esc(FIRM[id].name) + " <small>" + legendCount[id] + "</small></span>";
+    }).join("") + (legendIds.length > 6 ? "<small>+" + (legendIds.length - 6) + " more</small>" : "") + "</div></section>";
+
+  /* routings */
+  if (S.to) {
+    var rm = {};
+    typed.forEach(function (r) {
+      var k = routeKey(r);
+      if (!rm[k]) rm[k] = { k: k, r: r, n: 0, lo: r.days, hi: r.days };
+      rm[k].n++; rm[k].lo = Math.min(rm[k].lo, r.days); rm[k].hi = Math.max(rm[k].hi, r.days);
+    });
+    var rl = Object.keys(rm).map(function (k) { return rm[k]; }).sort(function (x, y) { return x.lo - y.lo; });
+    if (rl.length > 1 || S.route) {
+      main += '<div class="rrow"><span class="lbl">Routing</span>' + rl.map(function (g) {
+        var label = g.r.direct ? "Direct" : "Via " + g.r.via.map(function (c) { return PORT[c].name; }).join(", ");
+        return '<button type="button" class="rchip" data-route="' + g.k + '" aria-pressed="' + (S.route === g.k) + '">' +
+          '<span class="dot' + (g.r.direct ? " d" : "") + '"></span>' + esc(label) +
+          " <small>" + (g.lo === g.hi ? g.lo : g.lo + "–" + g.hi) + "d · " + g.n + "</small></button>";
+      }).join("") + "</div>";
+    }
+  }
+
+  /* provider type tabs */
+  var counts = {};
+  TYPES.forEach(function (t) {
+    var set = {};
+    base.forEach(function (r) { if ((!t.match || r.firm.type === t.match) && pass(r, { type: 1 })) set[r.firm.id] = 1; });
+    counts[t.key] = Object.keys(set).length;
+  });
+  main += '<div class="tabs" role="tablist" aria-label="Provider type">' + TYPES.map(function (t) {
+    return '<button type="button" role="tab" class="tab" data-type="' + t.key + '" aria-selected="' + (S.type === t.key) + '">' + t.label + " <small>" + counts[t.key] + "</small></button>";
+  }).join("") + "</div>";
+
+  /* provider cards */
+  if (!rows.length) {
+    main += '<div class="empty"><b>Nothing survives those filters</b><p>There are sailings on this lane. Drop a filter to get them back.</p>' +
+      '<div class="row"><button class="btn btn-ink" type="button" data-clear>Clear filters</button>' +
+      (S.type !== "all" ? '<button class="btn btn-line" type="button" data-type="all">Every provider type</button>' : "") + "</div></div>";
+  } else {
+    var groups = {};
+    rows.forEach(function (r) { (groups[r.firm.id] = groups[r.firm.id] || []).push(r); });
+    main += '<div class="pcs">' + sortCards(groups).map(function (id) { return cardHtml(FIRM[id], sortRows(groups[id])); }).join("") + "</div>";
+  }
+  main += '<p class="sample" style="margin-top:26px">Sailings are generated from weekly rotations, so this board never goes stale. Every company, vessel, time and rate here is sample data.</p>';
+  $("#rMain").innerHTML = main;
+}
+
+function srowHtml(r) {
+  var picked = S.picks.indexOf(r.key) > -1;
+  var full = !picked && S.picks.length >= 3;
+  var urgent = r.cut - NOW < 2 * DAY;
+  return '<li><div class="srow">' +
+    '<div class="srow__date">' + fmtD(r.etd) + "<small>" + WD[r.etd.getDay()] + " " + hm(r.etd) + "</small></div>" +
+    '<button type="button" class="srow__main" data-open="' + r.key + '">' +
+      '<span class="vsl"><i>' + (r.svc.mode === "road" ? "TIR" : "MV") + "</i>" + esc(r.vessel) + "<em>" + plural(r.days, "day") + "</em></span>" +
+      '<span class="tags"><span class="tag r">' + sc(r.from) + " → " + sc(r.to) + "</span>" +
+        (r.direct ? '<span class="tag dir">Direct</span>' : '<span class="tag via">' + viaText(r) + "</span>") +
+        '<span class="tag t">' + r.term + "</span></span>" +
+      '<span class="cut' + (urgent ? " u" : "") + '">Cut-off ' + fmtD(r.cut) + " " + hm(r.cut) + (urgent ? " · closes in " + untilLabel(r.cut) : "") + "</span>" +
+    "</button>" +
+    '<label class="cmpx"><input type="checkbox" data-pick="' + r.key + '"' + (picked ? " checked" : "") + (full ? " disabled" : "") +
+      ' aria-label="Compare ' + esc(r.vessel) + " on " + fmtD(r.etd) + " with " + esc(r.firm.name) + '">Compare</label>' +
+    "</div></li>";
+}
+function cardHtml(f, list) {
+  var open = !!S.open[f.id];
+  var shown = open ? list : list.slice(0, 3);
+  var fastest = Math.min.apply(null, list.map(function (r) { return r.days; }));
+  var dir = list.filter(function (r) { return r.direct; }).length;
+  return '<article class="pc' + (f.sponsor ? " is-ad" : "") + '" style="--fc:' + f.color + '">' +
+    '<div class="pc__top">' + av(f) +
+      '<div class="pc__id"><a href="#co-' + f.id + '">' + esc(f.name) + "</a><small>" + esc(f.type) + (f.verified ? " · Verified" : "") + "</small></div>" +
+      (f.sponsor ? '<span class="sp">Sponsored</span>' : f.featured ? '<span class="badge feat">Featured</span>' : "") +
+    "</div>" +
+    '<p class="pc__pitch">' + esc(f.pitch) + ".</p>" +
+    '<ul class="sl">' + shown.map(srowHtml).join("") + "</ul>" +
+    (list.length > 3 ? '<button type="button" class="pc__more" data-more="' + f.id + '" aria-expanded="' + open + '">' + (open ? "Show fewer" : "Show all " + list.length + " sailings") + "</button>" : "") +
+    '<div class="pc__foot"><div><b>' + plural(fastest, "day") + "</b><small>Fastest · " + dir + " of " + list.length + " direct</small></div>" +
+      '<div class="pc__acts"><a class="btn btn-line btn-sm" href="#co-' + f.id + '">Profile</a>' +
+      '<button type="button" class="btn btn-blue btn-sm" data-quote="' + list[0].key + '">' + (quotesOnly(f) ? "Ask" : "Quote") + "</button></div></div>" +
+    "</article>";
+}
+
+/* ===========================================================
+   COMPANY PROFILE
+   =========================================================== */
+function statusOf(r) {
+  if (r.etd < NOW) return ["gone", "Departed"];
+  if (r.cut < NOW) return ["shut", "Booking closed"];
+  if (r.cut - NOW < 2 * DAY) return ["soon", "Closes in " + untilLabel(r.cut)];
+  return ["open", "Booking open"];
+}
+function renderCompany() {
+  var f = FIRM[C.id];
+  var all = rowsFor({ from: "", to: "", a: addDays(TODAY, -21), b: addDays(TODAY, 42), bookable: false, firm: f.id })
+    .sort(function (x, y) { return x.etd - y.etd; });
+  var up = all.filter(function (r) { return r.etd >= NOW; });
+  var past = all.filter(function (r) { return r.etd < NOW; }).reverse();
+  var lanes = lanesOf(f.svcs);
+  if (!C.day) C.day = up.length ? iso(up[0].etd) : iso(TODAY);
+
+  /* the six-week calendar: two weeks back, four forward, Monday first */
+  var start = addDays(TODAY, -14);
+  while (start.getDay() !== 1) start = addDays(start, -1);
+  var cells = [];
+  for (var i = 0; i < 42; i++) cells.push(addDays(start, i));
+  var byDay = {};
+  all.forEach(function (r) { (byDay[iso(r.etd)] = byDay[iso(r.etd)] || []).push(r); });
+  var end = cells[41];
+  var monthLabel = MON[start.getMonth()] + (start.getMonth() !== end.getMonth() ? " – " + MON[end.getMonth()] : "") + " " + end.getFullYear();
+
+  var dayRows = (byDay[C.day] || []).slice().sort(function (x, y) { return x.etd - y.etd; });
+  var dayDate = new Date(C.day + "T00:00");
+
+  var ownSvcs = f.svcs.map(function (id) { return SVC[id]; });
+  var nextUp = up.filter(function (r) { return r.cut > NOW; })[0];
+
+  var html = apph("companies") +
+    '<div class="cohero' + (f.sponsor ? " is-ad" : "") + '" style="--fc:' + f.color + '"><div class="wrap cohero__in">' +
+      "<div>" +
+        '<a class="back" href="#companies">← All companies</a>' +
+        '<div class="coid">' + av(f) + "<div><h1>" + esc(f.name) + "</h1>" +
+          "<p>" + esc(f.type) + " · " + esc(f.offices.join(" · ")) + " · since " + f.since + "</p></div></div>" +
+        '<div class="cobadges">' +
+          (f.verified ? '<span class="badge v">Verified</span>' : '<span class="badge">Unverified</span>') +
+          (f.paid ? '<span class="badge ad">Sponsored</span>' : "") +
+          f.cargo.map(function (c) { return '<span class="badge">' + c + "</span>"; }).join("") +
+          '<span class="badge">Sample listing</span></div>' +
+        '<p class="copitch">' + esc(f.about) + "</p>" +
+      "</div>" +
+      '<aside class="contact" aria-label="Contact">' +
+        '<div class="who">' + av(f) + "<div><b>Bookings desk</b><small>" + esc(f.offices[0]) + " office</small></div></div>" +
+        (nextUp ? '<div class="reply" style="border-top:0;padding-top:0"><span>Next open sailing</span><b style="color:var(--ink)">' + fmtWD(nextUp.etd) + "</b></div>" : "") +
+        '<div class="reply"><span>Usually replies</span><b>' + f.reply + "</b></div>" +
+        (nextUp ? '<button class="btn btn-blue" type="button" data-quote="' + nextUp.key + '">' + (quotesOnly(f) ? "Ask for a quote" : "Request a booking") + "</button>" : "") +
+        '<a class="btn btn-line" href="#sched">See the calendar</a>' +
+      "</aside>" +
+    "</div></div>" +
+
+    '<main class="wrap page" style="padding-top:26px">' +
+      '<div class="nums costats">' +
+        "<div><b>" + f.since + "</b><small>Operating since</small></div>" +
+        "<div><b>" + esc(f.boxes) + "</b><small>Equipment</small></div>" +
+        "<div><b>" + ownSvcs.length + "</b><small>Weekly services</small></div>" +
+        "<div><b>" + up.length + "</b><small>Sailings, next 6 weeks</small></div>" +
+        "<div><b>" + past.length + "</b><small>Departed, last 3 weeks</small></div>" +
+      "</div>" +
+
+      '<section class="sec" id="sched" aria-label="Departures calendar"><div class="head"><h2>Departures calendar</h2><div class="rule"></div><span class="sample">Times are local, sample data</span></div>' +
+      '<div class="sched"><div class="month">' +
+        '<div class="month__head"><b>' + monthLabel + '</b><div class="month__key">' +
+          ownSvcs.map(function (s) { return '<span><i style="background:' + s.color + '"></i>' + esc(s.name) + "</span>"; }).join("") + "</div></div>" +
+        '<div class="mgrid">' + ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(function (d) { return '<div class="dow">' + d + "</div>"; }).join("") +
+        cells.map(function (d) {
+          var k = iso(d), list = (byDay[k] || []).slice().sort(function (x, y) { return x.etd - y.etd; });
+          var cls = "mday" + (d < TODAY ? " past" : "") + (k === iso(TODAY) ? " today" : "") + (C.day === k ? " on" : "");
+          return '<button type="button" class="' + cls + '" data-cday="' + k + '" aria-pressed="' + (C.day === k) + '" aria-label="' + fmtWD(d) + ", " + plural(list.length, "departure") + '">' +
+            '<span class="d">' + d.getDate() + (d.getDate() === 1 || k === iso(cells[0]) ? "<small>" + MON[d.getMonth()].toUpperCase() + "</small>" : "") + "</span>" +
+            list.slice(0, 2).map(function (r) { return '<span class="ev"><i style="background:' + r.svc.color + '"></i>' + hm(r.etd) + "<span>&nbsp;" + sc(r.to) + "</span></span>"; }).join("") +
+            (list.length > 2 ? '<span class="more">+' + (list.length - 2) + " more</span>" : "") +
+            "</button>";
+        }).join("") + "</div></div>" +
+        '<div class="dayp" aria-live="polite"><div class="dayp__h"><b>' + fmtWD(dayDate) + "</b><small>" +
+          (dayRows.length ? plural(dayRows.length, "departure") : "No departures") + (C.day === iso(TODAY) ? " · today" : "") + "</small></div>" +
+          (dayRows.length ? '<ul class="dep">' + dayRows.map(function (r) {
+            var st = statusOf(r);
+            return '<li><button type="button" data-open="' + r.key + '">' +
+              '<span class="tm">' + hm(r.etd) + "<small>ETD</small></span>" +
+              '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voy " + esc(r.voy) + " · " + r.term + "</small></span>" +
+              '<span class="tags"><span class="tag r">' + r.svc.rot.map(function (x) { return sc(x[0]); }).join(" · ") + '</span><span class="st ' + st[0] + '">' + st[1] + "</span></span>" +
+            "</button></li>";
+          }).join("") + "</ul>" : '<p class="none">Nothing leaves on this day. Pick a day with a coloured mark, or read the board below.</p>') +
+        "</div></div></section>" +
+
+      '<section class="sec" aria-label="Departure board"><div class="head"><h2>Departure board</h2><div class="rule"></div></div>' +
+      '<div class="board"><div class="board__tabs" role="tablist">' +
+        '<button type="button" role="tab" class="tab" data-btab="up" aria-selected="' + (C.tab === "up") + '">Upcoming <small>' + up.length + "</small></button>" +
+        '<button type="button" role="tab" class="tab" data-btab="past" aria-selected="' + (C.tab === "past") + '">Recently departed <small>' + past.length + "</small></button>" +
+      "</div>" + boardHtml(C.tab === "up" ? up.slice(0, 14) : past.slice(0, 14), C.tab) + "</div></section>" +
+
+      '<section class="sec" aria-label="Services"><div class="head"><h2>Services</h2><div class="rule"></div></div><div class="svcs">' +
+        ownSvcs.map(function (s) {
+          var own = s.op === f.id;
+          return '<article class="svc"><div class="svc__h"><b><i style="background:' + s.color + '"></i>' + esc(s.name) + "</b>" +
+            "<small>" + (s.mode === "road" ? "TIR road" : "Weekly") + " · every " + WD[s.wd] + " " + s.etd + "</small></div>" +
+            '<div class="rot">' + s.rot.map(function (x, i) {
+              return (i ? '<span class="rot__ln"></span>' : "") + '<span class="rot__p"><i></i><b>' + sc(x[0]) + "</b><small>" + (i ? "day " + x[1] : "load") + "</small></span>";
+            }).join("") + "</div>" +
+            '<div class="svc__f">' +
+              "<span><b>Terminal</b>" + s.term + "</span>" +
+              "<span><b>Cut-off</b>" + s.cut + " days, " + s.cutH + "</span>" +
+              "<span><b>Cargo</b>" + s.cargo.join(", ") + "</span>" +
+              "<span><b>" + (s.mode === "road" ? "Equipment" : "Vessels") + "</b>" + esc(s.vessels.join(", ")) + "</span>" +
+              "<span><b>Operator</b>" + (own ? "Own service" : esc(FIRM[s.op].name) + ", space bought") + "</span>" +
+            "</div></article>";
+        }).join("") + "</div></section>" +
+
+      '<section class="sec" aria-label="Lanes"><div class="head"><h2>Lanes served</h2><div class="rule"></div></div><div class="lanes">' +
+        lanes.map(function (l) {
+          return '<button type="button" class="lanec" data-lane="' + l.a + "|" + l.b + '"><small>' + esc(PORT[l.b].region) + "</small>" +
+            "<b>" + sc(l.a) + " → " + sc(l.b) + "</b><span>" + esc(PORT[l.a].name) + " to " + esc(PORT[l.b].name) + "</span>" +
+            "<small>" + plural(l.days, "day") + (l.direct ? " · direct" : " · via transshipment") + "</small></button>";
+        }).join("") + "</div></section>";
+
+  var similar = FIRMS.filter(function (x) { return x.type === f.type && x.id !== f.id; });
+  if (similar.length < 3) similar = similar.concat(FIRMS.filter(function (x) { return x.type !== f.type && x.id !== f.id && lanesOf(x.svcs).some(function (l) { return lanes.some(function (m) { return m.b === l.b; }); }); }));
+  html += '<section class="sec" aria-label="Similar companies"><div class="head"><h2>Also on these lanes</h2><div class="rule"></div><a href="#companies">All companies →</a></div>' +
+    '<div class="grid4">' + similar.slice(0, 4).map(function (x) { return coCard(x); }).join("") + "</div></section>" +
+    '<p class="sample" style="margin-top:28px">' + esc(f.name) + " is a sample listing. Vessels, times and schedules are generated from weekly rotations.</p>" +
+    "</main>";
+  $("#vCompany").innerHTML = html;
+}
+function boardHtml(list, tab) {
+  if (!list.length) return '<p class="note" style="padding:22px 18px">' + (tab === "up" ? "No sailings scheduled in the next six weeks." : "Nothing has left in the last three weeks.") + "</p>";
+  return '<div class="board__scroll"><table><thead><tr><th>Date</th><th>' + (tab === "up" ? "ETD" : "Sailed") + "</th><th>Vessel</th><th>Service</th><th>Route</th><th>Transit</th><th>Cut-off</th><th>Status</th></tr></thead><tbody>" +
+    list.map(function (r) {
+      var st = statusOf(r);
+      return '<tr data-open="' + r.key + '" tabindex="0">' +
+        '<td class="m">' + fmtWD(r.etd) + "</td>" +
+        '<td class="m">' + hm(r.etd) + "</td>" +
+        "<td><b>" + esc(r.vessel) + "</b><small>voy " + esc(r.voy) + "</small></td>" +
+        '<td><span class="tags"><span class="tag t" style="border-color:' + r.svc.color + ";color:" + r.svc.color + '">' + r.svc.id + "</span></span></td>" +
+        '<td class="m">' + r.svc.rot.map(function (x) { return sc(x[0]); }).join(" → ") + "</td>" +
+        '<td class="m">' + r.days + "d</td>" +
+        '<td class="m">' + fmtD(r.cut) + " " + hm(r.cut) + "</td>" +
+        '<td><span class="st ' + st[0] + '">' + st[1] + "</span></td></tr>";
+    }).join("") + "</tbody></table></div>";
+}
+
+/* ===========================================================
+   COMPANIES DIRECTORY
+   =========================================================== */
+function renderCompanies() {
+  if (!$("#dMain")) {
+    $("#vCompanies").innerHTML = apph("companies") + '<main class="wrap page" id="dMain"></main>';
+    syncQ();
+  }
+  var t = TYPES.filter(function (x) { return x.key === D.type; })[0];
+  var q = norm(D.q);
+  var list = FIRMS.filter(function (f) {
+    if (t.match && f.type !== t.match) return false;
+    if (D.cargo && f.cargo.indexOf(D.cargo) < 0) return false;
+    if (!q) return true;
+    var hay = norm([f.name, f.type, f.pitch, f.about, f.offices.join(" "), f.cargo.join(" "),
+      f.svcs.map(function (id) { return SVC[id].name; }).join(" "),
+      lanesOf(f.svcs).map(function (l) { return PORT[l.b].name + " " + PORT[l.b].country + " " + PORT[l.b].region; }).join(" ")].join(" "));
+    return q.split(" ").every(function (w) { return hay.indexOf(w) > -1; });
+  }).sort(function (x, y) { return (y.paid - x.paid) || (y.verified - x.verified) || x.name.localeCompare(y.name); });
+
+  var html = '<div class="dhead"><div><h1>Companies</h1><p>' + FIRMS.length + " shipping lines, NVOCCs, forwarders and customs agents working out of Karachi, Port Qasim and Gwadar. " +
+    '<span class="sample">Sample listings</span></p></div>' +
+    '<label class="dsearch"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9AA0A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+    '<input id="dq" placeholder="Name, city, port or cargo" aria-label="Search companies" value="' + esc(D.q) + '" autocomplete="off"></label></div>' +
+    '<div class="tabs" role="tablist" aria-label="Company type">' + TYPES.map(function (x) {
+      var n = FIRMS.filter(function (f) { return !x.match || f.type === x.match; }).length;
+      return '<button type="button" role="tab" class="tab" data-dtype="' + x.key + '" aria-selected="' + (D.type === x.key) + '">' + x.label + " <small>" + n + "</small></button>";
+    }).join("") + "</div>" +
+    '<div class="rrow"><span class="lbl">Carries</span>' + CARGO.map(function (c) {
+      return '<button type="button" class="f" data-dcargo="' + c.key + '" aria-pressed="' + (D.cargo === c.key) + '"><i style="background:' + c.color + '"></i>' + c.key + "</button>";
+    }).join("") + "</div>" +
+    '<div id="dList">' + dirList(list) + "</div>";
+  $("#dMain").innerHTML = html;
+}
+function dirList(list) {
+  if (!list.length) return '<div class="empty"><b>Nobody matches that</b><p>Try a city, a port or a cargo type, or clear the filters.</p><div class="row"><button class="btn btn-ink" type="button" data-dreset>Show every company</button></div></div>';
+  return '<p class="rsub" style="margin-top:18px"><b>' + plural(list.length, "company", "companies") + "</b></p>" +
+    '<div class="dgrid">' + list.map(function (f) { return coCard(f); }).join("") + "</div>";
+}
+
+/* ===========================================================
+   SAILING SHEET, COMPARE, TRAY
+   =========================================================== */
+function openSheet(key, quote) {
+  var r = ROW[key];
+  if (!r) return;
+  var d = $("#sheet");
+  var gone = r.etd < NOW, closed = r.cut < NOW;
+  var urgent = !closed && r.cut - NOW < 2 * DAY;
+  var rt = rates(r);
+  var picked = S.picks.indexOf(r.key) > -1;
+  var calls = r.svc.rot.slice(0, r.j + 1);
+  var readyDef = iso(addDays(r.etd, -r.svc.cut - 1));
+
+  d.innerHTML = '<div class="sh">' +
+    '<div class="sh__top">' + av(r.firm) +
+      '<div class="sh__t"><b>' + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + " · " + esc(r.svc.name) + " · voy " + esc(r.voy) + "</small></div>" +
+      '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
+    '<div class="sh__body">' +
+      '<div class="cutbox' + (urgent ? " u" : "") + '"><div><small>' + (gone ? "Sailed" : "Gate-in cut-off") + "</small><b>" +
+        (gone ? fmtWD(r.etd) + " " + hm(r.etd) : fmtWD(r.cut) + " " + hm(r.cut)) + "</b></div>" +
+        '<span class="left">' + (gone ? "Departed" : closed ? "Booking closed" : "Closes in " + untilLabel(r.cut)) + "</span></div>" +
+      '<div><span class="lbl">Routing</span><ul class="legs" style="margin-top:12px">' +
+        calls.map(function (x, i) {
+          var dt = i === 0 ? r.etd : addDays(r.dep.dates[0], x[1]);
+          var cls = i === 0 ? "o" : i === calls.length - 1 ? "d" : "";
+          return '<li class="' + cls + '"><span class="n"></span><span><b>' + esc(PORT[x[0]].name) + "</b><small>" + x[0] +
+            (i === 0 ? " · " + r.term + " · load" : i === calls.length - 1 ? " · discharge" : " · call") + "</small></span>" +
+            '<span class="when">' + fmtWD(dt) + (i === 0 ? "<br>ETD " + hm(r.etd) : "") + "</span></li>";
+        }).join("") + "</ul></div>" +
+      '<div class="tags">' + (r.direct ? '<span class="tag dir">Direct</span>' : '<span class="tag via">' + viaText(r) + "</span>") +
+        '<span class="tag t">' + plural(r.days, "day") + " port to port</span>" +
+        r.cargo.map(function (c) { return '<span class="tag t">' + c + "</span>"; }).join("") + "</div>" +
+      (quotesOnly(r.firm)
+        ? '<p class="note"><b>Quoted per shipment.</b> ' + esc(r.firm.name) + " arranges space on this sailing rather than publishing a box rate. Ask with your cargo details below.</p>"
+        : '<div class="rates"><div><span>Indicative rate, all in</span><span>Sample</span></div>' +
+          "<div><span>20′ dry</span><strong>" + money(rt.d20) + "</strong></div>" +
+          "<div><span>40′ dry</span><strong>" + money(rt.d40) + "</strong></div>" +
+          "<div><span>40′ reefer</span><strong>" + (r.cargo.indexOf("Reefer") > -1 ? money(rt.r40) : "n/a") + "</strong></div></div>") +
+      (gone || closed ? "" :
+        '<form class="qform" id="qform" autocomplete="off"><span class="lbl full">Ask ' + esc(r.firm.short) + " about this sailing</span>" +
+          '<label>Equipment<select id="qfEq">' + ["20′ dry", "40′ dry", "40′ high cube"].concat(r.cargo.indexOf("Reefer") > -1 ? ["40′ reefer"] : []).concat(r.cargo.indexOf("LCL") > -1 ? ["LCL, by m³"] : []).map(function (o) { return "<option>" + o + "</option>"; }).join("") + "</select></label>" +
+          '<label>Quantity<input id="qfN" type="number" min="1" value="1" inputmode="numeric"></label>' +
+          '<label>Cargo ready<input id="qfDate" type="date" value="' + readyDef + '"></label>' +
+          '<label>Commodity<input id="qfC" placeholder="e.g. frozen fish"></label>' +
+          '<label class="full">Your email<input id="qfE" type="email" required placeholder="you@company.pk"></label>' +
+          '<p class="note full" id="qfMsg"></p></form>') +
+    "</div>" +
+    '<div class="sh__foot">' +
+      (VIEW === "results" && !gone ? '<button type="button" class="btn btn-line" data-pickthis="' + r.key + '">' + (picked ? "In compare ✓" : "Add to compare") + "</button>" :
+        '<a class="btn btn-line" href="#co-' + r.firm.id + '">' + esc(r.firm.short) + " profile</a>") +
+      (gone || closed ? '<a class="btn btn-blue" href="#co-' + r.firm.id + '">Next sailings</a>' :
+        '<button type="submit" form="qform" class="btn btn-blue">' + (quotesOnly(r.firm) ? "Ask for a quote" : "Request booking") + "</button>") +
+    "</div></div>";
+  if (!d.open) d.showModal();
+  if (quote && $("#qfE")) setTimeout(function () { $("#qfE").focus(); }, 60);
+}
+
+function renderTray() {
+  var t = $("#tray");
+  var picks = S.picks.map(function (k) { return ROW[k]; }).filter(Boolean);
+  if (VIEW !== "results" || !picks.length) { t.hidden = true; return; }
+  t.hidden = false;
+  t.innerHTML = '<span class="tray__n">' + picks.length + " of 3</span><ul>" + picks.map(function (r) {
+    return "<li>" + av(r.firm) + "<span><b>" + esc(r.vessel) + "</b><small>" + fmtD(r.etd) + " · " + r.days + "d</small></span>" +
+      '<button type="button" data-unpick="' + r.key + '" aria-label="Remove ' + esc(r.vessel) + '">✕</button></li>';
+  }).join("") + "</ul>" +
+    '<button type="button" class="btn btn-blue btn-sm" data-compare' + (picks.length < 2 ? " disabled" : "") + ">Compare " + picks.length + "</button>";
+}
+function togglePick(key) {
+  var i = S.picks.indexOf(key);
+  if (i > -1) S.picks.splice(i, 1);
+  else if (S.picks.length < 3) S.picks.push(key);
+  else toast("You can compare three sailings at a time. Remove one first.");
+  if (VIEW === "results") renderResults();
+  renderTray();
+  if ($("#cmp").open) { if (S.picks.length < 2) $("#cmp").close(); else openCompare(); }
+}
+function openCompare() {
+  var picks = S.picks.map(function (k) { return ROW[k]; }).filter(Boolean);
+  if (picks.length < 2) return;
+  var best = function (vals, low) {
+    var b = low ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
+    return vals.map(function (v) { return v === b && vals.filter(function (x) { return x === b; }).length < vals.length; });
+  };
+  var rowsDef = [
+    ["Sails", picks.map(function (r) { return +r.etd; }), true, function (r) { return fmtWD(r.etd) + "<small>ETD " + hm(r.etd) + "</small>"; }],
+    ["Arrives", picks.map(function (r) { return +r.eta; }), true, function (r) { return fmtWD(r.eta) + "<small>" + esc(PORT[r.to].name) + "</small>"; }],
+    ["Transit", picks.map(function (r) { return r.days; }), true, function (r) { return plural(r.days, "day"); }],
+    ["Routing", picks.map(function (r) { return r.via.length; }), true, function (r) { return viaText(r) + "<small>" + r.svc.rot.slice(0, r.j + 1).map(function (x) { return sc(x[0]); }).join(" → ") + "</small>"; }],
+    ["Cut-off", picks.map(function (r) { return +r.cut; }), false, function (r) { return fmtWD(r.cut) + "<small>" + hm(r.cut) + " · " + r.term + "</small>"; }],
+    ["20′ dry", picks.map(function (r) { return quotesOnly(r.firm) ? 1e9 : rates(r).d20; }), true, function (r) { return quotesOnly(r.firm) ? "Quoted" : money(rates(r).d20) + "<small>indicative, sample</small>"; }],
+    ["40′ dry", picks.map(function (r) { return quotesOnly(r.firm) ? 1e9 : rates(r).d40; }), true, function (r) { return quotesOnly(r.firm) ? "Quoted" : money(rates(r).d40); }],
+    ["Cargo", null, null, function (r) { return esc(r.cargo.join(", ")); }],
+    ["Replies", null, null, function (r) { return esc(r.firm.reply); }]
+  ];
+  $("#cmp").innerHTML = '<div class="sh__top"><div class="sh__t"><b>Compare ' + picks.length + " sailings</b><small>Best in each row is marked. Rates are sample data.</small></div>" +
+    '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
+    '<div class="cmpt"><table><thead><tr><th></th>' + picks.map(function (r) {
+      return '<td><div style="display:flex;gap:10px;align-items:center">' + av(r.firm) + "<div><b>" + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + "</small></div></div></td>";
+    }).join("") + "</tr></thead><tbody>" +
+    rowsDef.map(function (d) {
+      var marks = d[1] ? best(d[1], d[2]) : picks.map(function () { return false; });
+      return "<tr><th>" + d[0] + "</th>" + picks.map(function (r, i) { return '<td class="' + (marks[i] ? "best" : "") + '">' + d[3](r) + "</td>"; }).join("") + "</tr>";
+    }).join("") +
+    "<tr><th></th>" + picks.map(function (r) { return '<td><button type="button" class="btn btn-blue btn-sm" data-quote="' + r.key + '">' + (quotesOnly(r.firm) ? "Ask" : "Request") + "</button></td>"; }).join("") + "</tr>" +
+    "</tbody></table></div>";
+  if (!$("#cmp").open) $("#cmp").showModal();
+}
+
+/* ===========================================================
+   EVENTS
+   =========================================================== */
+document.addEventListener("click", function (e) {
+  var t = e.target;
+  var el;
+
+  if ((el = t.closest("[data-sg]"))) {
+    var box = el.closest(".sugg");
+    var input = box.id === "sugg" ? $("#q") : $("#qTo");
+    pickSugg(el.getAttribute("data-sg"), input);
+    return;
+  }
+  if ((el = t.closest("[data-try]"))) {
+    var p = el.getAttribute("data-try").split("|");
+    S.from = p[0]; S.to = p[1]; clearFilters(); S.type = "all";
+    runSearch(); return;
+  }
+  if (t.closest("#fromChip")) {
+    var order = [""].concat(PK);
+    S.from = order[(order.indexOf(S.from) + 1) % order.length];
+    renderHomeState(); return;
+  }
+  if (t.closest("#homeFilters")) { runSearch(); return; }
+  if ((el = t.closest("[data-cargo]"))) {
+    var c = el.getAttribute("data-cargo"), i = S.cargo.indexOf(c);
+    if (i > -1) S.cargo.splice(i, 1); else S.cargo.push(c);
+    S.day = null;
+    if (VIEW === "results") renderResults(); else renderHomeState();
+    return;
+  }
+  if (t.closest("[data-direct]")) {
+    S.direct = !S.direct; S.day = null;
+    if (VIEW === "results") renderResults(); else renderHomeState();
+    return;
+  }
+  if (t.closest("[data-clear]")) { clearFilters(); renderResults(); return; }
+  if ((el = t.closest("[data-day]"))) { var k = el.getAttribute("data-day"); S.day = S.day === k ? null : k; renderResults(); return; }
+  if ((el = t.closest("[data-route]"))) { var rk = el.getAttribute("data-route"); S.route = S.route === rk ? null : rk; S.day = null; renderResults(); return; }
+  if ((el = t.closest("[data-type]"))) { S.type = el.getAttribute("data-type"); renderResults(); return; }
+  if ((el = t.closest("[data-more]"))) { var id = el.getAttribute("data-more"); S.open[id] = !S.open[id]; renderResults(); return; }
+  if ((el = t.closest("[data-win]"))) { S.win = +el.getAttribute("data-win"); renderResults(); return; }
+  if (t.closest("[data-anywhere]")) { S.to = ""; clearFilters(); renderResults(); return; }
+  if ((el = t.closest("[data-quote]"))) { e.preventDefault(); if ($("#cmp").open) $("#cmp").close(); openSheet(el.getAttribute("data-quote"), true); return; }
+  if ((el = t.closest("[data-open]"))) { openSheet(el.getAttribute("data-open")); return; }
+  if (t.closest("[data-close]")) { var dlg = t.closest("dialog"); if (dlg) dlg.close(); return; }
+  if ((el = t.closest("[data-pickthis]"))) { togglePick(el.getAttribute("data-pickthis")); openSheet(el.getAttribute("data-pickthis")); return; }
+  if ((el = t.closest("[data-unpick]"))) { togglePick(el.getAttribute("data-unpick")); return; }
+  if (t.closest("[data-compare]")) { openCompare(); return; }
+  if ((el = t.closest("[data-cday]"))) { C.day = el.getAttribute("data-cday"); var y = scrollY; renderCompany(); scrollTo(0, y); return; }
+  if ((el = t.closest("[data-btab]"))) { C.tab = el.getAttribute("data-btab"); var y2 = scrollY; renderCompany(); scrollTo(0, y2); return; }
+  if ((el = t.closest("[data-lane]"))) { var l = el.getAttribute("data-lane").split("|"); S.from = l[0]; S.to = l[1]; clearFilters(); S.type = "all"; runSearch(); return; }
+  if ((el = t.closest("[data-dtype]"))) { D.type = el.getAttribute("data-dtype"); if (VIEW === "companies") { e.preventDefault(); renderCompanies(); } return; }
+  if ((el = t.closest("[data-dcargo]"))) { var dc = el.getAttribute("data-dcargo"); D.cargo = D.cargo === dc ? "" : dc; renderCompanies(); return; }
+  if (t.closest("[data-dreset]")) { D.type = "all"; D.q = ""; D.cargo = ""; renderCompanies(); return; }
+  if (t.closest("[data-signin]")) { toast("Sign-in isn't part of this prototype yet."); return; }
+  if (t.closest("[data-contact]")) { toast("Contact isn't live in this prototype."); return; }
+  if ((el = t.closest("[data-plan]"))) { toast(el.getAttribute("data-plan") + " sign-up isn't live in this prototype. Nothing was charged."); return; }
+  if (t.closest('a[href="#spotlight"]') || t.closest('a[href="#providers"]')) {
+    /* anchors inside home: route() scrolls, but only if the hash changes */
+    var target = t.closest("a").getAttribute("href");
+    if (location.hash === target) { e.preventDefault(); route(); }
+  }
+});
+
+document.addEventListener("change", function (e) {
+  var t = e.target;
+  if (t.matches("[data-pick]")) { togglePick(t.getAttribute("data-pick")); return; }
+  if (t.id === "fTerm") { S.term = t.value; S.day = null; renderResults(); return; }
+  if (t.id === "fMax") { S.maxDays = +t.value; S.day = null; renderResults(); return; }
+  if (t.id === "fSort") { S.sort = t.value; renderResults(); return; }
+  if (t.id === "qFrom") { S.from = t.value; S.day = null; S.route = null; if (VIEW === "results") renderResults(); else runSearch(); return; }
+  if (t.id === "qWhen") { S.win = +t.value; S.day = null; if (VIEW === "results") renderResults(); else runSearch(); return; }
+});
+
+document.addEventListener("input", function (e) {
+  var t = e.target;
+  if (SUGG[t.id]) { buildSugg(t); return; }
+  if (t.id === "dq") {
+    D.q = t.value;
+    renderCompanies();
+    var n = $("#dq"); n.focus(); n.setSelectionRange(n.value.length, n.value.length);
+  }
+});
+document.addEventListener("focusin", function (e) {
+  if (SUGG[e.target.id]) buildSugg(e.target);
+});
+document.addEventListener("focusout", function (e) {
+  var t = e.target;
+  if (!SUGG[t.id]) return;
+  setTimeout(function () {
+    var box = document.getElementById(SUGG[t.id]);
+    if (box && !box.contains(document.activeElement) && document.activeElement !== t) closeSugg(t);
+  }, 120);
+});
+document.addEventListener("mousedown", function (e) {
+  if (e.target.closest(".sugg")) e.preventDefault();
+});
+document.addEventListener("keydown", function (e) {
+  var t = e.target;
+  if (SUGG[t.id]) {
+    var box = document.getElementById(SUGG[t.id]);
+    var opts = box.hidden ? [] : $$("button", box);
+    if ((e.key === "ArrowDown" || e.key === "ArrowUp") && opts.length) {
+      e.preventDefault();
+      var i = opts.findIndex(function (o) { return o.getAttribute("aria-selected") === "true"; });
+      i = e.key === "ArrowDown" ? (i + 1) % opts.length : (i - 1 + opts.length) % opts.length;
+      opts.forEach(function (o, k) { o.setAttribute("aria-selected", k === i ? "true" : "false"); });
+      opts[i].scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "Enter") {
+      var cur = opts.filter(function (o) { return o.getAttribute("aria-selected") === "true"; })[0];
+      if (cur) { e.preventDefault(); pickSugg(cur.getAttribute("data-sg"), t); }
+      return;
+    }
+    if (e.key === "Escape") { closeSugg(t); return; }
+  }
+  if ((e.key === "Enter" || e.key === " ") && t.matches("tr[data-open]")) { e.preventDefault(); openSheet(t.getAttribute("data-open")); }
+});
+
+document.addEventListener("submit", function (e) {
+  var f = e.target;
+  e.preventDefault();
+  if (f.id === "homeSearch") { closeSugg($("#q")); submitText($("#q").value); return; }
+  if (f.id === "stickForm") { submitText($("#stickQ").value); return; }
+  if (f.id === "qbar") { closeSugg($("#qTo")); var v = $("#qTo").value; if (!v.trim()) { S.to = ""; runSearch(); } else submitText(v); return; }
+  if (f.id === "qform") {
+    var email = $("#qfE");
+    var msg = $("#qfMsg");
+    if (!email.value || !email.checkValidity()) {
+      msg.className = "note full"; msg.textContent = "Add an email address so the provider can reply."; email.focus(); return;
+    }
+    msg.className = "note ok full";
+    msg.textContent = "Request drafted: " + $("#qfN").value + " × " + $("#qfEq").value + ". This is a prototype, so nothing was sent.";
+  }
+});
+
+/* dialogs close on the backdrop */
+["sheet", "cmp"].forEach(function (id) {
+  var d = document.getElementById(id);
+  d.addEventListener("click", function (e) { if (e.target === d) d.close(); });
+});
+
+/* nudge, once per visit, never during the intro */
+var nudge = $("#nudge");
+var NUDGE = "kargos.nudge";
+var seen = false;
+try { seen = sessionStorage.getItem(NUDGE) === "1"; } catch (err) { /* private window */ }
+function openNudge() {
+  if (seen || VIEW !== "home" || document.documentElement.classList.contains("intro")) return;
+  nudge.hidden = false;
+  requestAnimationFrame(function () { nudge.classList.add("in"); });
+  try { sessionStorage.setItem(NUDGE, "1"); } catch (err) { /* fine */ }
+  seen = true;
+}
+if (!seen) {
+  setTimeout(openNudge, 12000);
+  addEventListener("scroll", function onScroll() {
+    if (VIEW === "home" && scrollY > innerHeight * 0.9) { openNudge(); removeEventListener("scroll", onScroll); }
+  }, { passive: true });
+}
+$("#nudgex").addEventListener("click", function () {
+  nudge.classList.remove("in");
+  setTimeout(function () { nudge.hidden = true; }, REDUCE ? 0 : 400);
+});
+
+/* sticky search past the hero */
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(function (es) {
+    var on = !es[0].isIntersecting;
+    $("#stick").classList.toggle("in", on);
+    $("#stick").setAttribute("aria-hidden", on ? "false" : "true");
+    $$("#stick a, #stick input, #stick button").forEach(function (x) { x.tabIndex = on ? 0 : -1; });
+  }, { threshold: 0, rootMargin: "-70px 0px 0px 0px" }).observe($("#hero"));
+}
+
+/* ===========================================================
+   THE INTRO
+   The port wakes up in the dark: the box drops on its cable, the
+   board flips KARGOS in, the bar unrolls, an orange line runs round
+   its border, and the light spreads out from there until the whole
+   page is lit. Sponsors, filters and the rest load in as it arrives.
+   =========================================================== */
+var ROOT = document.documentElement;
+var introT = [];
+var introOn = false;
+function introFinish() {
+  if (!introOn) return;
+  introOn = false;
+  introT.forEach(clearTimeout);
+  var v = $("#veil");
+  v.classList.add("fade");
+  setTimeout(function () {
+    ROOT.classList.remove("intro", "play", "lit");
+    v.className = "veil";
+    v.removeAttribute("style");
+  }, 290);
+}
+function introLight() {
+  var s = $("#homeSearch").getBoundingClientRect();
+  var v = $("#veil");
+  v.style.left = s.left + "px"; v.style.top = s.top + "px";
+  v.style.width = s.width + "px"; v.style.height = s.height + "px";
+  v.style.borderRadius = s.height / 2 + "px";
+  void v.offsetWidth;
+  var cx = s.left + s.width / 2, cy = s.top + s.height / 2;
+  var R = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 140;
+  v.classList.add("grow");
+  v.style.left = cx - R + "px"; v.style.top = cy - R + "px";
+  v.style.width = 2 * R + "px"; v.style.height = 2 * R + "px";
+  v.style.borderRadius = R + "px";
+  ROOT.classList.add("lit");
+}
+function introStart() {
+  var h = location.hash.slice(1);
+  if (REDUCE || (h && h !== "") || scrollY > 40) return;
+  var form = $("#homeSearch");
+  var w = form.offsetWidth, ht = form.offsetHeight;
+  var tr = $("#trace");
+  tr.setAttribute("viewBox", "0 0 " + (w + 2) + " " + (ht + 2));
+  var rect = $("rect", tr);
+  rect.setAttribute("x", 1.25); rect.setAttribute("y", 1.25);
+  rect.setAttribute("width", w - 0.5); rect.setAttribute("height", ht - 0.5);
+  rect.setAttribute("rx", (ht - 0.5) / 2);
+  $(".hair").style.top = form.offsetTop + ht / 2 + "px";
+  var s = form.getBoundingClientRect();
+  var v = $("#veil");
+  v.style.left = s.left + s.width / 2 + "px"; v.style.top = s.top + s.height / 2 + "px";
+  introOn = true;
+  ROOT.classList.add("intro", "play");
+  introT.push(setTimeout(introLight, 2080));
+  introT.push(setTimeout(introFinish, 3500));
+  ["keydown", "pointerdown", "wheel", "touchstart"].forEach(function (ev) {
+    addEventListener(ev, function () { introFinish(); }, { once: true, passive: true });
+  });
+}
+$("#skip").addEventListener("click", function () { introFinish(); $("#q").focus(); });
+
+/* ===========================================================
+   BOOT
+   =========================================================== */
+renderHome();
+initStrip();
+armSpot();
+route();
+introStart();
+</script>
+</body></html>
