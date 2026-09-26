@@ -330,7 +330,10 @@ const state = {
   ov: "board",
   focus: null,
   picks: [],
-  filtersOpen: false
+  filtersOpen: false,
+  dir: { q: "", type: "all", cargo: "", region: "", verified: false, refineOpen: true },
+  prof: { id: "", tab: "sailings", region: "" },
+  lane: { a: "", b: "" }
 };
 
 function activeFilterCount() {
@@ -398,25 +401,63 @@ function writeUrl(replace) {
 
 function readUrl() {
   const h = location.hash || "#/";
-  if (h.indexOf("#/search") !== 0) {
-    state.view = "home";
-    return;
-  }
-  state.view = "results";
-  const qs = h.slice(h.indexOf("?") + 1);
+  const path = h.split("?")[0];
   const params = {};
   if (h.indexOf("?") > -1) {
-    qs.split("&").forEach(function (pair) {
+    h.slice(h.indexOf("?") + 1).split("&").forEach(function (pair) {
       const bits = pair.split("=");
       params[bits[0]] = decodeURIComponent(bits.slice(1).join("=") || "");
     });
   }
+
+  if (path === "#/providers") {
+    state.view = "providers";
+    const d = state.dir;
+    d.type = TYPES.some(function (t) { return t.key === params.type; }) ? params.type : "all";
+    d.cargo = CARGOS.indexOf(params.cargo) > -1 ? params.cargo : "";
+    d.region = REGIONS.indexOf(params.region) > -1 ? params.region : "";
+    d.verified = params.verified === "1";
+    d.q = params.q || "";
+    return;
+  }
+
+  let m = path.match(/^#\/provider\/([A-Z]{2})$/);
+  if (m && FIRM[m[1]]) {
+    if (state.prof.id !== m[1]) state.prof.region = "";
+    state.view = "provider";
+    state.prof.id = m[1];
+    state.prof.tab = PROF_TABS.some(function (t) { return t.key === params.tab; }) ? params.tab : "sailings";
+    return;
+  }
+
+  m = path.match(/^#\/lane\/([A-Z]{5})-([A-Z]{5})$/);
+  if (m) {
+    state.view = "lane";
+    state.lane = { a: m[1], b: m[2] };
+    return;
+  }
+
+  if (path !== "#/search") {
+    state.view = "home";
+    return;
+  }
+  state.view = "results";
   state.origin = PORT[params.from] && PORT[params.from].region === "Pakistan" ? params.from : "";
   state.dest = PORT[params.to] ? params.to : "";
   state.whenText = params.when || "";
   state.win = parseWhen(state.whenText);
   state.sort = ["recommended", "etd", "transit", "direct", "cutoff"].indexOf(params.sort) > -1 ? params.sort : "recommended";
   state.type = TYPES.some(function (t) { return t.key === params.type; }) ? params.type : "all";
+}
+
+function writeDirUrl() {
+  const d = state.dir, q = [];
+  if (d.type !== "all") q.push("type=" + d.type);
+  if (d.cargo) q.push("cargo=" + d.cargo);
+  if (d.region) q.push("region=" + encodeURIComponent(d.region));
+  if (d.verified) q.push("verified=1");
+  if (d.q.trim()) q.push("q=" + encodeURIComponent(d.q.trim()));
+  history.replaceState(null, "", "#/providers" + (q.length ? "?" + q.join("&") : ""));
 }
 
 /* ===========================================================
@@ -437,7 +478,7 @@ function topnav(hideMark) {
         '<span class="wide">KARGOS</span></a></span>' +
     '<span class="topnav__grow"></span>' +
     '<a class="topnav__link" href="#/search">Sailings</a>' +
-    '<a class="topnav__link topnav__link--wide" href="#/search?type=nvocc">Providers</a>' +
+    '<a class="topnav__link topnav__link--wide" href="#/providers">Providers</a>' +
     '<button type="button" class="theme" data-palette-next="' + next.key + '"' +
       ' title="Palette: ' + now.name + '. Switch to ' + next.name + '."' +
       ' aria-label="Colour palette, currently ' + now.name + '. Switch to ' + next.name + '.">' +
@@ -488,8 +529,10 @@ function footer() {
     "<span>&copy; KARGOS, Karachi. Sailings from Karachi, Port Qasim and Gwadar.</span>" +
     '<nav aria-label="Footer">' +
       '<a href="#/search">Sailings</a>' +
-      '<a href="#/search?type=line">Lines</a>' +
-      '<a href="#/search?type=nvocc">NVOCCs</a>' +
+      '<a href="#/providers?type=line">Lines</a>' +
+      '<a href="#/providers?type=nvocc">NVOCCs</a>' +
+      '<a href="#/providers?type=fwd">Forwarders</a>' +
+      '<a href="#/providers?type=cust">Customs agents</a>' +
     "</nav></footer>";
 }
 
@@ -567,13 +610,13 @@ function homeHtml() {
     return '<div class="home__region">' +
       '<span class="home__regionname mono">' + esc(region) + "</span><ul>" +
       list.map(function (l) {
-        return "<li><a href=\"" + laneHref(l.a, l.b) + "\">" +
+        return "<li><a href=\"" + lanePageHref(l.a, l.b) + "\">" +
           esc(PORT[l.a].name) + " to " + esc(PORT[l.b].name) + "</a></li>";
       }).join("") + "</ul></div>";
   }).join("");
 
   const railRun = FIRMS.map(function (c) {
-    return '<a class="rail__co" href="#/search?type=' + typeKeyOf(c.type) + '">' +
+    return '<a class="rail__co" href="' + profileHref(c.id) + '">' +
       '<i class="wide" style="background:' + TONES[c.tone] + '">' + esc(c.id) + "</i>" + esc(c.name) + "</a>";
   }).join("");
 
@@ -915,7 +958,7 @@ function cardsHtml(rows) {
       '<div class="co__bar" style="background:' + TONES[c.tone] + '">' +
         '<span class="co__mono">' + esc(c.id) + "</span>" +
         '<span class="co__id">' +
-          '<a class="co__name" href="#/search?type=' + typeKeyOf(c.type) + '">' + esc(c.name) + "</a>" +
+          '<a class="co__name" href="' + profileHref(c.id) + '">' + esc(c.name) + "</a>" +
           '<span class="co__sub mono">' + esc(c.type.toUpperCase()) + (c.verified ? " · VERIFIED" : "") + "</span>" +
         "</span>" +
         (c.featured ? '<span class="co__flag">FEATURED</span>' : "") +
@@ -942,7 +985,7 @@ function cardsHtml(rows) {
       '<div class="co__foot">' +
         '<span class="co__price"><b>' + plural(fastest, "day") + "</b>" +
           "<small>fastest, " + (directs ? directs + " direct" : "all transship") + "</small></span>" +
-        '<a class="pill pill--quiet" href="#/search?type=' + typeKeyOf(c.type) + '">All sailings</a>' +
+        '<a class="pill pill--quiet" href="' + profileHref(c.id) + '">All sailings</a>' +
       "</div></article>";
   }).join("");
 
@@ -988,6 +1031,496 @@ function trayHtml() {
 }
 
 /* ===========================================================
+   PROVIDERS, PROFILES AND LANES
+   =========================================================== */
+
+const CARGO_NOTES = {
+  Dry: "20' and 40' general purpose, high cube on request",
+  Reefer: "40' high cube reefer, pre-tripped and plugged in at the terminal",
+  DG: "IMDG classes accepted, subject to terminal approval",
+  OOG: "Flatracks and open tops for out-of-gauge and project cargo",
+  LCL: "Groupage by the cubic metre, consolidated weekly"
+};
+
+const TYPE_PLURAL = {
+  "Shipping line": "shipping lines",
+  "NVOCC": "NVOCCs",
+  "Forwarder": "forwarders",
+  "Customs agent": "customs agents"
+};
+
+function profileHref(id, tab) {
+  return "#/provider/" + id + (tab && tab !== "sailings" ? "?tab=" + tab : "");
+}
+function laneKey(a, b) { return a + "-" + b; }
+function lanePageHref(a, b) { return "#/lane/" + laneKey(a, b); }
+
+function monoTile(c, cls) {
+  return '<span class="' + cls + '" style="background:' + TONES[c.tone] + '">' + esc(c.id) + "</span>";
+}
+
+/* Every lane a list of services serves out of Pakistan: one entry per
+   origin/destination pair, with each service's own routing on it. */
+function lanesFor(svcIds) {
+  const lanes = {};
+  svcIds.forEach(function (id) {
+    const s = SVC[id];
+    for (let i = 0; i < s.rot.length - 1; i++) {
+      if (PK.indexOf(s.rot[i][0]) < 0) continue;
+      for (let j = i + 1; j < s.rot.length; j++) {
+        const a = s.rot[i][0], b = s.rot[j][0];
+        const k = laneKey(a, b);
+        const codes = s.rot.slice(i, j + 1).map(function (r) { return r[0]; });
+        const lane = lanes[k] = lanes[k] || { a: a, b: b, runs: [] };
+        lane.runs.push({ svc: s, codes: codes, days: s.rot[j][1] - s.rot[i][1], direct: j === i + 1 });
+      }
+    }
+  });
+  return Object.keys(lanes).map(function (k) {
+    const l = lanes[k];
+    l.fastest = Math.min.apply(null, l.runs.map(function (r) { return r.days; }));
+    l.direct = l.runs.some(function (r) { return r.direct; });
+    return l;
+  }).sort(function (x, y) {
+    return REGIONS.indexOf(PORT[x.b].region) - REGIONS.indexOf(PORT[y.b].region) || x.fastest - y.fastest;
+  });
+}
+
+const ALL_LANES = lanesFor(SERVICES.map(function (s) { return s.id; }));
+const LANE = {};
+ALL_LANES.forEach(function (l) { LANE[laneKey(l.a, l.b)] = l; });
+
+function firmsOn(svcIds) {
+  return FIRMS.filter(function (c) {
+    return c.svcs.some(function (id) { return svcIds.indexOf(id) > -1; });
+  });
+}
+
+function regionsOf(c) {
+  const set = {};
+  lanesFor(c.svcs).forEach(function (l) { set[PORT[l.b].region] = 1; });
+  return REGIONS.filter(function (r) { return set[r]; });
+}
+
+/* The bookable sailings a provider can put you on, soonest first. */
+function firmSails(c, days) {
+  const win = { from: TODAY, to: addDays(TODAY, days || 42), label: "" };
+  const rows = findSails({ origin: "", dest: "", win: win }).filter(function (r) {
+    return r.firm.id === c.id && r.cut > new Date();
+  }).sort(function (a, b) { return a.etd - b.etd; });
+  remember(rows);
+  return rows;
+}
+
+/* ---------- the directory ---------- */
+
+function dirMatches(c) {
+  const d = state.dir;
+  const t = TYPES.find(function (x) { return x.key === d.type; });
+  if (t && t.match && c.type !== t.match) return false;
+  if (d.cargo && c.cargo.indexOf(d.cargo) < 0) return false;
+  if (d.region && regionsOf(c).indexOf(d.region) < 0) return false;
+  if (d.verified && !c.verified) return false;
+  const q = norm(d.q).trim();
+  if (q) {
+    const hay = norm([c.name, c.type, c.pitch, c.about, c.offices.join(" "), c.cargo.join(" "),
+      c.svcs.map(function (id) { return SVC[id].name; }).join(" ")].join(" "));
+    if (!q.split(/\s+/).every(function (w) { return hay.indexOf(w) > -1; })) return false;
+  }
+  return true;
+}
+
+function dirRefineCount() {
+  const d = state.dir;
+  return (d.cargo ? 1 : 0) + (d.region ? 1 : 0) + (d.verified ? 1 : 0);
+}
+
+function firmCardHtml(c) {
+  const lanes = lanesFor(c.svcs);
+  return '<article class="co">' +
+    '<div class="co__bar" style="background:' + TONES[c.tone] + '">' +
+      '<span class="co__mono">' + esc(c.id) + "</span>" +
+      '<span class="co__id">' +
+        '<a class="co__name" href="' + profileHref(c.id) + '">' + esc(c.name) + "</a>" +
+        '<span class="co__sub mono">' + esc(c.type.toUpperCase()) + (c.verified ? " · VERIFIED" : "") + "</span>" +
+      "</span>" +
+      (c.featured ? '<span class="co__flag">FEATURED</span>' : "") +
+    "</div>" +
+    '<p class="co__pitch">' + esc(c.pitch) + "</p>" +
+    '<div class="co__foot">' +
+      '<span class="co__stats"><span>' + plural(c.svcs.length, "service") + " · " + plural(lanes.length, "lane") + "</span>" +
+        "<span>" + esc(c.offices.join(", ")) + " · since " + c.since + "</span></span>" +
+      '<a class="pill pill--quiet co__ask" href="' + profileHref(c.id) + '">Profile</a>' +
+    "</div></article>";
+}
+
+function dirResultsHtml() {
+  const list = FIRMS.filter(dirMatches).sort(function (a, b) {
+    return (b.featured - a.featured) || (b.verified - a.verified) || a.name.localeCompare(b.name);
+  });
+  if (!list.length) {
+    return '<p class="dir__count">No providers</p>' +
+      '<div class="dir__empty"><b>Nobody matches all of that.</b>' +
+      "<p>Drop a filter or search for something broader, like a city, a cargo type or a port.</p>" +
+      '<div class="fpanel__opts"><button type="button" class="chip" data-dir-reset="1">Show every provider</button></div></div>';
+  }
+  return '<p class="dir__count">' + plural(list.length, "provider") + "</p>" +
+    '<div class="cards" style="--cols:2">' + list.map(firmCardHtml).join("") + "</div>";
+}
+
+function refineHtml() {
+  const d = state.dir;
+  const group = function (title, key, opts) {
+    return '<div class="refine__group"><span class="eyebrow">' + title + "</span>" +
+      '<div class="refine__opts">' + opts.map(function (o) {
+        return '<button type="button" class="chip" data-dir-set="' + key + '" data-v="' + esc(o) + '"' +
+          ' aria-pressed="' + (d[key] === o) + '">' + esc(o) + "</button>";
+      }).join("") + "</div></div>";
+  };
+  return '<aside class="refine" aria-label="Refine providers">' +
+    '<div class="refine__head"><span class="refine__title">Refine</span>' +
+      (dirRefineCount() ? '<button type="button" class="refine__clear" data-dir-clear="1">Clear all</button>' : "") +
+    "</div>" +
+    group("Cargo", "cargo", CARGOS) +
+    group("Ships to", "region", REGIONS) +
+    '<div class="refine__group"><span class="eyebrow">Listing</span><div class="refine__opts">' +
+      '<button type="button" class="chip" data-dir-verified="1" aria-pressed="' + d.verified + '">Verified only</button>' +
+    "</div></div></aside>";
+}
+
+function directoryHtml() {
+  const d = state.dir;
+  const tokens = [];
+  if (d.cargo) tokens.push(["cargo", d.cargo]);
+  if (d.region) tokens.push(["region", "To " + d.region]);
+  if (d.verified) tokens.push(["verified", "Verified"]);
+  const n = dirRefineCount();
+
+  return '<div class="home">' + topnav(false) +
+    '<main class="page dir">' +
+      '<div class="dir__bar">' +
+        '<button type="button" class="dir__refine' + (d.refineOpen ? " is-open" : "") + '" data-dir-toggle="1"' +
+          ' aria-expanded="' + d.refineOpen + '">Refine' +
+          (n ? '<span class="dir__refinecount">' + n + "</span>" : "") + "</button>" +
+        '<div class="dir__search">' +
+          tokens.map(function (t) {
+            return '<span class="dir__token">' + esc(t[1]) +
+              '<button type="button" data-dir-drop="' + t[0] + '" aria-label="Remove ' + esc(t[1]) + '">&#10005;</button></span>';
+          }).join("") +
+          '<label class="dir__field">' +
+            '<input id="dirQ" type="search" aria-label="Search providers" placeholder="Company, city, cargo or service" value="' + esc(d.q) + '"' +
+            ' autocomplete="off" spellcheck="false"></label>' +
+          '<div class="dir__tabs" role="tablist" aria-label="Provider type">' +
+            TYPES.map(function (t) {
+              return '<button type="button" role="tab" class="chip" data-dir-type="' + t.key + '"' +
+                ' aria-selected="' + (d.type === t.key) + '">' + esc(t.label) + "</button>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      '<div class="dir__layout' + (d.refineOpen ? "" : " dir__layout--wide") + '">' +
+        (d.refineOpen ? refineHtml() : "") +
+        '<section class="dir__results" id="dirResults" aria-live="polite">' + dirResultsHtml() + "</section>" +
+      "</div>" +
+      '<p class="sample-note res__foot">Every company on KARGOS is sample data.</p>' +
+    "</main>" + footer() + "</div>";
+}
+
+/* ---------- a provider's profile ---------- */
+
+const PROF_TABS = [
+  { key: "sailings", label: "Sailings" },
+  { key: "lanes", label: "Lanes" },
+  { key: "equipment", label: "Equipment" },
+  { key: "about", label: "About" }
+];
+
+function profSailingsHtml(c, rows) {
+  const regions = regionsOf(c);
+  const pick = state.prof.region;
+  const shown = pick ? rows.filter(function (r) { return PORT[r.to].region === pick; }) : rows;
+
+  const chips = '<div class="prof__filters"><span class="eyebrow">Discharging in</span><div class="prof__chips">' +
+    '<button type="button" class="chip" data-prof-region=""  aria-pressed="' + !pick + '">Anywhere</button>' +
+    regions.map(function (r) {
+      return '<button type="button" class="chip" data-prof-region="' + esc(r) + '" aria-pressed="' + (pick === r) + '">' + esc(r) + "</button>";
+    }).join("") + "</div></div>";
+
+  if (!shown.length) return chips + '<p class="prof__none">No bookable sailings in the next six weeks.</p>';
+
+  /* One panel per service, so a weekly string reads as a string. */
+  const bySvc = {};
+  shown.forEach(function (r) { (bySvc[r.svc.id] = bySvc[r.svc.id] || []).push(r); });
+  const panels = Object.keys(bySvc).map(function (id) {
+    const s = SVC[id], list = bySvc[id];
+    return '<article class="co">' +
+      '<div class="co__bar" style="background:' + TONES[c.tone] + '">' +
+        '<span class="co__mono">' + esc(s.id) + "</span>" +
+        '<span class="co__id"><span class="co__name">' + esc(s.name) + "</span>" +
+          '<span class="co__sub mono">' + (s.mode === "road" ? "TIR ROAD" : "WEEKLY") + " · " + esc(s.term) + "</span></span>" +
+      "</div>" +
+      '<ul class="co__sailings">' + list.slice(0, 4).map(function (r) {
+        return "<li>" +
+          '<button type="button" class="co__sailing" data-open="' + r.key + '">' +
+            '<span class="co__etd mono">' + fmtD(r.etd) + "</span>" +
+            '<span class="co__vessel">' + esc(r.vessel) +
+              "<small>For " + esc(PORT[r.to].name) + ", " + plural(r.days, "day") + ", " + viaLabel(r).toLowerCase() + "</small></span>" +
+            '<span class="co__cut' + cutClass(r) + '">' + fmtD(r.cut) + "</span>" +
+          "</button></li>";
+      }).join("") + "</ul>" +
+      '<div class="co__foot"><span class="co__stats"><span>' +
+        s.rot.map(function (x) { return x[0].slice(2); }).join(" · ") + "</span>" +
+        "<span>" + esc(s.cargo.join(", ")) + "</span></span>" +
+        '<a class="pill pill--quiet co__ask" href="' + laneHref(s.rot[0][0], s.rot[s.rot.length - 1][0]) + '">Search</a>' +
+      "</div></article>";
+  }).join("");
+
+  return chips + '<div class="cards" style="--cols:2">' + panels + "</div>";
+}
+
+function profLanesHtml(c) {
+  return '<div class="prof__lanes">' + lanesFor(c.svcs).map(function (l) {
+    return '<a class="prof__lane" href="' + lanePageHref(l.a, l.b) + '">' +
+      '<span class="mono">' + l.a.slice(2) + " &rarr; " + l.b.slice(2) + "</span>" +
+      "<b>" + esc(PORT[l.b].name) + "</b>" +
+      "<small>From " + esc(PORT[l.a].name) + ", " + plural(l.fastest, "day") + (l.direct ? " direct" : " via transship") + "</small></a>";
+  }).join("") + "</div>";
+}
+
+function profEquipHtml(c) {
+  return '<div class="prof__equip"><span class="eyebrow">What ' + esc(c.name) + " will carry</span><ul>" +
+    c.cargo.map(function (k) {
+      const n = c.svcs.filter(function (id) { return SVC[id].cargo.indexOf(k) > -1 || k === "LCL"; }).length;
+      return "<li><b>" + esc(k) + "</b><span class=\"mono\">" + plural(n, "service") + "</span>" +
+        "<small>" + esc(CARGO_NOTES[k] || "") + "</small></li>";
+    }).join("") + "</ul>" +
+    '<p class="prof__none">Equipment: ' + esc(c.boxes) + ".</p></div>";
+}
+
+function profAboutHtml(c) {
+  const terms = {};
+  c.svcs.forEach(function (id) { if (SVC[id].mode !== "road") terms[SVC[id].term] = 1; });
+  const row = function (k, v) { return "<div><dt>" + k + "</dt><dd>" + esc(v) + "</dd></div>"; };
+  return '<div class="prof__about"><p>' + esc(c.about) + "</p><dl>" +
+    row("Type", c.type) +
+    row("Operating since", String(c.since)) +
+    row("Offices", c.offices.join(", ")) +
+    row("Equipment", c.boxes) +
+    row("Services", c.svcs.map(function (id) { return SVC[id].name; }).join(", ")) +
+    row("Loads at", Object.keys(terms).join(", ") || "Road only") +
+    row("Cargo", c.cargo.join(", ")) +
+    row("Listing", (c.verified ? "Verified" : "Unverified") + ", sample data") +
+    "</dl></div>";
+}
+
+function profileHtml(c) {
+  const rows = firmSails(c);
+  const lanes = lanesFor(c.svcs);
+  const tab = state.prof.tab;
+  const next = rows[0];
+  const badges = [];
+  if (c.featured) badges.push('<span class="badge badge--accent">Featured</span>');
+  if (c.verified) badges.push('<span class="badge badge--soft">Verified</span>');
+  badges.push('<span class="badge badge--outline">' + esc(c.type) + "</span>");
+  badges.push('<span class="badge badge--outline">Sample listing</span>');
+
+  const body = tab === "lanes" ? profLanesHtml(c)
+    : tab === "equipment" ? profEquipHtml(c)
+    : tab === "about" ? profAboutHtml(c)
+    : profSailingsHtml(c, rows);
+
+  const cutoffs = rows.slice(0, 5);
+  const similar = FIRMS.filter(function (x) { return x.type === c.type && x.id !== c.id; }).slice(0, 3);
+  const typeKey = typeKeyOf(c.type);
+
+  return '<div class="home">' + topnav(false) +
+    '<main class="page prof">' +
+      '<a class="prof__back" href="#/providers' + (typeKey !== "all" ? "?type=" + typeKey : "") + '">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>' +
+        "All " + esc(TYPE_PLURAL[c.type] || "providers") + "</a>" +
+      '<header class="prof__head">' +
+        monoTile(c, "prof__mono wide") +
+        '<div class="prof__id"><h1>' + esc(c.name) + "</h1>" +
+          '<span class="prof__sub">' + esc(c.type) + " · " + esc(c.offices.join(", ")) + "</span>" +
+          '<div class="prof__badges">' + badges.join("") + "</div></div>" +
+        '<div class="prof__acts">' +
+          (next ? '<button type="button" class="pill pill--solid" data-open="' + next.key + '">Next sailing, ' + fmtD(next.etd) + "</button>" : "") +
+          '<a class="pill pill--quiet" href="' + profileHref(c.id, "lanes") + '">' + plural(lanes.length, "lane") + "</a>" +
+        "</div>" +
+      "</header>" +
+      '<p class="prof__blurb">' + esc(c.pitch) + ".</p>" +
+      '<dl class="prof__facts">' +
+        "<div><dt>Since</dt><dd>" + c.since + "</dd></div>" +
+        "<div><dt>Equipment</dt><dd>" + esc(c.boxes) + "</dd></div>" +
+        "<div><dt>Weekly services</dt><dd>" + c.svcs.length + "</dd></div>" +
+        "<div><dt>Next 6 weeks</dt><dd>" + plural(rows.length, "sailing") + "</dd></div>" +
+      "</dl>" +
+      '<nav class="prof__tabs" role="tablist" aria-label="Profile sections">' +
+        PROF_TABS.map(function (t) {
+          return '<button type="button" role="tab" class="prof__tab' + (tab === t.key ? " is-on" : "") + '"' +
+            ' data-prof-tab="' + t.key + '" aria-selected="' + (tab === t.key) + '">' + t.label + "</button>";
+        }).join("") +
+      "</nav>" +
+      '<div class="prof__body">' +
+        '<section class="prof__main">' + body + "</section>" +
+        '<aside class="prof__side">' +
+          '<div class="prof__panel"><span class="eyebrow">Next cut-offs</span>' +
+            (cutoffs.length ? '<ul class="prof__feed">' + cutoffs.map(function (r) {
+              return "<li><span>" + esc(r.vessel) + " for " + esc(PORT[r.to].name) + "</span>" +
+                "<small>Gate-in " + fmtDT(r.cut) + " · " + esc(r.term) + "</small></li>";
+            }).join("") + "</ul>" : '<p class="prof__none">Nothing closing in the next six weeks.</p>') +
+          "</div>" +
+          '<div class="prof__panel"><span class="eyebrow">Contact</span>' +
+            '<div class="prof__contact"><span class="prof__initials">' + esc(c.id) + "</span>" +
+              '<span class="prof__cwho"><b>Bookings desk</b><small>' + esc(c.offices[0]) + " office</small></span></div>" +
+            (next ? '<button type="button" class="pill pill--solid prof__inquire" data-open="' + next.key + '">' +
+              (c.type === "Forwarder" || c.type === "Customs agent" ? "Ask for a quote" : "Request a booking") + "</button>" : "") +
+            '<p class="prof__none">Sample listing: requests are not sent anywhere.</p>' +
+          "</div>" +
+        "</aside>" +
+      "</div>" +
+      (similar.length ? '<section class="prof__similar">' +
+        '<div class="section__head"><h2 class="section__title">Other ' + esc(TYPE_PLURAL[c.type]) + "</h2>" +
+          '<a class="section__link" href="#/providers?type=' + typeKey + '">See all</a></div>' +
+        '<div class="cards">' + similar.map(firmCardHtml).join("") + "</div></section>" : "") +
+    "</main>" + footer() + "</div>";
+}
+
+/* ---------- a lane ---------- */
+
+function cutSpan(runs) {
+  const cuts = runs.map(function (r) { return r.svc.cut; });
+  const lo = Math.min.apply(null, cuts), hi = Math.max.apply(null, cuts);
+  return lo === hi ? plural(lo, "day") : lo + " to " + hi + " days";
+}
+
+function laneHtml(a, b) {
+  const lane = LANE[laneKey(a, b)];
+  const A = PORT[a], B = PORT[b];
+
+  if (!lane) {
+    return '<div class="home">' + topnav(false) + '<main class="page lane">' +
+      '<div class="lane__head"><h1>' + esc(A ? A.name : a) + " to " + esc(B ? B.name : b) + "</h1>" +
+      '<p class="lane__lede">No service listed on KARGOS calls this pair. The lane index on the home page lists every one that does.</p>' +
+      '<div class="lane__acts"><a class="pill pill--solid" href="#/">Lane index</a>' +
+        '<a class="pill pill--quiet" href="#/search' + (B ? "?to=" + b : "") + '">Search sailings</a></div></div>' +
+      "</main>" + footer() + "</div>";
+  }
+
+  const svcIds = lane.runs.map(function (r) { return r.svc.id; });
+  const firms = firmsOn(svcIds).sort(function (x, y) {
+    return (y.featured - x.featured) || (y.verified - x.verified) || x.name.localeCompare(y.name);
+  });
+  const directRuns = lane.runs.filter(function (r) { return r.direct; });
+
+  const map = {};
+  lane.runs.forEach(function (r) {
+    const k = r.codes.join(">");
+    (map[k] = map[k] || { key: k, codes: r.codes, direct: r.direct, runs: [] }).runs.push(r);
+  });
+  const routings = Object.keys(map).map(function (k) { return map[k]; });
+
+  const rows = applyFilters(findSails({ origin: a, dest: b, win: parseWhen("") }), {})
+    .sort(function (x, y) { return x.etd - y.etd; });
+  /* One line per vessel call, not per provider selling a slot on it. */
+  const seen = {}, deps = [];
+  rows.forEach(function (r) {
+    const k = r.svc.id + r.voy;
+    if (!seen[k]) { seen[k] = 1; deps.push(r); }
+  });
+
+  const cargo = {};
+  lane.runs.forEach(function (r) { r.svc.cargo.forEach(function (x) { cargo[x] = 1; }); });
+  const cargoList = CARGOS.filter(function (x) { return cargo[x]; });
+  const terms = {};
+  lane.runs.forEach(function (r) { if (r.codes[0] === r.svc.rot[0][0]) terms[r.svc.term] = 1; });
+
+  const related = [];
+  PK.forEach(function (o) { if (o !== a && LANE[laneKey(o, b)]) related.push(LANE[laneKey(o, b)]); });
+  ALL_LANES.forEach(function (l) {
+    if (l.a === a && l.b !== b && PORT[l.b].region === B.region) related.push(l);
+  });
+  ALL_LANES.forEach(function (l) {
+    if (related.length < 12 && l.a === a && PORT[l.b].region !== B.region && related.indexOf(l) < 0) related.push(l);
+  });
+
+  const board = deps.length
+    ? '<section class="dboard" aria-label="Next departures on this lane">' +
+        '<header class="dboard__head"><span class="dboard__title">Next on this lane</span>' +
+        '<span class="dboard__meta mono">ETD · VESSEL · ETA · TERMINAL</span></header>' +
+        '<ol class="dboard__rows">' + deps.slice(0, 6).map(function (r, i) {
+          const step = i * 90;
+          return '<li><a class="dboard__row" href="' + laneHref(a, b) + '">' +
+            '<span class="dboard__etd">' + flaps(fmtD(r.etd), step) + "</span>" +
+            '<span class="dboard__vessel">' + flaps(r.vessel, step + 60) + "</span>" +
+            '<span class="dboard__for">' + flaps(fmtD(r.eta), step + 120) + "<small>" + plural(r.days, "day") + "</small></span>" +
+            '<span class="dboard__term mono">' + esc(r.term) + "</span>" +
+            '<span class="dboard__op">' + esc(FIRM[r.svc.op].name) + "</span></a></li>";
+        }).join("") + "</ol>" +
+        '<footer class="dboard__foot"><a class="dboard__all" href="' + laneHref(a, b) + '">Every sailing and provider</a>' +
+        '<span class="sample-note">Sample schedule, generated from weekly rotations.</span></footer></section>'
+    : '<div class="dir__empty"><b>Nothing bookable in the next three weeks.</b>' +
+        '<p>Every cut-off in the window has passed. The next rotation will show here as soon as it opens.</p></div>';
+
+  const fastest = lane.runs.slice().sort(function (x, y) { return x.days - y.days; })[0];
+
+  return '<div class="home">' + topnav(false) +
+    '<main class="page lane">' +
+      '<nav class="lane__crumbs" aria-label="Breadcrumb">' +
+        '<a href="#/">KARGOS</a><span aria-hidden="true">/</span>' +
+        '<a href="#/search?from=' + a + '">From ' + esc(A.name) + "</a><span aria-hidden=\"true\">/</span>" +
+        '<a href="#/search?to=' + b + '">' + esc(B.region) + "</a><span aria-hidden=\"true\">/</span>" +
+        '<span aria-current="page">' + esc(A.name) + " to " + esc(B.name) + "</span></nav>" +
+      '<header class="lane__head">' +
+        "<h1>" + esc(A.name) + " to " + esc(B.name) + "</h1>" +
+        '<p class="lane__lede">' + plural(lane.runs.length, "weekly service") + " and " + plural(firms.length, "provider") +
+          ". Fastest " + plural(lane.fastest, "day") + " port to port" +
+          (lane.direct ? ", with " + (directRuns.length === 1 ? "one direct call" : directRuns.length + " direct calls") : ", all by transshipment") + ".</p>" +
+        '<div class="lane__acts">' +
+          '<a class="pill pill--solid pill--lg" href="' + laneHref(a, b) + '">See every sailing</a>' +
+          '<a class="pill pill--quiet pill--lg" href="#/search?from=' + a + '">Everywhere from ' + esc(A.name) + "</a>" +
+        "</div></header>" +
+      '<section class="lane__block">' + board + "</section>" +
+      '<section class="lane__block"><h2>Routings</h2>' +
+        '<div class="lane__split">' +
+          '<div class="rmap">' + mapSvg(routings, { pick: false }) + "</div>" +
+          "<div>" +
+            '<ul class="lane__routings">' + routings.map(function (g) {
+              const days = g.runs.map(function (r) { return r.days; });
+              const lo = Math.min.apply(null, days), hi = Math.max.apply(null, days);
+              return "<li><b>" + (g.direct ? "Direct" : "Via " + esc(g.codes.slice(1, -1).map(function (c) { return PORT[c].name; }).join(", "))) + "</b>" +
+                "<small>" + (lo === hi ? plural(lo, "day") : lo + " to " + hi + " days") + " · " +
+                esc(g.runs.map(function (r) { return r.svc.name + " (" + (r.svc.mode === "road" ? "road" : WD[r.svc.wd].charAt(0) + WD[r.svc.wd].slice(1).toLowerCase()) + ")"; }).join(", ")) +
+                "</small></li>";
+            }).join("") + "</ul>" +
+            '<p class="rmap-key" style="margin-top:12px"><span><i></i>Direct</span>' +
+              '<span><i style="border-top-color:var(--brand-2)"></i>Transship</span></p>' +
+          "</div>" +
+        "</div></section>" +
+      '<section class="lane__block"><h2>Who can move it</h2>' +
+        '<ul class="lane__providers">' + firms.map(function (c) {
+          return '<li><a href="' + profileHref(c.id) + '">' + monoTile(c, "lane__mono wide") +
+            '<span class="lane__pname"><b>' + esc(c.name) + "</b><small>" + esc(c.type) +
+              (c.verified ? " · verified" : "") + " · " + esc(c.pitch) + "</small></span></a></li>";
+        }).join("") + "</ul></section>" +
+      '<section class="lane__block lane__prose"><h2>About this lane</h2>' +
+        "<p>" + esc(A.name) + " (" + a + ") to " + esc(B.name) + ", " + esc(B.country) + " (" + b + "). " +
+          "The quickest option is the " + esc(fastest.svc.name) + ", " + plural(fastest.days, "day") +
+          (fastest.direct ? " on a direct call." : " calling at " + esc(fastest.codes.slice(1, -1).map(function (c) { return PORT[c].name; }).join(" and ")) + " on the way.") +
+          " Services on this lane load at " + esc(Object.keys(terms).join(", ") || "transshipment calls") +
+          " and between them take " + esc(cargoList.join(", ")) + " cargo.</p>" +
+        "<p>Cut-offs close " + cutSpan(lane.runs) + " before departure. The providers above either operate these services or buy space on them, so the same vessel can appear under several names.</p>" +
+        '<p class="sample-note">Ports and LOCODEs are real. Services, providers and transit times are sample data.</p>' +
+      "</section>" +
+      (related.length ? '<section class="lane__block"><h2>Related lanes</h2><ul class="lane__related">' +
+        related.slice(0, 12).map(function (l) {
+          return '<li><a href="' + lanePageHref(l.a, l.b) + '"><span class="mono">' + l.a.slice(2) + "&rarr;" + l.b.slice(2) + "</span>" +
+            esc(PORT[l.a].name) + " to " + esc(PORT[l.b].name) + "</a></li>";
+        }).join("") + "</ul></section>" : "") +
+    "</main>" + footer() + "</div>";
+}
+
+/* ===========================================================
    RENDER
    =========================================================== */
 
@@ -1002,6 +1535,29 @@ function render() {
       lastView = "home";
     }
     document.title = "KARGOS — every sailing out of Pakistan";
+    return;
+  }
+
+  if (state.view === "providers") {
+    root.innerHTML = directoryHtml();
+    lastView = "providers";
+    document.title = "KARGOS — providers";
+    return;
+  }
+
+  if (state.view === "provider") {
+    const c = FIRM[state.prof.id];
+    root.innerHTML = profileHtml(c);
+    lastView = "provider";
+    document.title = "KARGOS — " + c.name;
+    return;
+  }
+
+  if (state.view === "lane") {
+    const A = PORT[state.lane.a], B = PORT[state.lane.b];
+    root.innerHTML = laneHtml(state.lane.a, state.lane.b);
+    lastView = "lane";
+    document.title = "KARGOS — " + (A ? A.name : state.lane.a) + " to " + (B ? B.name : state.lane.b);
     return;
   }
 
@@ -1034,7 +1590,10 @@ function render() {
     '<div class="res__head"><h1 class="res__lane">' + laneTitle() + "</h1>" +
       '<p class="res__sub">' + plural(firmCount, "provider") + ", " + esc(state.win.label.toLowerCase()) +
       (state.dest ? "" : ", every destination") +
-      (rows.length ? "" : ' · <span class="res__note">nothing found</span>') + "</p></div>" +
+      (rows.length ? "" : ' · <span class="res__note">nothing found</span>') +
+      (state.dest && LANE[laneKey(state.origin || "PKKHI", state.dest)]
+        ? ' · <a href="' + lanePageHref(state.origin || "PKKHI", state.dest) + '">About this lane</a>' : "") +
+      "</p></div>" +
     '<section class="ov" aria-label="Overview">' +
       '<div class="ov__switch" role="tablist" aria-label="Overview view">' +
         '<button type="button" role="tab" class="ov__tab" data-ov="board" aria-selected="' + (state.ov === "board") + '">Departures</button>' +
@@ -1114,8 +1673,10 @@ function openDrawer(row) {
         "</div></div>") +
     '<div class="sheet__actions">' +
       '<button type="button" class="pill pill--solid" data-close="1">Request booking</button>' +
-      '<button type="button" class="pill pill--quiet" data-pickthis="' + r.key + '">' +
-        (state.picks.some(function (p) { return p.key === r.key; }) ? "In compare" : "Add to compare") + "</button>" +
+      (state.view === "results"
+        ? '<button type="button" class="pill pill--quiet" data-pickthis="' + r.key + '">' +
+          (state.picks.some(function (p) { return p.key === r.key; }) ? "In compare" : "Add to compare") + "</button>"
+        : '<a class="pill pill--quiet" href="' + profileHref(r.firm.id) + '">' + esc(r.firm.name) + "</a>") +
     "</div></div>";
 
   if (!d.open) d.showModal();
@@ -1465,6 +2026,39 @@ document.addEventListener("click", function (e) {
   if (unpick) { togglePick(unpick.getAttribute("data-unpick")); return; }
 
   if (t.closest("[data-clearpicks]")) { state.picks = []; render(); return; }
+
+  /* directory */
+  if (t.closest("[data-dir-toggle]")) { state.dir.refineOpen = !state.dir.refineOpen; render(); return; }
+  const dirType = t.closest("[data-dir-type]");
+  if (dirType) { state.dir.type = dirType.getAttribute("data-dir-type"); writeDirUrl(); render(); return; }
+  const dirSet = t.closest("[data-dir-set]");
+  if (dirSet) {
+    const k = dirSet.getAttribute("data-dir-set"), v = dirSet.getAttribute("data-v");
+    state.dir[k] = state.dir[k] === v ? "" : v;
+    writeDirUrl(); render(); return;
+  }
+  if (t.closest("[data-dir-verified]")) { state.dir.verified = !state.dir.verified; writeDirUrl(); render(); return; }
+  const dirDrop = t.closest("[data-dir-drop]");
+  if (dirDrop) {
+    const k = dirDrop.getAttribute("data-dir-drop");
+    state.dir[k] = k === "verified" ? false : "";
+    writeDirUrl(); render(); return;
+  }
+  if (t.closest("[data-dir-clear]") || t.closest("[data-dir-reset]")) {
+    const all = !!t.closest("[data-dir-reset]");
+    Object.assign(state.dir, { cargo: "", region: "", verified: false }, all ? { q: "", type: "all" } : {});
+    writeDirUrl(); render(); return;
+  }
+
+  /* profile */
+  const profTab = t.closest("[data-prof-tab]");
+  if (profTab) {
+    state.prof.tab = profTab.getAttribute("data-prof-tab");
+    history.replaceState(null, "", profileHref(state.prof.id, state.prof.tab));
+    render(); return;
+  }
+  const profRegion = t.closest("[data-prof-region]");
+  if (profRegion) { state.prof.region = profRegion.getAttribute("data-prof-region"); render(); return; }
   if (t.closest("[data-compare]")) { openCompare(); return; }
 });
 
@@ -1479,6 +2073,12 @@ document.addEventListener("change", function (e) {
 });
 
 document.addEventListener("input", function (e) {
+  if (e.target.id === "dirQ") {
+    state.dir.q = e.target.value;
+    writeDirUrl();
+    $("#dirResults").innerHTML = dirResultsHtml();
+    return;
+  }
   const field = e.target.getAttribute && e.target.getAttribute("data-field");
   if (!field) return;
   capDraft[field] = e.target.value;
@@ -1564,9 +2164,13 @@ document.addEventListener("submit", function (e) {
 });
 
 window.addEventListener("hashchange", function () {
+  const was = state.view + state.prof.id + state.lane.a + state.lane.b;
   readUrl();
   render();
   syncCapsule();
+  if (state.view !== "results" && was !== state.view + state.prof.id + state.lane.a + state.lane.b) {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
 });
 
 /* ---------- lookups the handlers need ---------- */
@@ -1574,9 +2178,13 @@ window.addEventListener("hashchange", function () {
 let rowIndex = {};
 
 function indexRows() {
-  const found = findSails({ origin: state.origin, dest: state.dest, win: state.win });
-  rowIndex = {};
-  found.forEach(function (r) { rowIndex[r.key] = r; });
+  remember(findSails({ origin: state.origin, dest: state.dest, win: state.win }));
+}
+
+/* Keys are built from the sailing itself, so rows from any page can
+   share one index and the drawer can open them all. */
+function remember(rows) {
+  rows.forEach(function (r) { rowIndex[r.key] = r; });
 }
 
 function rowByKey(key) {

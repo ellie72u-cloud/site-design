@@ -24,7 +24,7 @@ npx http-server . -p 8080
 | `index.html` | The shell: root node, the sailing drawer and the compare dialog. |
 | `assets/kargos.css` | The design system exactly as exported from the design assets — five palettes, the component layer, the responsive rules. Not hand-edited. |
 | `assets/data.js` | Ports, services and providers. |
-| `assets/app.js` | The engine and the two pages. |
+| `assets/app.js` | The engine and the five pages. |
 
 ## The pages
 
@@ -44,11 +44,24 @@ providers listed on KARGOS.
 - **Compare** — up to three sailings side by side, best value in each row
   flagged, with the routes drawn together.
 
+**Providers** is the directory: search by company, city, cargo or service,
+narrow by type, cargo, the region they ship to and verified listings.
+
+**Provider profile** (`#/provider/GL`) has the facts, the company's next
+bookable sailings grouped by service (each opens the sailing drawer), the lanes
+it serves, the equipment it carries, an about tab, next cut-offs and similar
+providers.
+
+**Lane page** (`#/lane/PKKHI-AEJEA`) is the crawlable page behind every entry
+in the home lane index: the next departures, the routings drawn on the map,
+every provider who can move it, a short write-up and related lanes.
+
 The palette button in the masthead cycles Harbour, Graphite, Forest, Terracotta
 and Ink, and remembers the choice.
 
-Searches live in the URL (`#/search?from=PKKHI&to=AEJEA&sort=transit`), so a
-result set can be linked and the back button works.
+Searches live in the URL (`#/search?from=PKKHI&to=AEJEA&sort=transit`), as do
+directory filters (`#/providers?type=nvocc&cargo=Reefer`) and profile tabs, so
+any view can be linked and the back button works.
 
 ## The data
 
