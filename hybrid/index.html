@@ -232,7 +232,7 @@ footer a:hover{color:#fff}
 .sstrip__edge{width:4px;flex:none;background:var(--sc,var(--orange));transition:background .45s ease}
 .sstrip__tag{position:absolute;left:18px;top:10px;z-index:2;font:700 8.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--orange-ink)}
 .sstrip__view{position:relative;flex:1;min-width:0;height:88px}
-.sstrip__item{position:absolute;inset:0;display:flex;align-items:center;gap:14px;padding:26px 16px 14px 18px;text-align:left;
+.sstrip__item{position:absolute;inset:0;width:100%;border:0;background:none;font:inherit;color:inherit;cursor:pointer;display:flex;align-items:center;gap:14px;padding:26px 16px 14px 18px;text-align:left;
   opacity:0;transform:translateY(38%);transition:opacity .42s var(--ease),transform .42s var(--ease);pointer-events:none}
 .sstrip__item.is-on{opacity:1;transform:none;pointer-events:auto}
 .sstrip__av{width:42px;height:42px;flex:none;border-radius:9px;display:grid;place-items:center;font:800 17px var(--display);color:#fff;letter-spacing:.02em}
@@ -347,10 +347,10 @@ footer a:hover{color:#fff}
 .play .hero > .search{opacity:0;transform:scaleX(.06);animation:unroll .34s cubic-bezier(.2,.8,.25,1) 1.16s forwards;box-shadow:0 0 0 7px rgba(255,255,255,.08),0 22px 60px -14px rgba(0,0,0,.72)}
 @keyframes unroll{0%{transform:scaleX(.06);opacity:0}25%{opacity:1}100%{transform:none;opacity:1}}
 .play .hero > .search > *:not(.trace):not(.sugg){opacity:0;animation:fadein .24s ease-out 1.42s forwards}
-.trace{position:absolute;left:-1px;top:-1px;width:calc(100% + 2px);height:calc(100% + 2px);pointer-events:none;overflow:visible;display:none}
+.trace{position:absolute;left:-1px;top:-1px;pointer-events:none;overflow:visible;display:none}
 .intro .trace{display:block}
-.trace rect{fill:none;stroke:var(--orange);stroke-width:2.5;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 6px rgba(242,90,15,.8))}
-.play .trace rect{animation:trace .55s cubic-bezier(.5,0,.3,1) 1.5s forwards}
+.trace path{fill:none;stroke:var(--orange);stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 5px rgba(242,90,15,.7))}
+.play .trace path{animation:trace .62s cubic-bezier(.55,0,.25,1) 1.48s forwards}
 .intro.lit .trace{opacity:0;transition:opacity .9s ease .35s}
 @keyframes trace{to{stroke-dashoffset:0}}
 /* what the light reaches, loading in as it arrives */
@@ -410,7 +410,7 @@ footer a:hover{color:#fff}
 .fclear{flex:none;border:0;background:none;font:600 12px var(--body);color:var(--blue);text-decoration:underline;text-underline-offset:3px;padding:0 4px}
 
 /* departures calendar strip */
-.cal{margin-top:22px;border:1px solid var(--line-2);border-radius:14px;background:#fff;overflow:hidden}
+.cal{padding:0;margin-top:22px;border:1px solid var(--line-2);border-radius:14px;background:#fff;overflow:hidden}
 .cal__head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:18px 20px 4px}
 .cal__head b{font:800 26px/1 var(--display);text-transform:uppercase}
 .cal__head span{font-size:14px;color:var(--sub)}
@@ -689,6 +689,34 @@ dialog::backdrop{background:rgba(5,8,15,.5)}
 .dsearch input{flex:1;min-width:0;border:0;outline:0;font:400 15px var(--body);background:transparent}
 .dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
 
+
+/* sailings pop-up: what is on the water now and what leaves next */
+.sails{width:min(760px,calc(100% - 32px))}
+.sails__body{padding:6px 20px 20px;display:flex;flex-direction:column;gap:18px}
+.sails__chips{display:flex;gap:6px;flex-wrap:wrap;padding-top:12px}
+.sails__cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sails__col{border:1px solid var(--line-2);border-radius:12px;overflow:hidden}
+.sails__col h3{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--soft);border-bottom:1px solid var(--line);font:800 18px/1 var(--display);text-transform:uppercase}
+.sails__col h3 small{font:500 10px var(--mono);letter-spacing:.1em;color:var(--sub)}
+.sails .dep button{padding:12px 16px}
+.st.run{background:var(--blue-soft);color:var(--blue)}
+.st.run::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;animation:blip 1.6s ease-in-out infinite}
+@keyframes blip{50%{opacity:.25}}
+.sails__foot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--line)}
+@media (max-width:640px){.sails__cols{grid-template-columns:1fr}}
+
+/* search transition: the bar travels to the top, results rise from below */
+#vHome.leaving{opacity:0;transition:opacity .2s ease}
+.fly{position:fixed;z-index:80;display:flex;align-items:center;gap:10px;padding:5px 5px 5px 18px;background:#fff;border:1px solid var(--line-2);border-radius:999px;
+  box-shadow:0 22px 44px -18px rgba(17,19,21,.38);pointer-events:none;overflow:hidden;font:400 15px var(--body);color:var(--ink);white-space:nowrap}
+.fly span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.fly i{font-style:normal;align-self:stretch;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:var(--blue);color:#fff;font-size:14px;font-weight:500}
+.apph__mark,.apph__nav{transition:opacity .45s ease}
+#vResults.entering .qbar{visibility:hidden}
+#vResults.entering #rTop,#vResults.entering #rMain{opacity:0}
+#vResults.entering .apph__mark,#vResults.entering .apph__nav{opacity:0}
+.rise{animation:riseUp .62s var(--ease) both}
+@keyframes riseUp{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important}
   .sstrip__bar i.run{width:100%}
@@ -786,7 +814,7 @@ dialog::backdrop{background:rgba(5,8,15,.5)}
 
   <span class="hair" aria-hidden="true"></span>
   <form class="search" id="homeSearch" role="search">
-    <svg class="trace" id="trace" aria-hidden="true"><rect pathLength="1"/></svg>
+    <svg class="trace" id="trace" aria-hidden="true"></svg>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA0A6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <button class="chip" type="button" id="fromChip" title="Change where the cargo loads"></button>
     <input id="q" placeholder="Add destination, service or company" aria-label="Destination, service or company"
@@ -918,7 +946,7 @@ dialog::backdrop{background:rgba(5,8,15,.5)}
       <input id="stickQ" aria-label="Search destination or company" placeholder="Karachi to Jebel Ali" tabindex="-1" autocomplete="off">
       <button class="btn btn-blue" type="submit" tabindex="-1">Search</button>
     </form>
-    <a class="stick__ad" href="#co-GL" tabindex="-1"><i></i>Gulfstar Lines, sponsored</a>
+    <button class="stick__ad" type="button" data-sails="GL" tabindex="-1" style="background:#fff"><i></i>Gulfstar Lines, sponsored</button>
   </div>
 </div>
 
@@ -929,13 +957,14 @@ dialog::backdrop{background:rgba(5,8,15,.5)}
     <span class="sp">Sponsored</span>
     <b>Gulfstar Lines</b>
     <p id="nudgeTxt">Weekly direct reefer, Karachi to Jebel Ali in 4 days.</p>
-    <a class="btn btn-blue btn-sm" href="#co-GL">See sailings</a>
+    <button class="btn btn-blue btn-sm" type="button" data-sails="GL">See sailings</button>
   </div>
 </aside>
 
 <div class="tray" id="tray" hidden></div>
 <dialog class="sheet" id="sheet" aria-label="Sailing"></dialog>
 <dialog class="cmpd" id="cmp" aria-label="Compare sailings"></dialog>
+<dialog class="cmpd sails" id="sails" aria-label="Sailings"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 "use strict";
@@ -1302,9 +1331,12 @@ function sponsorLane(f) {
    =========================================================== */
 var VIEW = "";
 var VIEWKEY = "";
+var SKIPHASH = null;
 function go(h) {
-  if (location.hash === "#" + h || (h === "" && location.hash === "")) route();
-  else location.hash = h;
+  if (location.hash === "#" + h || (h === "" && location.hash === "")) { route(); return; }
+  SKIPHASH = h;
+  location.hash = h;
+  route();
 }
 function route() {
   var h = decodeURIComponent(location.hash.slice(1));
@@ -1341,11 +1373,67 @@ function route() {
     : v === "company" ? "KARGOS — " + FIRM[C.id].name
     : v === "companies" ? "KARGOS — Companies" : "KARGOS Hybrid";
 }
-addEventListener("hashchange", route);
+addEventListener("hashchange", function () {
+  if (SKIPHASH !== null && location.hash.slice(1) === SKIPHASH) { SKIPHASH = null; return; }
+  SKIPHASH = null;
+  route();
+});
 
 function runSearch() {
   S.day = null; S.route = null; S.open = {};
+  if (VIEW === "home" && !REDUCE && typeof Element.prototype.animate === "function") { flySearch(); return; }
   go("results");
+  revealResults();
+}
+
+/* The bar lifts off the home page and travels into the results header,
+   then the results rise in from below, one block after another. */
+var flying = false;
+function flySearch() {
+  if (flying) return;
+  flying = true;
+  var stickOn = $("#stick").classList.contains("in");
+  var src = stickOn ? $("#stickForm") : $("#homeSearch");
+  var r0 = src.getBoundingClientRect();
+  var fly = document.createElement("div");
+  fly.className = "fly";
+  fly.setAttribute("aria-hidden", "true");
+  fly.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA0A6" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>' +
+    "<span>" + esc(laneText()) + "</span><i>Search</i>";
+  fly.style.left = r0.left + "px"; fly.style.top = r0.top + "px";
+  fly.style.width = r0.width + "px"; fly.style.height = r0.height + "px";
+  document.body.appendChild(fly);
+  src.style.visibility = "hidden";
+  fly.animate([{ transform: "none" }, { transform: "translateY(-6px) scale(1.015)" }], { duration: 200, easing: "ease-out", fill: "forwards" });
+  $("#vHome").classList.add("leaving");
+  setTimeout(function () {
+    $("#vResults").classList.add("entering");
+    go("results");
+    src.style.visibility = "";
+    $("#vHome").classList.remove("leaving");
+    var r1 = $("#qbar").getBoundingClientRect();
+    var a = fly.animate([
+      { left: r0.left + "px", top: r0.top - 6 + "px", width: r0.width + "px", height: r0.height + "px" },
+      { left: r1.left + "px", top: r1.top + "px", width: r1.width + "px", height: r1.height + "px" }
+    ], { duration: 580, easing: "cubic-bezier(.3,.7,.15,1)", fill: "forwards" });
+    a.onfinish = function () {
+      $("#vResults").classList.remove("entering");
+      revealResults();
+      fly.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: "forwards" }).onfinish = function () { fly.remove(); };
+      flying = false;
+    };
+  }, 200);
+}
+function revealResults() {
+  if (REDUCE || VIEW !== "results") return;
+  var els = $$("#rTop .rhead, #rTop .fbar, #rMain > :not(.pcs), #rMain .pc");
+  els.forEach(function (el, i) {
+    el.classList.remove("rise");
+    void el.offsetWidth;
+    el.style.animationDelay = Math.min(i, 12) * 55 + "ms";
+    el.classList.add("rise");
+  });
+  setTimeout(function () { els.forEach(function (el) { el.classList.remove("rise"); el.style.animationDelay = ""; }); }, 1500);
 }
 
 /* ===========================================================
@@ -1418,6 +1506,7 @@ function renderHome() {
         '<h3><span class="ln"><span>Weekly direct reefer</span></span><span class="ln"><span>to the Gulf. <em>' + (next ? next.days : 4) + " days.</em></span></span></h3>" +
         "<p>Own-fleet reefer and dry from KICT to Jebel Ali, Hamad and Umm Qasr, sailing every " + WD[SVC.GFX.wd] + " at " + SVC.GFX.etd + ".</p>" +
         '<div class="ctas">' + (next ? '<button class="btn btn-blue" type="button" data-quote="' + next.key + '">Request a quote</button>' : "") +
+          '<button class="btn btn-line" type="button" data-sails="GL">Vessels running</button>' +
           '<a class="btn btn-line" href="#co-GL">View profile</a></div>' +
       "</div>" +
       '<div class="spot-r"><div class="route"><div class="rl">' +
@@ -1460,11 +1549,11 @@ function renderHome() {
   /* sponsor strip */
   $("#sview").innerHTML = SPONSORS.map(function (f, i) {
     var l = sponsorLane(f);
-    return '<a class="sstrip__item' + (i === 0 ? " is-on" : "") + '" href="#co-' + f.id + '"' + (i === 0 ? "" : ' tabindex="-1" aria-hidden="true"') + ">" +
+    return '<button type="button" class="sstrip__item' + (i === 0 ? " is-on" : "") + '" data-sails="' + f.id + '"' + (i === 0 ? "" : ' tabindex="-1" aria-hidden="true"') + ">" +
       '<span class="sstrip__av" style="background:' + f.color + '">' + f.id + "</span>" +
       '<span class="sstrip__txt"><span class="sstrip__nm">' + esc(f.name) + '</span><span class="sstrip__pitch">' + esc(f.pitch) + "</span></span>" +
       '<span class="sstrip__route">' + plural(l.days, "day") + (l.direct ? ", direct" : ", weekly") + "<b>" + sc(l.a) + " → " + sc(l.b) + "</b></span>" +
-      '<span class="sstrip__cta">See sailings</span></a>';
+      '<span class="sstrip__cta">See sailings</span></button>';
   }).join("");
   $("#sdots").innerHTML = SPONSORS.map(function (_, i) { return "<i" + (i === 0 ? ' class="on"' : "") + "></i>"; }).join("");
 
@@ -1917,7 +2006,8 @@ function renderCompany() {
         ownSvcs.map(function (s) {
           var own = s.op === f.id;
           return '<article class="svc"><div class="svc__h"><b><i style="background:' + s.color + '"></i>' + esc(s.name) + "</b>" +
-            "<small>" + (s.mode === "road" ? "TIR road" : "Weekly") + " · every " + WD[s.wd] + " " + s.etd + "</small></div>" +
+            "<small>" + (s.mode === "road" ? "TIR road" : "Weekly") + " · every " + WD[s.wd] + " " + s.etd + "</small>" +
+            '<button type="button" class="btn btn-line btn-sm" data-sails="' + f.id + '" data-svc="' + s.id + '">Vessels running</button></div>' +
             '<div class="rot">' + s.rot.map(function (x, i) {
               return (i ? '<span class="rot__ln"></span>' : "") + '<span class="rot__p"><i></i><b>' + sc(x[0]) + "</b><small>" + (i ? "day " + x[1] : "load") + "</small></span>";
             }).join("") + "</div>" +
@@ -2113,6 +2203,63 @@ function openCompare() {
 }
 
 /* ===========================================================
+   SAILINGS POP-UP
+   =========================================================== */
+var SP = { firm: "", svc: "" };
+function openSails(fid, sid) {
+  SP.firm = fid; SP.svc = sid || "";
+  if ($("#sheet").open) $("#sheet").close();
+  renderSails();
+  if (!$("#sails").open) $("#sails").showModal();
+}
+/* Where a sailing is now, from its call dates. */
+function runningOf(r) {
+  var d = r.dep.dates, rot = r.svc.rot;
+  var last = d[d.length - 1];
+  if (NOW >= addDays(last, 1)) return ["gone", "Arrived " + sc(rot[rot.length - 1][0]) + " " + fmtD(last)];
+  for (var i = 1; i < d.length; i++) {
+    if (NOW < d[i]) return ["run", (r.svc.mode === "road" ? "On the road" : "At sea") + " · next " + sc(rot[i][0]) + " " + fmtD(d[i])];
+    if (dayDiff(d[i], NOW) === 0) return ["run", "Calling " + PORT[rot[i][0]].name + " today"];
+  }
+  return ["run", "Final leg"];
+}
+function renderSails() {
+  var f = FIRM[SP.firm];
+  var all = rowsFor({ from: "", to: "", a: addDays(TODAY, -35), b: addDays(TODAY, 35), bookable: false, firm: f.id })
+    .filter(function (r) { return !SP.svc || r.svc.id === SP.svc; })
+    .sort(function (x, y) { return x.etd - y.etd; });
+  var running = all.filter(function (r) { return r.etd < NOW && NOW < addDays(r.dep.dates[r.dep.dates.length - 1], 1); }).reverse();
+  var landed = all.filter(function (r) { return r.etd < NOW && NOW >= addDays(r.dep.dates[r.dep.dates.length - 1], 1); }).reverse();
+  var water = running.concat(landed).slice(0, 5);
+  var up = all.filter(function (r) { return r.etd >= NOW; }).slice(0, 5);
+  var lane = SP.svc ? { a: SVC[SP.svc].rot[0][0], b: SVC[SP.svc].rot[SVC[SP.svc].rot.length - 1][0] } : (f.sponsor ? sponsorLane(f) : lanesOf(f.svcs)[0]);
+  var item = function (r, st) {
+    return '<li><button type="button" data-open="' + r.key + '">' +
+      '<span class="tm">' + hm(r.etd) + "<small>" + fmtD(r.etd).toUpperCase() + "</small></span>" +
+      '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · " + r.svc.rot.map(function (x) { return sc(x[0]); }).join(" → ") + "</small></span>" +
+      '<span class="tags"><span class="st ' + st[0] + '">' + st[1] + "</span></span></button></li>";
+  };
+  $("#sails").innerHTML =
+    '<div class="sh__top">' + av(f) + '<div class="sh__t"><b>' + esc(f.name) + "</b><small>" +
+      (SP.svc ? esc(SVC[SP.svc].name) + " · " : "") + "Vessels running and coming up · " + running.length + " on the water now</small></div>" +
+      (f.paid ? '<span class="sp">Sponsored</span>' : "") +
+      '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
+    '<div class="sails__body">' +
+      (f.svcs.length > 1 ? '<div class="sails__chips"><button type="button" class="f" data-ssvc="" aria-pressed="' + !SP.svc + '">All services</button>' +
+        f.svcs.map(function (id) { return '<button type="button" class="f" data-ssvc="' + id + '" aria-pressed="' + (SP.svc === id) + '"><i style="background:' + SVC[id].color + '"></i>' + esc(SVC[id].name) + "</button>"; }).join("") + "</div>" : "") +
+      '<div class="sails__cols">' +
+        '<div class="sails__col"><h3>On the water <small>' + running.length + " running</small></h3>" +
+          (water.length ? '<ul class="dep">' + water.map(function (r) { return item(r, runningOf(r)); }).join("") + "</ul>" : '<p class="note" style="padding:16px">Nothing has sailed in the last five weeks.</p>') + "</div>" +
+        '<div class="sails__col"><h3>Coming up <small>next ' + up.length + "</small></h3>" +
+          (up.length ? '<ul class="dep">' + up.map(function (r) { return item(r, statusOf(r)); }).join("") + "</ul>" : '<p class="note" style="padding:16px">No sailings in the next five weeks.</p>') + "</div>" +
+      "</div>" +
+      '<p class="sample">Positions are worked out from the published rotation, not live tracking. Sample data.</p>' +
+    "</div>" +
+    '<div class="sails__foot"><a class="btn btn-line" href="#co-' + f.id + '">Full profile</a>' +
+      (lane ? '<button type="button" class="btn btn-blue" data-lane="' + lane.a + "|" + lane.b + '">Search ' + sc(lane.a) + " → " + sc(lane.b) + "</button>" : "") + "</div>";
+}
+
+/* ===========================================================
    EVENTS
    =========================================================== */
 document.addEventListener("click", function (e) {
@@ -2156,7 +2303,9 @@ document.addEventListener("click", function (e) {
   if ((el = t.closest("[data-win]"))) { S.win = +el.getAttribute("data-win"); renderResults(); return; }
   if (t.closest("[data-anywhere]")) { S.to = ""; clearFilters(); renderResults(); return; }
   if ((el = t.closest("[data-quote]"))) { e.preventDefault(); if ($("#cmp").open) $("#cmp").close(); openSheet(el.getAttribute("data-quote"), true); return; }
-  if ((el = t.closest("[data-open]"))) { openSheet(el.getAttribute("data-open")); return; }
+  if ((el = t.closest("[data-sails]"))) { e.preventDefault(); openSails(el.getAttribute("data-sails"), el.getAttribute("data-svc")); return; }
+  if ((el = t.closest("[data-ssvc]"))) { SP.svc = el.getAttribute("data-ssvc"); renderSails(); return; }
+  if ((el = t.closest("[data-open]"))) { if ($("#sails").open) $("#sails").close(); openSheet(el.getAttribute("data-open")); return; }
   if (t.closest("[data-close]")) { var dlg = t.closest("dialog"); if (dlg) dlg.close(); return; }
   if ((el = t.closest("[data-pickthis]"))) { togglePick(el.getAttribute("data-pickthis")); openSheet(el.getAttribute("data-pickthis")); return; }
   if ((el = t.closest("[data-unpick]"))) { togglePick(el.getAttribute("data-unpick")); return; }
@@ -2251,7 +2400,7 @@ document.addEventListener("submit", function (e) {
 });
 
 /* dialogs close on the backdrop */
-["sheet", "cmp"].forEach(function (id) {
+["sheet", "cmp", "sails"].forEach(function (id) {
   var d = document.getElementById(id);
   d.addEventListener("click", function (e) { if (e.target === d) d.close(); });
 });
@@ -2346,11 +2495,15 @@ function introStart() {
   var form = $("#homeSearch");
   var w = form.offsetWidth, ht = form.offsetHeight;
   var tr = $("#trace");
-  tr.setAttribute("viewBox", "0 0 " + (w + 2) + " " + (ht + 2));
-  var rect = $("rect", tr);
-  rect.setAttribute("x", 1.25); rect.setAttribute("y", 1.25);
-  rect.setAttribute("width", w - 0.5); rect.setAttribute("height", ht - 0.5);
-  rect.setAttribute("rx", (ht - 0.5) / 2);
+  /* The drawing is exactly the pill's size, so nothing is scaled: the two
+     strokes leave the top centre, run round each end on the border line
+     itself and meet at the bottom. */
+  tr.setAttribute("width", w); tr.setAttribute("height", ht);
+  tr.setAttribute("viewBox", "0 0 " + w + " " + ht);
+  var x0 = 1, y0 = 1, x1 = w - 1, y1 = ht - 1, r = (y1 - y0) / 2, cx = w / 2;
+  tr.innerHTML =
+    '<path pathLength="1" d="M' + cx + " " + y0 + "H" + (x1 - r) + "A" + r + " " + r + " 0 0 1 " + (x1 - r) + " " + y1 + "H" + cx + '"/>' +
+    '<path pathLength="1" d="M' + cx + " " + y0 + "H" + (x0 + r) + "A" + r + " " + r + " 0 0 0 " + (x0 + r) + " " + y1 + "H" + cx + '"/>';
   $(".hair").style.top = form.offsetTop + ht / 2 + "px";
   introOn = true;
   ROOT.classList.add("intro", "play");
