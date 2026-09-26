@@ -315,11 +315,13 @@ footer a:hover{color:#fff}
    ignores the pointer, the bar is typable from the first frame,
    and any key, click, scroll or touch jumps to the end.
    =========================================================== */
-.veil{position:fixed;z-index:90;pointer-events:none;left:50%;top:50%;width:0;height:0;border-radius:999px;display:none;
-  box-shadow:inset 0 0 70px 34px var(--night),0 0 0 400vmax var(--night)}
+/* A full-screen layer painted with a radial gradient each frame: an
+   ellipse that starts on the search pill's own border and relaxes into a
+   circle as it grows, with a feathered edge and a faint orange rim where
+   the light is arriving. */
+.veil{position:fixed;inset:0;z-index:90;pointer-events:none;display:none;background:var(--night);will-change:background}
 .intro .veil{display:block}
-.veil.grow{transition:left 1s cubic-bezier(.62,0,.22,1),top 1s cubic-bezier(.62,0,.22,1),width 1s cubic-bezier(.62,0,.22,1),height 1s cubic-bezier(.62,0,.22,1),border-radius 1s ease}
-.veil.fade{transition:opacity .28s ease;opacity:0}
+.veil.fade{transition:opacity .35s ease;opacity:0}
 .intro .hero > .logo,.intro .hero > .tagline,.intro .hero > .search{z-index:95}
 .intro .logo .word{color:#fff}
 .intro .tagline{color:rgba(255,255,255,.7)}
@@ -2301,6 +2303,7 @@ function introFinish() {
   if (!introOn) return;
   introOn = false;
   introT.forEach(clearTimeout);
+  cancelAnimationFrame(introRAF);
   var v = $("#veil");
   v.classList.add("fade");
   setTimeout(function () {
@@ -2309,20 +2312,33 @@ function introFinish() {
     v.removeAttribute("style");
   }, 290);
 }
+var introRAF = 0;
+function easeInOut(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
 function introLight() {
   var s = $("#homeSearch").getBoundingClientRect();
   var v = $("#veil");
-  v.style.left = s.left + "px"; v.style.top = s.top + "px";
-  v.style.width = s.width + "px"; v.style.height = s.height + "px";
-  v.style.borderRadius = s.height / 2 + "px";
-  void v.offsetWidth;
   var cx = s.left + s.width / 2, cy = s.top + s.height / 2;
-  var R = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 140;
-  v.classList.add("grow");
-  v.style.left = cx - R + "px"; v.style.top = cy - R + "px";
-  v.style.width = 2 * R + "px"; v.style.height = 2 * R + "px";
-  v.style.borderRadius = R + "px";
+  var w = s.width / 2, h = s.height / 2;
+  /* far enough that the lit area clears every corner of the screen */
+  var reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 60;
+  var t0 = performance.now(), DUR = 1500;
   ROOT.classList.add("lit");
+  function frame(now) {
+    var p = Math.min(1, (now - t0) / DUR);
+    var e = easeInOut(p);
+    var grow = e * reach;
+    /* the ellipse keeps the pill's proportions at first, then rounds out */
+    var rx = w + grow, ry = h + grow * (1 + (w - h) / reach);
+    var feather = 70 + e * 320;
+    var k = (rx / (rx + feather) * 100).toFixed(2);
+    var gl = (+k + (100 - k) * 0.28).toFixed(2);
+    var md = (+k + (100 - k) * 0.68).toFixed(2);
+    var rim = (0.10 * (1 - e)).toFixed(3);
+    v.style.background = "radial-gradient(" + (rx + feather).toFixed(1) + "px " + (ry + feather * (ry / rx)).toFixed(1) + "px at " +
+      cx.toFixed(1) + "px " + cy.toFixed(1) + "px, rgba(5,8,15,0) 0%, rgba(5,8,15,0) " + k + "%, rgba(242,90,15," + rim + ") " + gl + "%, rgba(5,8,15,.72) " + md + "%, #05080F 100%)";
+    if (p < 1 && introOn) introRAF = requestAnimationFrame(frame);
+  }
+  introRAF = requestAnimationFrame(frame);
 }
 function introStart() {
   var h = location.hash.slice(1);
@@ -2336,13 +2352,10 @@ function introStart() {
   rect.setAttribute("width", w - 0.5); rect.setAttribute("height", ht - 0.5);
   rect.setAttribute("rx", (ht - 0.5) / 2);
   $(".hair").style.top = form.offsetTop + ht / 2 + "px";
-  var s = form.getBoundingClientRect();
-  var v = $("#veil");
-  v.style.left = s.left + s.width / 2 + "px"; v.style.top = s.top + s.height / 2 + "px";
   introOn = true;
   ROOT.classList.add("intro", "play");
   introT.push(setTimeout(introLight, 2080));
-  introT.push(setTimeout(introFinish, 3500));
+  introT.push(setTimeout(introFinish, 3750));
   ["keydown", "pointerdown", "wheel", "touchstart"].forEach(function (ev) {
     addEventListener(ev, function () { introFinish(); }, { once: true, passive: true });
   });
