@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Only the weights this page actually sets: display 800, mono 500/600, body 400/500/600. -->
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
 </head><body>
 <style>
 /* KARGOS Hybrid is a deliberately single, light look: white ground,
@@ -1272,6 +1272,72 @@ button.cat:first-child{border-left:0}
 .cmp__xl:hover{background:#0B7342!important}
 .cmp__xl[aria-busy="true"]{opacity:.75;cursor:progress}
 @media (max-width:560px){.cmp__xl span{display:none}.cmp__xl{padding:0 11px}}
+/* ---- nav extras: following, language ---- */
+.navx{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:transparent;color:inherit;font:500 13px var(--body);white-space:nowrap}
+.navx:hover{border-color:#fff}
+.apph .navx,.topnav .navx{color:rgba(255,255,255,.88)}
+.navx--lang .l-ur{font:600 15px/1 "Noto Nastaliq Urdu",serif;padding-bottom:2px}
+.ur .navx--lang .l-ur,html:not(.ur) .navx--lang .l-en{display:none}
+.foln{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--go);color:var(--night);font:700 11px/18px var(--body);text-align:center}
+.apph__nav{align-items:center}
+@media (max-width:1180px){.apph__nav .navx--fol span{display:none}}
+@media (max-width:640px){.topnav .navx--fol span{display:none}}
+/* ---- follow ---- */
+.folbox{display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--soft)}
+.folbox > div{flex:1;min-width:0}
+.folbox b{display:block;font-weight:600;font-size:14px}
+.folbox small{display:block;font-size:12.5px;color:var(--sub);line-height:1.45;margin-top:2px}
+.folbox.on{border-color:rgba(14,138,79,.35);background:var(--green-soft)}
+.folbox.on b{color:var(--green)}
+.folw{width:min(720px,calc(100vw - 24px))}
+.fol__body{background:var(--ground)}
+.fol{list-style:none;padding:14px 16px;display:grid;gap:10px}
+.fol li{display:flex;align-items:stretch;background:#fff;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;box-shadow:inset 4px 0 0 var(--fc)}
+.fol__main{flex:1;min-width:0;display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;padding:14px 12px 14px 18px;border:0;background:none;text-align:left}
+.fol__main:hover{background:var(--soft)}
+.fol__d{font:800 20px/1 var(--display);text-transform:uppercase}
+.fol__d small{display:block;margin-top:4px;font:500 10px var(--mono);letter-spacing:.08em;color:var(--sub)}
+.fol__v b{display:block;font-weight:600;font-size:15px}
+.fol__v > small{display:block;font-size:12.5px;color:var(--sub);margin-top:2px}
+.fol__st{display:inline-block;margin-top:8px;padding:3px 9px;border-radius:6px;font:600 12.5px var(--body)}
+.fol__st.open{background:var(--green-soft);color:var(--green)}
+.fol__st.soon{background:#FEF3C7;color:#92400E}
+.fol__st.shut{background:var(--soft);color:var(--sub)}
+.fol__st.run{background:#DBEAFE;color:#1E40AF}
+.fol__ok{display:block;margin-top:6px;font:500 10.5px var(--mono);letter-spacing:.04em;color:var(--faint)}
+.fol__x{flex:none;width:44px;border:0;border-left:1px solid var(--line);background:none;color:var(--faint);font-size:14px}
+.fol__x:hover{color:var(--red);background:var(--soft)}
+.fol__empty{padding:34px 24px;text-align:center}
+.fol__empty b{display:block;font-size:17px}
+.fol__empty p{max-width:440px;margin:8px auto 16px;font-size:14px;color:var(--sub);line-height:1.55}
+/* ---- holidays ---- */
+.hol{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:2px 8px;border-radius:5px;background:#FEF3C7;color:#92400E;font:600 11.5px var(--body)}
+.hol::before{content:"";width:6px;height:6px;border-radius:50%;background:#D97706}
+.holnote{padding:11px 13px;border-radius:10px;background:#FEF3C7;color:#78350F;font-size:13px;line-height:1.5}
+/* ---- WhatsApp buttons ---- */
+.cmp__wa{display:inline-flex;align-items:center;gap:7px;background:#25D366!important;border-color:#25D366!important;color:#06351D!important}
+.cmp__wa:hover{background:#1FB959!important}
+@media (max-width:560px){.cmp__wa span{display:none}.cmp__wa{padding:0 11px}}
+/* ---- numbered compare picks ---- */
+.cmp__ship > i{display:grid;place-items:center;color:var(--night);font:800 11px/1 var(--body)}
+.cmp__no{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--pc);color:var(--night);font:800 11.5px/1 var(--body)}
+.rt__no text{fill:#070D1F;font:800 10px var(--body);text-anchor:middle}
+.rt__no{transition:opacity .25s}
+.cmpmap.hl .rt__no:not(.on){opacity:.25}
+/* ---- claim banner, as an invitation ---- */
+.unclaimed{background:linear-gradient(90deg,#EAF1FF,#E6F7EE);border-bottom:1px solid #D3E0F5}
+.unclaimed__tag{background:var(--green)}
+/* ---- Urdu ---- */
+[data-ur]{font-family:"Noto Nastaliq Urdu",serif!important;letter-spacing:0!important;text-transform:none!important;font-weight:500;line-height:1.75;font-size:max(.94em,12.5px);font-style:normal}
+.ur select,.ur input{font-family:var(--body),"Noto Nastaliq Urdu",sans-serif}
+.ur select{text-transform:none;letter-spacing:0}
+.ur .tagline [data-ur]{font-size:.9em;line-height:2}
+.ur .lede [data-ur]{line-height:2.1}
+h1 [data-ur],h2 [data-ur],h3 [data-ur]{font-weight:600;line-height:1.5;font-size:.72em}
+.btn [data-ur],button [data-ur]{line-height:1.4}
+/* narrow screens keep Following and the language switch; the text links go */
+@media (max-width:1100px){.apph__nav{display:flex;gap:8px}.apph__nav > a{display:none}.apph__nav .navx--fol span{display:none}}
+@media (max-width:860px){.apph__nav{order:2;margin-left:auto}}
 </style>
 
 <div class="veil" id="veil" aria-hidden="true"></div>
@@ -1285,6 +1351,7 @@ button.cat:first-child{border-left:0}
     <a class="l hide" href="#companies">Companies</a>
     <a class="l hide" href="#results">Routes</a>
     <a class="l" href="#providers">For providers</a>
+    <button type="button" class="navx navx--fol" data-folopen aria-label="Sailings you follow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Following</span><b class="foln" hidden></b></button><button type="button" class="navx navx--lang" data-lang aria-label="Switch language"><span class="l-ur" lang="ur">اردو</span><span class="l-en">English</span></button>
   </div>
 </nav>
 
@@ -1340,18 +1407,18 @@ button.cat:first-child{border-left:0}
   <section>
     <div class="head"><span class="no">05</span><h2>Lines serving Pakistan</h2><div class="rule"></div><a class="ad" href="#providers">Represent a line? Claim →</a></div>
     <div class="grid6">
-      <div class="box" style="--c:#42B0D5"><b>Maersk</b><small>Copenhagen · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#202124"><b>MSC</b><small>Geneva · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#E2001A"><b>CMA CGM</b><small>Marseille · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#0A4D9A"><b>COSCO</b><small>Shanghai · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#F07D00"><b>Hapag-Lloyd</b><small>Hamburg · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#C4007A"><b>ONE</b><small>Singapore · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#00813F"><b>Evergreen</b><small>Taipei · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#00857C"><b>HMM</b><small>Seoul · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#1F3A93"><b>Yang Ming</b><small>Keelung · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#D4102A"><b>OOCL</b><small>Hong Kong · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#003A70"><b>Wan Hai</b><small>Taipei · Intra-Asia</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
-      <div class="box" style="--c:#E0A100"><b>PIL</b><small>Singapore · Deep sea</small><div class="cl">Unclaimed <a href="#providers">Claim →</a></div></div>
+      <div class="box" style="--c:#42B0D5"><b>Maersk</b><small>Copenhagen · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#202124"><b>MSC</b><small>Geneva · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#E2001A"><b>CMA CGM</b><small>Marseille · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#0A4D9A"><b>COSCO</b><small>Shanghai · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#F07D00"><b>Hapag-Lloyd</b><small>Hamburg · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#C4007A"><b>ONE</b><small>Singapore · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#00813F"><b>Evergreen</b><small>Taipei · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#00857C"><b>HMM</b><small>Seoul · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#1F3A93"><b>Yang Ming</b><small>Keelung · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#D4102A"><b>OOCL</b><small>Hong Kong · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#003A70"><b>Wan Hai</b><small>Taipei · Intra-Asia</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
+      <div class="box" style="--c:#E0A100"><b>PIL</b><small>Singapore · Deep sea</small><div class="cl">Not yet claimed <a href="#providers">Claim free →</a></div></div>
     </div>
   </section>
 </main>
@@ -1433,6 +1500,7 @@ button.cat:first-child{border-left:0}
 <dialog class="sheet" id="sheet" aria-label="Sailing"></dialog>
 <dialog class="cmpd" id="cmp" aria-label="Compare sailings"></dialog>
 <dialog class="cmpd sails" id="sails" aria-label="Sailings"></dialog>
+<dialog class="cmpd sails folw" id="fol" aria-label="Sailings you follow"></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 "use strict";
@@ -1534,6 +1602,20 @@ var INLAND = [
 ];
 var INL = {};
 INLAND.forEach(function (x) { INL[x.code] = x; });
+/* Pakistan's public holidays: port gates run, but customs, banks and the
+   agent's office slow down, so a cut-off that lands near one needs the
+   paperwork done early. Lunar dates are the expected ones. */
+var HOLS = [
+  ["2026-11-09", 1, "Iqbal Day"], ["2026-12-25", 1, "Quaid-e-Azam Day"], ["2027-02-05", 1, "Kashmir Day"],
+  ["2027-03-10", 3, "Eid ul Fitr (expected)"], ["2027-03-23", 1, "Pakistan Day"], ["2027-05-01", 1, "Labour Day"],
+  ["2027-05-16", 3, "Eid ul Adha (expected)"], ["2027-06-14", 2, "Ashura (expected)"], ["2027-08-14", 1, "Independence Day"]
+].map(function (h) { var d = new Date(h[0] + "T00:00"); return { from: d, to: new Date(+d + h[1] * 864e5 - 1), n: h[2] }; });
+/* the holiday that falls in the three days before the gate shuts, if any */
+function holNear(r) {
+  var a = +r.cut - 3 * 864e5, b = +r.cut;
+  for (var i = 0; i < HOLS.length; i++) if (+HOLS[i].to >= a && +HOLS[i].from <= b) return HOLS[i];
+  return null;
+}
 function inlandNow() { return S.inland ? INL[S.inland] : null; }
 /* the day cargo has to leave the inland city to make a terminal cut-off */
 function roadOut(cut, city) { return addDays(cut, -city.road); }
@@ -1958,6 +2040,7 @@ function route() {
   else if (v === "company") { if (changed) { C.id = h.slice(3); C.day = null; C.lens = false; C.tab = "up"; C.more = false; C.owner = false; C.tier = null; C.look = ""; } renderCompany(); }
   else if (v === "companies") renderCompanies();
   else renderHomeState();
+  paintFolCount();
 
   renderTray();
   if (openCmp) openCompare();
@@ -2107,6 +2190,7 @@ function apph(active) {
       '<a href="#companies"' + (active === "companies" ? ' aria-current="page"' : "") + ">Companies</a>" +
       '<a href="#results"' + (active === "results" ? ' aria-current="page"' : "") + ">Routes</a>" +
       '<a href="#providers">Advertise</a>' +
+      '<button type="button" class="navx navx--fol" data-folopen aria-label="Sailings you follow"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Following</span><b class="foln" hidden></b></button><button type="button" class="navx navx--lang" data-lang aria-label="Switch language"><span class="l-ur" lang="ur">اردو</span><span class="l-en">English</span></button>' +
     "</nav></div></header>";
 }
 function syncQ() {
@@ -2642,6 +2726,7 @@ function srowHtml(r, loud, first) {
       '<span class="cut ' + stc + '">Cargo in by ' + fmtD(r.cut) + " " + hm(r.cut) + (urgent ? " · only " + untilLabel(r.cut) + " left" : "") + "</span>" +
       (SOLD[r.dep.id + "|" + r.j] > 1 ? '<span class="alsofrom">Same ship, also sold by ' + plural(SOLD[r.dep.id + "|" + r.j] - 1, "other company", "other companies") + "</span>" : "") +
       (inlandNow() ? '<span class="road">Leave ' + esc(inlandNow().name) + " by " + fmtD(roadOut(r.cut, inlandNow())) + "</span>" : "") +
+      (holNear(r) ? '<span class="hol">' + esc(holNear(r).n) + " " + fmtD(holNear(r).from) + ", file papers early</span>" : "") +
     "</button>" +
     '<label class="cmpx"><input type="checkbox" data-pick="' + r.key + '"' + (picked ? " checked" : "") + (full ? " disabled" : "") +
       ' aria-label="Compare ' + esc(r.vessel) + " on " + fmtD(r.etd) + " with " + esc(r.firm.name) + '">Compare</label>' +
@@ -2712,10 +2797,10 @@ function renderCompany() {
   var html = apph("companies") +
     (C.owner ? ownerBar(f, tier, real) : "") +
     (!isClaimed(f) ? '<div class="unclaimed"><div class="wrap unclaimed__in">' +
-      '<span class="unclaimed__tag">Unclaimed</span>' +
-      "<p><b>" + esc(f.name) + " has not taken a page on KARGOS.</b> Their sailings are here because we track the services, " +
-      "but nobody from the company maintains this page, so there are no contact details and you cannot request a booking through us.</p>" +
-      '<button class="btn btn-ink btn-sm" type="button" data-owner="on">Is this your company?</button>' +
+      '<span class="unclaimed__tag">Free to claim</span>' +
+      "<p><b>Is this " + esc(f.name) + "?</b> We list your sailings from public schedules so shippers can find you. " +
+      "Claim the page, free, to add your phone and WhatsApp and start getting enquiries.</p>" +
+      '<button class="btn btn-blue btn-sm" type="button" data-owner="on">Claim this page, free</button>' +
     "</div></div>" : "") +
     '<div class="cohero' + (claimed ? "" : " is-bare") + '" style="--fc:' + (claimed ? lookColor(f) : "#CFD1D4") + '"><div class="wrap cohero__in">' +
       "<div>" +
@@ -2936,7 +3021,7 @@ function depList(rows) {
     var st = statusOf(r);
     return '<li><button type="button" data-open="' + r.key + '">' +
       '<span class="tm">' + hm(r.etd) + "<small>Leaves</small></span>" +
-      '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voy " + esc(r.voy) + " · " + r.term + "</small></span>" +
+      '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voyage " + esc(r.voy) + " · " + r.term + "</small></span>" +
       '<span class="tags"><span class="tag r">' + esc(routeShort(r.svc)) + '</span><span class="st ' + st[0] + '">' + st[1] + "</span></span>" +
     "</button></li>";
   }).join("") + "</ul>";
@@ -3130,7 +3215,7 @@ function boardHtml(list, tab) {
     var st = statusOf(r), open = st[0] === "open" || st[0] === "soon";
     return '<li data-bday="' + iso(r.etd) + '"><button type="button" data-open="' + r.key + '">' +
       '<span class="tm">' + fmtD(r.etd) + "<small>" + WD[r.etd.getDay()] + " " + hm(r.etd) + "</small></span>" +
-      '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voy " + esc(r.voy) + "</small></span>" +
+      '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voyage " + esc(r.voy) + "</small></span>" +
       '<span class="tags"><span class="tag r">' + esc(routeShort(r.svc)) + '</span>' +
         '<span class="tag t">' + plural(r.days, "day") + "</span>" +
         '<span class="st ' + st[0] + '">' + st[1] + "</span>" +
@@ -3215,7 +3300,7 @@ function howToBook(r, gone, closed) {
   return '<div class="sendrow"><button type="button" class="btn btn-line btn-sm" data-send="' + r.key + '">' +
       '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 5 5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Z"/></svg>' +
       "Send this to my agent</button>" +
-      '<small>Copies the vessel, the date and the cut-off, ready to paste into WhatsApp.</small></div>' +
+      '<small>Opens WhatsApp with the vessel, the date and the cut-off written out, ready to send.</small></div>' +
     '<div><span class="lbl">How to book this sailing</span><ol class="howto">' +
     steps.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol></div>" + agentsFor(r);
 }
@@ -3247,19 +3332,21 @@ function openSheet(key, quote) {
 
   d.innerHTML = '<div class="sh">' +
     '<div class="sh__top">' + av(r.firm) +
-      '<div class="sh__t"><b>' + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + " · " + esc(r.svc.name) + " · voy " + esc(r.voy) + "</small></div>" +
+      '<div class="sh__t"><b>' + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + " · " + esc(r.svc.name) + " · voyage " + esc(r.voy) + "</small></div>" +
       '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
     '<div class="sh__body">' +
       '<div class="cutbox' + (urgent ? " u" : "") + '"><div><small>' + (gone ? "Sailed" : "Gate-in cut-off") + "</small><b>" +
         (gone ? fmtWD(r.etd) + " " + hm(r.etd) : fmtWD(r.cut) + " " + hm(r.cut)) + "</b></div>" +
         '<span class="left">' + (gone ? esc(runningOf(r)[1]) : closed ? "Booking closed" : "Closes in " + untilLabel(r.cut)) + "</span></div>" +
+      (!gone && !closed && holNear(r) ? '<p class="holnote"><b>' + esc(holNear(r).n) + ", " + fmtWD(holNear(r).from) + ".</b> Customs and banks slow down around it, so get your papers filed a day or two before the cut-off.</p>" : "") +
+      followBox(r, gone) +
       '<div><span class="lbl">Routing</span><ul class="legs" style="margin-top:12px">' +
         calls.map(function (x, i) {
           var dt = i === 0 ? r.etd : addDays(r.dep.dates[0], x[1]);
           var cls = i === 0 ? "o" : i === calls.length - 1 ? "d" : "";
           return '<li class="' + cls + '"><span class="n"></span><span><b>' + esc(PORT[x[0]].name) + "</b><small>" + x[0] +
             (i === 0 ? " · " + r.term + " · load" : i === calls.length - 1 ? " · discharge" : " · call") + "</small></span>" +
-            '<span class="when">' + fmtWD(dt) + (i === 0 ? "<br>ETD " + hm(r.etd) : "") + "</span></li>";
+            '<span class="when">' + fmtWD(dt) + (i === 0 ? "<br>Leaves " + hm(r.etd) : "") + "</span></li>";
         }).join("") + "</ul></div>" +
       '<div class="tags">' + (r.direct ? '<span class="tag dir">Direct</span>' : '<span class="tag via">' + viaText(r) + "</span>") +
         '<span class="tag t">' + plural(r.days, "day") + " port to port</span>" +
@@ -3313,7 +3400,7 @@ function openCompare() {
     return vals.map(function (v) { return v === b && vals.filter(function (x) { return x === b; }).length < vals.length; });
   };
   var rowsDef = [
-    ["Sails", picks.map(function (r) { return +r.etd; }), true, function (r) { return fmtWD(r.etd) + "<small>ETD " + hm(r.etd) + "</small>"; }],
+    ["Sails", picks.map(function (r) { return +r.etd; }), true, function (r) { return fmtWD(r.etd) + "<small>Leaves " + hm(r.etd) + "</small>"; }],
     ["Arrives", picks.map(function (r) { return +r.eta; }), true, function (r) { return fmtWD(r.eta) + "<small>" + esc(PORT[r.to].name) + "</small>"; }],
     ["Journey", picks.map(function (r) { return r.days; }), true, function (r) { return plural(r.days, "day"); }],
     ["Route", picks.map(function (r) { return r.via.length; }), true, function (r) { return viaText(r) + "<small>" + esc(r.svc.rot.slice(0, r.j + 1).map(function (x) { return pn(x[0]); }).join(" → ")) + "</small>"; }],
@@ -3330,6 +3417,7 @@ function openCompare() {
   ];
   $("#cmp").innerHTML = '<div class="sh__top"><div class="sh__t"><b>Compare ' + picks.length + " sailings</b><small>Hover a ship to see its route. The better of each row is marked. " + SAMPLE.tag + ".</small></div>" +
     '<button type="button" class="cmp__share cmp__xl" data-cmpxl><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Download Excel</span></button>' +
+    '<button type="button" class="cmp__share cmp__wa" data-cmpwa>' + WA_ICON + "<span>WhatsApp</span></button>" +
     '<button type="button" class="cmp__share" data-cmpshare>Copy link</button>' +
     '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
     '<div class="cmp__body">' +
@@ -3337,13 +3425,13 @@ function openCompare() {
         '<div class="cmpmap" id="cmpMap">' + cmpMapSvg(picks) + "</div>" +
         '<ul class="cmp__ships">' + picks.map(function (r, i) {
           return '<li><button type="button" class="cmp__ship" data-hl="' + i + '" data-open="' + r.key + '" style="--pc:' + PICKC[i] + '">' +
-            '<i aria-hidden="true"></i><span><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b>" +
+            '<i aria-hidden="true">' + (i + 1) + "</i><span><b>" + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b>" +
             "<small>" + esc(r.firm.name) + " · " + fmtD(r.etd) + " · " + plural(r.days, "day") + "</small>" +
             "<small>" + esc(r.svc.rot.slice(0, r.j + 1).map(function (x) { return sc(x[0]); }).join(" → ")) + "</small></span></button></li>";
         }).join("") + "</ul>" +
       "</div>" +
       '<div class="cmpt"><table><thead><tr><th></th>' + picks.map(function (r, i) {
-        return '<td data-hl="' + i + '" style="--pc:' + PICKC[i] + '"><div class="cmp__hd">' + av(r.firm) + "<div><b>" + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + "</small></div></div></td>";
+        return '<td data-hl="' + i + '" style="--pc:' + PICKC[i] + '"><div class="cmp__hd"><span class="cmp__no" aria-hidden="true">' + (i + 1) + "</span>" + av(r.firm) + "<div><b>" + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + "</small></div></div></td>";
       }).join("") + "</tr></thead><tbody>" +
       rowsDef.map(function (d) {
         var marks = d[1] ? best(d[1], d[2]) : picks.map(function () { return false; });
@@ -3373,6 +3461,7 @@ function cmpMapSvg(picks) {
   var cx = (lo0 + lo1) / 2, cy = (la0 + la1) / 2;
   var X = function (c) { return W / 2 + (LL[c][1] - cx) * k; };
   var Y = function (c) { return H / 2 - (LL[c][0] - cy) * k; };
+  var tags = [];
   var paths = picks.map(function (r, i) {
     var calls = r.svc.rot.slice(0, r.j + 1).map(function (x) { return x[0]; }).filter(function (c) { return LL[c]; });
     var d = "M" + X(calls[0]).toFixed(1) + " " + Y(calls[0]).toFixed(1);
@@ -3383,6 +3472,10 @@ function cmpMapSvg(picks) {
       var qx = (x1 + x2) / 2 - dy / len * bow, qy = (y1 + y2) / 2 + dx / len * bow;
       d += " Q" + qx.toFixed(1) + " " + qy.toFixed(1) + " " + x2.toFixed(1) + " " + y2.toFixed(1);
     }
+    var ex = X(calls[calls.length - 1]), ey = Y(calls[calls.length - 1]);
+    var ang = (i / Math.max(1, picks.length)) * Math.PI * 2 - Math.PI / 2;
+    tags.push('<g class="rt__no" data-ri="' + i + '" transform="translate(' + (ex + Math.cos(ang) * 17).toFixed(1) + " " + (ey + Math.sin(ang) * 17).toFixed(1) + ')">' +
+      '<circle r="8" fill="' + PICKC[i] + '"/><text y="3.6">' + (i + 1) + "</text></g>");
     return '<path class="rt" data-ri="' + i + '" d="' + d + '" stroke="' + PICKC[i] + '"/>';
   }).join("");
   /* labels take the first free corner around their dot; a crowded one is left
@@ -3407,7 +3500,7 @@ function cmpMapSvg(picks) {
   }).join("");
   return '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Routes of the sailings being compared">' +
     '<defs><pattern id="cmpdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#1C2C55"/></pattern></defs>' +
-    '<rect width="' + W + '" height="' + H + '" fill="url(#cmpdots)"/>' + paths + ports + "</svg>";
+    '<rect width="' + W + '" height="' + H + '" fill="url(#cmpdots)"/>' + paths + ports + tags.join("") + "</svg>";
 }
 /* ===========================================================
    COMPARISON AS A SPREADSHEET
@@ -3608,7 +3701,7 @@ function cmpHighlight(i) {
   var map = $("#cmpMap");
   if (!map) return;
   map.classList.toggle("hl", i !== null);
-  $$(".rt", map).forEach(function (p) { p.classList.toggle("on", String(i) === p.getAttribute("data-ri")); });
+  $$(".rt,.rt__no", map).forEach(function (p) { p.classList.toggle("on", String(i) === p.getAttribute("data-ri")); });
   $$("#cmp [data-hl]").forEach(function (el) { el.classList.toggle("on", String(i) === el.getAttribute("data-hl")); });
 }
 ["mouseover", "focusin"].forEach(function (ev) {
@@ -3757,13 +3850,15 @@ document.addEventListener("click", function (e) {
         "Leaves " + fmtWD(r.etd) + " " + hm(r.etd) + "\n" +
         "Cargo in by " + fmtWD(r.cut) + " " + hm(r.cut) + " at " + r.term +
         (inlandNow() ? "\nLeave " + inlandNow().name + " by " + fmtD(roadOut(r.cut, inlandNow())) : "");
-      if (navigator.clipboard) navigator.clipboard.writeText(msg).then(
-        function () { toast("Copied. Paste it into WhatsApp."); },
-        function () { toast("Could not copy on this browser."); });
-      else toast("Could not copy on this browser.");
+      toWhatsApp(msg + "\n\nvia KARGOS");
     }
     return;
   }
+  if ((el = t.closest("[data-follow]"))) { toggleFollow(el.getAttribute("data-follow")); return; }
+  if (t.closest("[data-folopen]")) { openFollowing(); return; }
+  if (t.closest("[data-folwa]")) { toWhatsApp(followDigest()); return; }
+  if (t.closest("[data-lang]")) { setLang(LANG === "ur" ? "en" : "ur"); return; }
+  if (t.closest("[data-cmpwa]")) { toWhatsApp(cmpDigest()); return; }
   if ((el = t.closest("[data-cmpxl]"))) { cmpExcel(el); return; }
   if (t.closest("[data-cmpshare]")) {
     /* a forwarder sends a client three options, not three screenshots */
@@ -3970,6 +4065,8 @@ function introLight() {
 function introStart() {
   var h = location.hash.slice(1);
   if (REDUCE || (h && h !== "") || scrollY > 40) return;
+  /* a welcome, not a toll: the first visit gets it, the daily user does not */
+  try { if (localStorage.getItem("kargos.intro")) return; localStorage.setItem("kargos.intro", "1"); } catch (e) {}
   var form = $("#homeSearch");
   var w = form.offsetWidth, ht = form.offsetHeight;
   var tr = $("#trace");
@@ -4003,12 +4100,215 @@ function introStart() {
 $("#skip").addEventListener("click", function () { introFinish(); $("#q").focus(); });
 
 /* ===========================================================
+   FOLLOWING: shipping updates without an account
+   The point of KARGOS for a shipper is knowing where their sailing
+   stands across every carrier. Follow one and it lands on this list
+   with its live state; the list goes to WhatsApp in one tap.
+   Kept in this browser only.
+   =========================================================== */
+var WA_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>';
+function toWhatsApp(text) {
+  var url = "https://wa.me/?text=" + encodeURIComponent(text);
+  var w = null;
+  try { w = window.open(url, "_blank"); if (w) w.opener = null; } catch (e) {}
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
+    toast(w ? "Opening WhatsApp. The message is copied too." : "Copied. Paste it into WhatsApp.");
+  }, function () { if (w) toast("Opening WhatsApp."); else toast("Open WhatsApp and paste: " + text.split("\n")[0]); });
+  else if (w) toast("Opening WhatsApp.");
+}
+var FOL = [];
+try { FOL = JSON.parse(localStorage.getItem("kargos.follow") || "[]").filter(function (k) { return typeof k === "string"; }); } catch (e) { FOL = []; }
+/* rows are built on demand, so build the whole window before reading the
+   list, then let go of anything that has aged out of it */
+function folRows() {
+  rowsFor({ from: "", to: "", a: addDays(TODAY, -21), b: addDays(TODAY, 42), bookable: false });
+  var n = FOL.length;
+  FOL = FOL.filter(function (k) { return ROW[k]; });
+  if (FOL.length !== n) saveFol();
+  return FOL.map(function (k) { return ROW[k]; });
+}
+function saveFol() { try { localStorage.setItem("kargos.follow", JSON.stringify(FOL)); } catch (e) {} paintFolCount(); }
+function paintFolCount() {
+  $$(".foln").forEach(function (b) { b.hidden = !FOL.length; b.textContent = FOL.length; });
+}
+function followBox(r, gone) {
+  var on = FOL.indexOf(r.key) > -1;
+  return '<div class="folbox' + (on ? " on" : "") + '"><div><b>' + (on ? "You follow this sailing" : "Track this sailing") + "</b>" +
+    "<small>" + (on ? "It is on your Following list with its live status. Share the list to WhatsApp any time."
+      : gone ? "See where it is on the way and when it reaches each port." : "Keep its cut-off, departure and arrival in one place, next to your other sailings.") + "</small></div>" +
+    '<button type="button" class="btn ' + (on ? "btn-line" : "btn-blue") + ' btn-sm" data-follow="' + r.key + '" aria-pressed="' + on + '">' + (on ? "Following ✓" : "Follow") + "</button></div>";
+}
+function toggleFollow(k) {
+  var i = FOL.indexOf(k);
+  if (i > -1) FOL.splice(i, 1); else FOL.unshift(k);
+  saveFol();
+  var box = $("#sheet .folbox");
+  if (box && ROW[k]) box.outerHTML = followBox(ROW[k], ROW[k].etd < NOW);
+  if ($("#fol").open) openFollowing();
+  toast(i > -1 ? "Stopped following." : "Following. Find it under Following at the top.");
+}
+/* one line of where a sailing stands, the same words on screen and in WhatsApp */
+function folState(r) {
+  if (r.etd < NOW) return ["run", runningOf(r)[1]];
+  if (r.cut < NOW) return ["shut", "Gate shut, leaves " + fmtWD(r.etd) + " " + hm(r.etd)];
+  if (r.cut - NOW < 2 * DAY) return ["soon", "Cargo in by " + fmtWD(r.cut) + " " + hm(r.cut) + ", " + untilLabel(r.cut) + " left"];
+  return ["open", "Cargo in by " + fmtWD(r.cut) + " " + hm(r.cut)];
+}
+function openFollowing() {
+  var rows = folRows();
+  var d = $("#fol");
+  d.innerHTML = '<div class="sh__top"><div class="sh__t"><b>Following</b><small>' +
+      (rows.length ? plural(rows.length, "sailing") + " across " + plural(rows.map(function (r) { return r.firm.id; }).filter(function (x, i, a) { return a.indexOf(x) === i; }).length, "company", "companies") + ". Live status, kept in this browser." : "Nothing yet.") + "</small></div>" +
+      (rows.length ? '<button type="button" class="cmp__share cmp__wa" data-folwa>' + WA_ICON + "<span>Send to WhatsApp</span></button>" : "") +
+      '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
+    '<div class="fol__body">' + (rows.length ? '<ul class="fol">' + rows.map(function (r) {
+      var st = folState(r), hol = r.etd >= NOW && holNear(r);
+      return '<li style="--fc:' + r.firm.color + '"><button type="button" class="fol__main" data-open="' + r.key + '">' +
+        '<span class="fol__d">' + fmtD(r.etd) + "<small>" + WD[r.etd.getDay()] + " " + hm(r.etd) + "</small></span>" +
+        '<span class="fol__v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + " · " + esc(pn(r.from)) + " → " + esc(pn(r.to)) + " · " + plural(r.days, "day") + "</small>" +
+          '<span class="fol__st ' + st[0] + '">' + esc(st[1]) + "</span>" +
+          (hol ? '<span class="hol">' + esc(hol.n) + " near the cut-off</span>" : "") +
+          '<span class="fol__ok">No changes to date, cut-off or terminal since you followed</span></span></button>' +
+        '<button type="button" class="fol__x" data-follow="' + r.key + '" aria-label="Stop following ' + esc(r.vessel) + '">✕</button></li>';
+    }).join("") + "</ul>"
+      : '<div class="fol__empty"><b>Follow a sailing to track it here.</b><p>Open any sailing from a search or a company page and press Follow. Its cut-off, departure and arrival stay here, next to sailings from other carriers, and go to WhatsApp in one tap.</p><a class="btn btn-blue btn-sm" href="#results" data-close>Find a sailing</a></div>') +
+    '<p class="sample" style="padding:0 20px 18px">' + SAMPLE.tag + ". A live KARGOS would message you when a carrier moves a date.</p></div>";
+  if (!d.open) d.showModal();
+}
+function followDigest() {
+  return "Sailings I'm following\n\n" + folRows().map(function (r) {
+    return (r.svc.mode === "road" ? "" : "MV ") + r.vessel + ", " + r.firm.name + "\n" + pn(r.from) + " to " + pn(r.to) + ", leaves " + fmtWD(r.etd) + " " + hm(r.etd) + "\n" + folState(r)[1];
+  }).join("\n\n") + "\n\nvia KARGOS";
+}
+function cmpDigest() {
+  var picks = S.picks.map(function (k) { return ROW[k]; }).filter(Boolean);
+  return "Comparing " + picks.length + " sailings on KARGOS\n\n" + picks.map(function (r, i) {
+    return (i + 1) + ". " + (r.svc.mode === "road" ? "" : "MV ") + r.vessel + ", " + r.firm.name + "\n" +
+      pn(r.from) + " to " + pn(r.to) + ", " + plural(r.days, "day") + (r.direct ? ", direct" : ", " + viaText(r).toLowerCase()) + "\n" +
+      "Leaves " + fmtWD(r.etd) + " " + hm(r.etd) + " · cargo in by " + fmtWD(r.cut) + " " + hm(r.cut);
+  }).join("\n\n") + "\n\n" + location.href.split("#")[0] + "#cmp/" + S.picks.join(",");
+}
+
+/* ===========================================================
+   URDU
+   The labels people act on, in Urdu; names, ports and codes stay as
+   they are printed on the bill of lading. A pass over the text as it
+   renders, so every view gets it without each template knowing.
+   =========================================================== */
+var UR = {
+  "Compare":"موازنہ","Sponsored":"اشتہار","Not yet claimed":"ابھی کلیم نہیں","Claim free →":"مفت کلیم کریں","Profile":"پروفائل","Profile →":"پروفائل",
+  "Next":"اگلا","Straight there":"سیدھا","Quote":"قیمت پوچھیں","Companies":"کمپنیاں","Routes":"روٹس","From":"کہاں سے","To":"کہاں تک",
+  "Cargo ready":"مال کب تیار","Search":"تلاش","All Pakistan":"پورا پاکستان","Line":"لائن","Advertise":"اشتہار دیں","Get featured →":"نمایاں ہوں",
+  "Booking open":"بکنگ کھلی ہے","Ask":"پوچھیں","Request":"درخواست","until the gate shuts":"گیٹ بند ہونے تک","Shipping lines":"شپنگ لائنز",
+  "Forwarders":"فارورڈرز","Customs agents":"کسٹمز ایجنٹ","Forwarder":"فارورڈر","Customs agent":"کسٹمز ایجنٹ","Shipping line":"شپنگ لائن",
+  "Spotlight":"اسپاٹ لائٹ","Next sailing":"اگلی روانگی","Cut-off":"آخری وقت","Replies":"جواب","Direct only":"صرف سیدھا","Featured":"نمایاں",
+  "Can’t be booked here":"یہاں بک نہیں ہوتا","Cargo in by":"مال کب تک پہنچے","Terminal":"ٹرمینل","Takes":"کون سا مال","Usually replies in":"عموماً جواب",
+  "Skip intro":"انٹرو چھوڑیں","For providers":"کمپنیوں کے لیے","Try":"مثلاً","or":"یا","Closing in the next 7 days":"اگلے 7 دن میں بند",
+  "Book this slot →":"یہ جگہ بک کریں","Featured providers":"نمایاں کمپنیاں","Your company here":"آپ کی کمپنی یہاں","Browse by service":"سروس کے لحاظ سے",
+  "Trucking":"ٹرکنگ","Warehousing":"گودام","On KARGOS":"کارگوس پر","Lines serving Pakistan":"پاکستان آنے والی لائنز","Represent a line? Claim →":"لائن کے نمائندے؟ کلیم کریں",
+  "Monthly searches":"ماہانہ تلاش","Profile views":"پروفائل دیکھے گئے","Featured slots":"نمایاں جگہیں","Directory":"ڈائریکٹری","Free":"مفت",
+  "Claim listing":"لسٹنگ کلیم کریں","Book Spotlight":"اسپاٹ لائٹ بک کریں","Leaves":"روانگی","Anywhere":"کہیں بھی","Sample data":"نمونہ ڈیٹا",
+  "Sort":"ترتیب","Best match":"بہترین","Leaves soonest":"جلد روانگی","Quickest journey":"تیز ترین سفر","Closing first":"پہلے بند","Featured first":"نمایاں پہلے",
+  "Press a day to see only its sailings":"کسی دن کو دبائیں، صرف اس دن کی روانگیاں","Gate-in cut-off":"گیٹ میں مال کا آخری وقت","Routing":"راستہ",
+  "Direct":"سیدھا","Send this to my agent":"اپنے ایجنٹ کو بھیجیں","How to book this sailing":"یہ روانگی کیسے بک کریں","Equipment":"کنٹینر",
+  "Quantity":"تعداد","Commodity":"مال","Phone or WhatsApp":"فون یا واٹس ایپ","Email":"ای میل","(optional)":"(اختیاری)","In compare ✓":"موازنے میں ✓",
+  "Add to compare":"موازنے میں ڈالیں","Request booking":"بکنگ کی درخواست","Ask for a quote":"قیمت پوچھیں","Request a booking":"بکنگ کی درخواست",
+  "Download Excel":"ایکسل ڈاؤن لوڈ","Copy link":"لنک کاپی","Sails":"روانگی","Arrives":"پہنچے گا","Journey":"سفر","Route":"راستہ","Time you have":"آپ کے پاس وقت",
+  "Vessels running":"چلنے والے جہاز","loads here":"یہاں لوڈ","Vessels":"جہاز","Operator":"آپریٹر","Own service":"اپنی سروس","← All companies":"تمام کمپنیاں",
+  "Sample listing":"نمونہ لسٹنگ","See the calendar":"کیلنڈر دیکھیں","In business since":"کاروبار میں از","Also on these lanes":"انہی راستوں پر اور",
+  "All companies →":"تمام کمپنیاں","Verified":"تصدیق شدہ","Bookings desk":"بکنگ ڈیسک","Next open sailing":"اگلی کھلی روانگی","Phone / WhatsApp":"فون / واٹس ایپ",
+  "When they sail":"یہ کب روانہ ہوتے ہیں","Every sailing":"تمام روانگیاں","Upcoming":"آنے والی","Recently departed":"حال ہی میں روانہ","Their routes":"ان کے راستے",
+  "Where they go":"یہ کہاں جاتے ہیں","Times are local, sample data":"مقامی وقت، نمونہ ڈیٹا","Already left, last 3 weeks":"پچھلے 3 ہفتوں میں روانہ",
+  "Status":"صورتحال","Following":"فالو شدہ","Follow":"فالو کریں","Following ✓":"فالو شدہ ✓","Track this sailing":"یہ روانگی ٹریک کریں","You follow this sailing":"آپ یہ روانگی فالو کر رہے ہیں",
+  "WhatsApp":"واٹس ایپ","Send to WhatsApp":"واٹس ایپ پر بھیجیں","Find a sailing":"روانگی تلاش کریں","Free to claim":"مفت کلیم",
+  "Claim this page, free":"یہ صفحہ مفت کلیم کریں","Row colour":"قطار کا رنگ","Pakistan":"پاکستان","Cargo":"مال","Any terminal":"کوئی بھی ٹرمینل",
+  "Any journey length":"سفر کتنا بھی","Next 6 weeks":"اگلے 6 ہفتے","Next 3 weeks":"اگلے 3 ہفتے","Just this week":"صرف یہ ہفتہ","Every destination we list":"ہماری ہر منزل",
+  "Show fewer":"کم دکھائیں","Closes within 2 days":"2 دن میں بند","Closes within 12 hours":"12 گھنٹے میں بند","Up to 5 days":"5 دن تک",
+  "Up to 10 days":"10 دن تک","Up to 20 days":"20 دن تک","All":"سب","Today":"آج","TODAY":"آج","Shipping lines ":"شپنگ لائنز",
+  "Tell us when your cargo is ready. We will show you what you can still catch.":"بتائیں آپ کا مال کب تیار ہے، ہم دکھائیں گے کون سا جہاز ابھی پکڑا جا سکتا ہے۔",
+  "These are the sailings you can still make. The date is the day the ship leaves; the cut-off is the last time your container can reach the terminal.":"یہ وہ روانگیاں ہیں جو آپ ابھی پکڑ سکتے ہیں۔ تاریخ جہاز کی روانگی کا دن ہے؛ آخری وقت وہ ہے جب تک آپ کا کنٹینر ٹرمینل پہنچ جانا چاہیے۔",
+  "Opens WhatsApp with the vessel, the date and the cut-off written out, ready to send.":"واٹس ایپ کھلے گا، جہاز، تاریخ اور آخری وقت لکھے ہوئے، بس بھیج دیں۔",
+  "Keep its cut-off, departure and arrival in one place, next to your other sailings.":"اس کا آخری وقت، روانگی اور آمد ایک جگہ، آپ کی باقی روانگیوں کے ساتھ۔",
+  "It is on your Following list with its live status. Share the list to WhatsApp any time.":"یہ آپ کی فالو لسٹ میں ہے۔ لسٹ کسی بھی وقت واٹس ایپ پر بھیجیں۔",
+  "No changes to date, cut-off or terminal since you followed":"فالو کرنے کے بعد تاریخ، آخری وقت یا ٹرمینل میں کوئی تبدیلی نہیں",
+  "Follow a sailing to track it here.":"یہاں ٹریک کرنے کے لیے کوئی روانگی فالو کریں۔","Recently departed ":"حال ہی میں روانہ","Sign in":"سائن اِن","Contact":"رابطہ","Carries":"لے جاتے ہیں"
+};
+var UR_RX = [
+  [/^(\d+) days?$/, "$1 دن"], [/^(\d+) hours?$/, "$1 گھنٹے"], [/^Closes in (\d+) (day|days)$/, "$1 دن میں بند"], [/^Closes in (\d+) (hour|hours)$/, "$1 گھنٹے میں بند"],
+  [/^Show all (\d+) sailings$/, "تمام $1 روانگیاں"], [/^View all (\d+) →$/, "تمام $1 دیکھیں"], [/^Compare (\d+) sailings$/, "$1 روانگیوں کا موازنہ"],
+  [/^(\d+) days · straight there$/, "$1 دن · سیدھا"], [/^(\d+) days · changes ship on the way$/, "$1 دن · راستے میں جہاز بدلے گا"], [/^(\d+) days · one change$/, "$1 دن · ایک بار جہاز بدلے گا"],
+  [/^Changes ship at (\d+) ports$/, "$1 بندرگاہوں پر جہاز بدلے گا"], [/^Since (\d{4})$/, "$1 سے"], [/^day (\d+)$/, "دن $1"],
+  [/^(\d+) sailings?$/, "$1 روانگیاں"], [/^(\d+) ships?$/, "$1 جہاز"], [/^(\d+) lanes$/, "$1 راستے"], [/^(\d+) listed$/, "$1 درج"]
+];
+function urOf(t) {
+  if (UR[t]) return UR[t];
+  for (var i = 0; i < UR_RX.length; i++) if (UR_RX[i][0].test(t)) return t.replace(UR_RX[i][0], UR_RX[i][1]);
+  return null;
+}
+var LANG = "en";
+try { LANG = localStorage.getItem("kargos.lang") === "ur" ? "ur" : "en"; } catch (e) {}
+var UR_PH = { "Add destination, service or company": "منزل، سروس یا کمپنی", "Anywhere, a port or a company": "کہیں بھی، بندرگاہ یا کمپنی", "Karachi to Jebel Ali": "کراچی سے جبل علی" };
+function urWalk(root) {
+  if (LANG !== "ur" || !root) return;
+  if (root.nodeType === 3) { urText(root); return; }
+  if (root.nodeType !== 1 || root.closest("[data-ur],script,style,svg,.word")) return;
+  var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n, list = [];
+  while ((n = w.nextNode())) list.push(n);
+  list.forEach(urText);
+  $$("input[placeholder]", root).concat(root.matches && root.matches("input[placeholder]") ? [root] : []).forEach(function (i) {
+    var u = UR_PH[i.getAttribute("placeholder")]; if (u) { i.setAttribute("data-ph-en", i.placeholder); i.placeholder = u; }
+  });
+  urOptions(root);
+}
+/* options cannot hold a span: swap their text and keep the English beside it */
+function urOptions(root) {
+  $$("option", root.nodeType === 1 ? root : document.body).forEach(function (o) {
+    if (o.hasAttribute("data-en")) return;
+    var u = urOf(o.textContent.trim());
+    if (u) { o.setAttribute("data-en", o.textContent); o.textContent = u; }
+  });
+}
+function urText(n) {
+  var par = n.parentNode;
+  if (!par || par.nodeType !== 1 || par.closest("[data-ur],script,style,svg,.word,option,textarea,title")) return;
+  var raw = n.nodeValue, t = raw.trim();
+  if (!t) return;
+  var u = urOf(t);
+  if (!u) return;
+  var sp = document.createElement("span");
+  sp.setAttribute("data-ur", t); sp.lang = "ur"; sp.dir = "auto"; sp.textContent = u;
+  var lead = raw.match(/^\s*/)[0], tail = raw.match(/\s*$/)[0];
+  if (lead) par.insertBefore(document.createTextNode(lead), n);
+  par.insertBefore(sp, n);
+  if (tail) par.insertBefore(document.createTextNode(tail), n);
+  par.removeChild(n);
+}
+function urUndo() {
+  $$("[data-ur]").forEach(function (sp) { sp.replaceWith(document.createTextNode(sp.getAttribute("data-ur"))); });
+  $$("option[data-en]").forEach(function (o) { o.textContent = o.getAttribute("data-en"); o.removeAttribute("data-en"); });
+  $$("[data-ph-en]").forEach(function (i) { i.placeholder = i.getAttribute("data-ph-en"); i.removeAttribute("data-ph-en"); });
+}
+var urMO = new MutationObserver(function (muts) {
+  if (LANG !== "ur") return;
+  muts.forEach(function (m) { m.addedNodes.forEach(function (x) { urWalk(x); }); });
+});
+function setLang(l) {
+  LANG = l;
+  try { localStorage.setItem("kargos.lang", l); } catch (e) {}
+  ROOT.classList.toggle("ur", l === "ur");
+  if (l === "ur") { urWalk(document.body); urMO.observe(document.body, { childList: true, subtree: true }); }
+  else { urMO.disconnect(); urUndo(); }
+}
+
+/* ===========================================================
    BOOT
    =========================================================== */
 renderHome();
 armSpot();
 route();
 introStart();
+paintFolCount();
+if (LANG === "ur") setLang("ur");
 </script>
 
 </body></html>
