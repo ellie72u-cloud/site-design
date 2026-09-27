@@ -1164,28 +1164,47 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
 .ckey span{display:inline-flex;align-items:center;gap:6px}
 .ckey i{width:4px;height:14px;border-radius:2px}
 
-/* home sections: full-width bands, each opening on a blue or green bar */
-#vHome main > section{position:relative;padding:46px 0 48px;background:var(--bb,#fff);box-shadow:0 0 0 100vmax var(--bb,#fff);clip-path:inset(0 -100vmax)}
-#vHome main > section::before{content:"";position:absolute;top:0;left:50%;width:100vw;height:4px;transform:translateX(-50%);background:var(--bar)}
-#vHome main > section:nth-child(odd){--bar:var(--blue)}
-#vHome main > section:nth-child(even){--bar:var(--green)}
-#vHome main > section:nth-child(2){--bb:#EDF2FB}
-#vHome main > section:nth-child(4){--bb:#EAF5EF}
-#vHome main > section .head .no{color:var(--bar);font-weight:600}
-#vHome main > section .head .rule{background:color-mix(in srgb,var(--bar) 35%,transparent)}
+/* home sections: one plain ground, separated by space alone */
+#vHome main > section{padding:30px 0 34px}
+#vHome main > section:first-child{padding-top:26px}
 
-/* spotlight: two slots side by side, each a compact panel */
+/* the first screen: hero, then the spotlight, with the featured row in view */
+.hero{padding-top:clamp(22px,3.4vh,48px);padding-bottom:clamp(26px,4vh,52px)}
+.logo > svg{width:52px;height:52px}
+.logo .word{font-size:66px}
+.tagline{margin:10px 0 20px}
+
+/* spotlight: two slim slots side by side */
 .spots{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.spot--half{grid-template-columns:1fr}
-.spot--half .spot-l{padding:22px 24px 18px 30px}
-.spot--half h3{margin:14px 0 6px;font-size:32px}
-.spot--half p{font-size:14px;line-height:1.5}
-.spot--half .ctas{margin-top:14px}
-.spot--half .ctas .btn{padding:8px 16px;font-size:13px}
-.spot--half .spot-r{border-left:0;border-top:1px solid var(--line)}
-.spot--half .route{padding:26px 24px 12px 30px}
-.spot--half .rl .p b{font-size:28px}
-.spot--half .facts b{font-size:17px}
+.spot--half{display:flex;flex-direction:column;gap:10px;padding:16px 18px 14px 26px}
+.spot--half .who .av{width:34px;height:34px;font-size:14px}
+.spot--half h3{margin:0;font-size:26px;line-height:1}
+.spot--half .rl{gap:10px}
+.spot--half .rl .p b{font-size:20px}
+.spot--half .rl .p small{display:none}
+.spot--half .rl .ln span{top:-17px;font-size:9.5px}
+.spot--half .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed var(--line-2)}
+.spot--half .kv{display:flex;gap:18px;font:500 9.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.spot--half .kv b{display:block;margin-top:2px;font:800 15px/1 var(--display);letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums}
+.spot--half .ctas{margin:0;gap:6px}
+.spot--half .ctas .btn{padding:7px 14px;font-size:13px}
+
+/* browse by service: the chosen kind rises up underneath */
+button.cat{border:0;border-left:1px solid var(--line-2);background:#fff;text-align:left;font:inherit;color:inherit;cursor:pointer}
+button.cat:first-child{border-left:0}
+.cat[aria-expanded="true"]{background:var(--night);color:#fff}
+.cat[aria-expanded="true"] .n,.cat[aria-expanded="true"] small{color:var(--go)}
+.catpanel{margin-top:14px;padding:20px;border:1px solid var(--line-2);border-radius:14px;background:var(--soft);animation:catUp .45s var(--ease) both}
+.catpanel__h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.catpanel__h b{font:800 24px/1 var(--display);text-transform:uppercase}
+.catpanel__h small{margin-left:10px;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--sub)}
+.catpanel__h a,.catpanel__h button{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:none;border:0;cursor:pointer}
+.catpanel .card{animation:catUp .5s var(--ease) both;animation-delay:calc(var(--i) * 70ms + 120ms)}
+.catpanel .note{font-size:14px}
+@keyframes catUp{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+
+/* the intro: a green line round the bar, a green rim on the light */
+.trace path{stroke:var(--go);filter:drop-shadow(0 0 6px rgba(53,224,138,.75))}
 @media (max-width:900px){.spots{grid-template-columns:1fr}}
 .mrow > span:first-child{white-space:nowrap}
 </style>
@@ -1208,9 +1227,9 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
   <div class="logo" aria-label="KARGOS">
     <span class="cable" aria-hidden="true"></span>
     <svg width="72" height="72" viewBox="0 0 104 104" aria-hidden="true">
-      <rect x="4" y="4" width="96" height="96" rx="18" fill="#111315"/>
-      <rect x="16" y="16" width="72" height="72" rx="8" fill="#F25A0F"/>
-      <g fill="#111315" opacity=".22"><rect x="24" y="16" width="3" height="72"/><rect x="77" y="16" width="3" height="72"/></g>
+      <rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/>
+      <rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/>
+      <g fill="#06382A" opacity=".35"><rect x="24" y="16" width="3" height="72"/><rect x="77" y="16" width="3" height="72"/></g>
       <path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/>
     </svg>
     <div class="word" id="word" aria-hidden="true">KARGOS</div>
@@ -1250,6 +1269,7 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
   <section>
     <div class="head"><span class="no">03</span><h2>Browse by service</h2><div class="rule"></div></div>
     <div class="cats" id="catSlot"></div>
+    <div id="catPanel" aria-live="polite"></div>
   </section>
 
   <section>
@@ -1328,7 +1348,7 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
 <footer>
   <div class="wrap">
     <a class="fl" href="#">
-      <svg width="24" height="24" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#F25A0F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>
+      <svg width="24" height="24" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>
       KARGOS
     </a>
     <div class="links"><a href="#companies">Companies</a><a href="#results">Routes</a><a href="#providers">Advertise</a></div>
@@ -1623,7 +1643,7 @@ var SAMPLE = {
   positions: "Positions are worked out from the published rotation, not live tracking. Sample data."
 };
 var VF = '<svg class="vf" viewBox="0 0 16 16" aria-label="Verified"><circle cx="8" cy="8" r="8" fill="#1A56DB"/><path d="M4.8 8.3l2.1 2.1 4.3-4.6" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>';
-var MARK = '<svg width="30" height="30" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#111315"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#F25A0F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>';
+var MARK = '<svg width="30" height="30" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>';
 
 /* ===========================================================
    THE SAILINGS
@@ -2106,25 +2126,19 @@ function renderHome() {
     var days = next ? next.days : SVC[svcId].rot.filter(function (x) { return x[0] === to; })[0][1];
     var how = next && !next.direct ? "VIA " + plural(next.via.length, "CALL").toUpperCase() : "DIRECT";
     return '<article class="spot spot--half">' +
-      '<div class="spot-l">' +
-        '<div class="who">' + av(f) + "<div><b>" + esc(f.name) + "</b><small>" + esc(f.type) + " · " + esc(f.offices[0]) + "</small></div>" +
-          '<span class="sp">Sponsored</span></div>' +
-        '<h3><span class="ln"><span>' + head + ' <em>' + days + " days.</em></span></span></h3>" +
-        "<p>" + blurb + "</p>" +
-        '<div class="ctas">' + (next ? '<button class="btn btn-blue" type="button" data-quote="' + next.key + '">Request a quote</button>' : "") +
-          '<button class="btn btn-line" type="button" data-sails="' + f.id + '">Vessels running</button>' +
-          '<a class="btn btn-line" href="#co-' + f.id + '">Profile</a></div>' +
-      "</div>" +
-      '<div class="spot-r"><div class="route"><div class="rl">' +
-        '<div class="p"><b>' + sc(from) + "</b><small>" + esc(PORT[from].name) + "</small></div>" +
+      '<div class="who">' + av(f) + "<div><b>" + esc(f.name) + "</b><small>" + esc(f.type) + " · " + esc(f.offices[0]) + "</small></div>" +
+        '<span class="sp">Sponsored</span></div>' +
+      '<h3><span class="ln"><span>' + head + ' <em>' + days + " days.</em></span></span></h3>" +
+      '<div class="rl"><div class="p"><b>' + sc(from) + "</b></div>" +
         '<div class="ln"><i aria-hidden="true"></i><span>' + how + " · " + days + " DAYS</span></div>" +
-        '<div class="p" style="text-align:right"><b>' + sc(to) + "</b><small>" + esc(PORT[to].name) + "</small></div>" +
-      "</div></div>" +
-      '<div class="facts">' +
-        "<div><small>Next sailing</small><b>" + (next ? fmtWD(next.etd) : "—") + "</b></div>" +
-        "<div><small>Cut-off</small><b>" + (next ? WD[next.cut.getDay()] + " " + hm(next.cut) : "—") + "</b></div>" +
-        "<div><small>Replies</small><b>" + f.reply + "</b></div>" +
-      "</div></div></article>";
+        '<div class="p"><b>' + sc(to) + "</b></div></div>" +
+      '<div class="foot"><div class="kv">' +
+          "<span>Next sailing<b>" + (next ? fmtWD(next.etd) : "—") + "</b></span>" +
+          "<span>Cut-off<b>" + (next ? WD[next.cut.getDay()] + " " + hm(next.cut) : "—") + "</b></span>" +
+          "<span>Replies<b>" + f.reply + "</b></span></div>" +
+        '<div class="ctas">' + (next ? '<button class="btn btn-blue" type="button" data-quote="' + next.key + '">Quote</button>' : "") +
+          '<a class="btn btn-line" href="#co-' + f.id + '">Profile</a></div>' +
+      "</div></article>";
   };
   $("#spotSlot").innerHTML = '<div class="spots">' +
     spot(FIRM.GL, "PKKHI", "AEJEA", "GFX", "Direct reefer to the Gulf.",
@@ -2142,10 +2156,10 @@ function renderHome() {
 
   var cats = TYPES.slice(1).map(function (t, i) {
     var n = FIRMS.filter(function (f) { return f.type === t.match; }).length;
-    return '<a class="cat" href="#companies" data-dtype="' + t.key + '"><span class="n">/0' + (i + 1) + "</span><div><b>" + t.plural + "</b><small>" + n + " listed</small></div></a>";
+    return '<button type="button" class="cat" data-cat="' + t.key + '" aria-expanded="false" aria-controls="catPanel"><span class="n">/0' + (i + 1) + "</span><div><b>" + t.plural + "</b><small>" + n + " listed</small></div></button>";
   });
-  cats.push('<a class="cat soon" href="#providers"><span class="n">/05</span><div><b>Trucking</b><small>Listings opening</small></div></a>');
-  cats.push('<a class="cat soon" href="#providers"><span class="n">/06</span><div><b>Warehousing</b><small>Listings opening</small></div></a>');
+  cats.push('<button type="button" class="cat soon" data-cat="truck" aria-expanded="false" aria-controls="catPanel"><span class="n">/05</span><div><b>Trucking</b><small>Listings opening</small></div></button>');
+  cats.push('<button type="button" class="cat soon" data-cat="ware" aria-expanded="false" aria-controls="catPanel"><span class="n">/06</span><div><b>Warehousing</b><small>Listings opening</small></div></button>');
   $("#catSlot").innerHTML = cats.join("");
 
   var short = { "Shipping line": "Line", "NVOCC": "NVOCC", "Forwarder": "Forwarder", "Customs agent": "Customs" };
@@ -2186,6 +2200,33 @@ function renderHomeState() {
   $("#homeF").innerHTML = CARGO.map(function (c) {
     return '<button type="button" class="f" data-cargo="' + c.key + '" aria-pressed="' + (S.cargo.indexOf(c.key) > -1) + '"><i style="background:' + c.color + '"></i>' + c.key + "</button>";
   }).join("") + '<button type="button" class="f" data-direct aria-pressed="' + S.direct + '"><i style="background:#F25A0F"></i>Direct only</button>';
+}
+
+/* browse by service: one kind open at a time, rising up under the row */
+var HOMECAT = "";
+function toggleCat(k) {
+  HOMECAT = HOMECAT === k ? "" : k;
+  $$("#catSlot .cat").forEach(function (b) { b.setAttribute("aria-expanded", String(b.getAttribute("data-cat") === HOMECAT)); });
+  var box = $("#catPanel");
+  if (!HOMECAT) { box.innerHTML = ""; return; }
+  var t = TYPES.filter(function (x) { return x.key === HOMECAT; })[0];
+  if (!t) {
+    var what = HOMECAT === "truck" ? "Trucking" : "Warehousing";
+    box.innerHTML = '<div class="catpanel"><div class="catpanel__h"><div><b>' + what + '</b><small>Listings opening</small></div>' +
+      '<button type="button" data-cat="' + HOMECAT + '">Close</button></div>' +
+      '<p class="note">No ' + what.toLowerCase() + ' companies are listed yet. If you run one out of Karachi, Port Qasim or Gwadar, you can be among the first.</p>' +
+      '<p style="margin-top:12px"><a class="btn btn-blue btn-sm" href="#providers">List your company</a></p></div>';
+  } else {
+    var list = FIRMS.filter(function (f) { return f.type === t.match; })
+      .sort(function (x, y) { return (y.paid - x.paid) || x.name.localeCompare(y.name); });
+    box.innerHTML = '<div class="catpanel"><div class="catpanel__h"><div><b>' + t.plural + "</b><small>" + list.length + " listed</small></div>" +
+      '<a href="#companies" data-dtype="' + t.key + '">Open in the directory →</a></div>' +
+      '<div class="grid4">' + list.map(function (f, i) {
+        return coCard(f).replace('<a class="card"', '<a class="card" style="--i:' + i + '"');
+      }).join("") + "</div></div>";
+  }
+  var r = box.getBoundingClientRect();
+  if (r.bottom > innerHeight) box.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth", block: "nearest" });
 }
 
 /* spotlight entrance */
@@ -3242,6 +3283,7 @@ document.addEventListener("click", function (e) {
   var t = e.target;
   var el;
 
+  if ((el = t.closest("[data-cat]"))) { toggleCat(el.getAttribute("data-cat")); return; }
   if ((el = t.closest("[data-sg]"))) {
     var box = el.closest(".sugg");
     var input = box.id === "sugg" ? $("#q") : $("#qTo");
@@ -3510,7 +3552,7 @@ function introLight() {
     var md = (+k + (100 - k) * 0.68).toFixed(2);
     var rim = (0.10 * (1 - e)).toFixed(3);
     v.style.background = "radial-gradient(" + (rx + feather).toFixed(1) + "px " + (ry + feather * (ry / rx)).toFixed(1) + "px at " +
-      cx.toFixed(1) + "px " + cy.toFixed(1) + "px, rgba(5,8,15,0) 0%, rgba(5,8,15,0) " + k + "%, rgba(242,90,15," + rim + ") " + gl + "%, rgba(5,8,15,.72) " + md + "%, #05080F 100%)";
+      cx.toFixed(1) + "px " + cy.toFixed(1) + "px, rgba(5,8,15,0) 0%, rgba(5,8,15,0) " + k + "%, rgba(53,224,138," + rim + ") " + gl + "%, rgba(5,8,15,.72) " + md + "%, #05080F 100%)";
     if (p < 1 && introOn) introRAF = requestAnimationFrame(frame);
   }
   introRAF = requestAnimationFrame(frame);
