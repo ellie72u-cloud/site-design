@@ -1106,27 +1106,64 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
 .fbar{margin-top:0;background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 8px 18px -14px rgba(7,13,31,.4)}
 .fbar .lbl{color:var(--night)}
 
-/* the calendar is the port's departure board: near-black, amber flap digits */
-.cal{background:var(--board);border:1px solid var(--board-line);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-.cal__head{background:#0A1022;border-bottom:1px solid var(--board-row);padding-bottom:14px}
+/* the calendar: a light board under a blue strip. Company colours mark the
+   sailings, green is today, blue is the day you pick. */
+.cal{background:#fff;border:1px solid var(--line-2);color:var(--ink);box-shadow:0 1px 2px rgba(7,13,31,.05)}
+.cal__head{background:linear-gradient(90deg,var(--night),#123A78);border-bottom:0;padding:16px 20px 14px}
 .cal__head b{color:#fff}
-.cal__head span{color:#9AA6C8}
+.cal__head span{color:rgba(255,255,255,.72)}
 .cal__head .cal__hint{color:var(--go)}
-.cal__gap{padding-top:10px;color:var(--board-sub)}
-.cal__day:hover:not(:disabled){background:#0D1530}
-.cal__wd{color:var(--board-sub)}
-.cal__dn{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 4px;border-radius:4px;font-size:20px;background:linear-gradient(#1A2138 50%,#141A2E 50%);color:var(--flap);box-shadow:inset 0 -1px 0 rgba(0,0,0,.6)}
-.cal__day.is-empty .cal__dn{color:#3A4566}
-.cal__day.is-today::before,.cal__day.is-today .cal__dn{color:var(--go)}
-.cal__day.is-mon{box-shadow:inset 1px 0 0 var(--board-row)}
+.cal__gap{padding-top:10px;color:var(--sub)}
+.cal__scroll{padding:10px 12px 6px}
+.cal__day{border-radius:12px}
+.cal__day:hover:not(:disabled){background:var(--blue-soft)}
+.cal__wd{color:var(--faint)}
+.cal__dn{color:var(--night)}
+.cal__day.is-empty .cal__dn{color:#C3CAD6}
+.cal__day.is-today{background:var(--green-soft)}
+.cal__day.is-today::before,.cal__day.is-today .cal__dn{color:var(--green-2)}
+.cal__day.is-mon{box-shadow:inset 1px 0 0 var(--line)}
 .cal__day.is-on,.cal__day.is-on:hover{background:var(--blue)}
-.cal__day.is-on .cal__dn{background:#fff;color:var(--night)}
-.cal__day.is-on .cal__wd,.cal__day.is-on em{color:#fff}
-.cal__stack i{height:10px;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
-.cal__stack em{color:#9AA6C8}
-.cal__legend{background:#0A1022;border-top-color:var(--board-row);color:#E8ECF7}
+.cal__day.is-on .cal__dn,.cal__day.is-on .cal__wd,.cal__day.is-on em,.cal__day.is-on::before{color:#fff}
+.cal__stack i{width:70%;height:9px;border-radius:3px}
+.cal__day.is-on .cal__stack i{box-shadow:0 0 0 1.5px #fff}
+.cal__stack em{color:var(--sub)}
+.cal__legend{background:var(--soft);border-top:1px solid var(--line);color:var(--ink-2)}
 .cal__legend i{width:12px;height:12px}
-.cal__legend small{color:var(--board-sub)}
+.cal__legend small{color:var(--faint)}
+
+/* compare: a wide sheet with the routes on a night map above the table */
+.cmpd{width:min(1180px,calc(100% - 32px));background:var(--ground)}
+.cmpd .sh__top{background:var(--night);color:#fff;border-bottom:0}
+.cmpd .sh__t small{color:rgba(255,255,255,.65)}
+.cmpd .x{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}
+.cmpd .x:hover{border-color:#fff}
+.cmp__share{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}
+.cmp__share:hover{border-color:#fff}
+.cmp__body{padding:18px;display:flex;flex-direction:column;gap:16px}
+.cmp__top{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.cmpmap{border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 45% 55%,#13224A,#0A1328 72%);border:1px solid #1B2A52}
+.cmpmap svg{display:block;width:100%;height:auto}
+.cmpmap .rt{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:7 7;opacity:.9;transition:opacity .2s,stroke-width .2s;animation:rtflow 2.4s linear infinite}
+.cmpmap.hl .rt{opacity:.14}
+.cmpmap.hl .rt.on{opacity:1;stroke-width:5;stroke-dasharray:none;filter:drop-shadow(0 0 6px currentColor)}
+@keyframes rtflow{to{stroke-dashoffset:-28}}
+.cmpmap .pt circle{fill:#fff;stroke:#0A1328;stroke-width:2}
+.cmpmap .pt.pk circle{fill:var(--go)}
+.cmpmap .pt text{font:500 11px var(--mono);letter-spacing:.08em;fill:rgba(255,255,255,.78)}
+.cmp__ships{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cmp__ship{display:flex;align-items:flex-start;gap:12px;width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:left;transition:border-color .15s,box-shadow .15s}
+.cmp__ship i{flex:none;width:14px;height:14px;margin-top:3px;border-radius:4px;background:var(--pc)}
+.cmp__ship b{display:block;font-weight:600;font-size:15px}
+.cmp__ship small{display:block;font:500 11px var(--mono);color:var(--sub);margin-top:2px}
+.cmp__ship:hover,.cmp__ship.on{border-color:var(--pc);box-shadow:0 0 0 2px var(--pc)}
+.cmpt{background:#fff;border:1px solid var(--line);border-radius:14px}
+.cmpt thead td{border-top:4px solid var(--pc);transition:background .15s}
+.cmpt thead td.on{background:var(--blue-soft)}
+.cmp__hd{display:flex;gap:10px;align-items:center}
+.cmp__hd b{display:block;font:800 20px/1 var(--display);text-transform:uppercase}
+.cmp__hd small{display:block;font:500 11px var(--mono);color:var(--sub);margin-top:3px}
+@media (max-width:900px){.cmp__top{grid-template-columns:minmax(0,1fr)}}
 
 /* company cards: the header is the company's colour, the body stays plain,
    and every card in the grid is the same size */
@@ -1207,6 +1244,19 @@ button.cat:first-child{border-left:0}
 .trace path{stroke:var(--go);filter:drop-shadow(0 0 6px rgba(53,224,138,.75))}
 @media (max-width:900px){.spots{grid-template-columns:1fr}}
 .mrow > span:first-child{white-space:nowrap}
+/* the rail as a lens: the chosen day lights up below, the rest steps back */
+.drail__lens{flex:none;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 12px 0 11px;border:1px solid rgba(14,138,79,.35);border-radius:999px;background:var(--green-soft);color:var(--green);font:600 12.5px var(--body);white-space:nowrap;transition:border-color .15s,background .15s}
+.drail__lens i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(14,138,79,.18)}
+.drail__lens b{font-size:11px;opacity:.7}
+.drail__lens:hover{border-color:var(--green)}
+.drail__lens[hidden]{display:none}
+#vCompany [data-bday],#vCompany .svc,#vCompany .lanec{transition:opacity .3s var(--ease),filter .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
+.lens [data-bday]:not(.lit),.lens .svc:not(.lit),.lens .lanec:not(.lit){opacity:.4;filter:saturate(.35)}
+.lens [data-bday].lit button{box-shadow:inset 4px 0 0 var(--blue)}
+.lens [data-bday].lit .v b{color:var(--blue)}
+.lens .svc.lit{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc),0 10px 28px -14px var(--sc)}
+.lens .lanec.lit{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+@media (max-width:860px){.drail__lens span{display:none}.drail__lens{padding:0 11px}}
 </style>
 
 <div class="veil" id="veil" aria-hidden="true"></div>
@@ -1226,12 +1276,7 @@ button.cat:first-child{border-left:0}
 <header class="hero" id="hero">
   <div class="logo" aria-label="KARGOS">
     <span class="cable" aria-hidden="true"></span>
-    <svg width="72" height="72" viewBox="0 0 104 104" aria-hidden="true">
-      <rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/>
-      <rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/>
-      <g fill="#06382A" opacity=".35"><rect x="24" y="16" width="3" height="72"/><rect x="77" y="16" width="3" height="72"/></g>
-      <path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/>
-    </svg>
+    <svg width="72" height="72" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="22" fill="#1A56DB"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0v11a22 22 0 0 1-22 22H26A22 22 0 0 1 4 78z" fill="#0E8A4F"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2.2"/><path d="M31 21h13v21l15-21h15L57 45l19 33H61L44 51v27H31z" fill="#fff"/></svg>
     <div class="word" id="word" aria-hidden="true">KARGOS</div>
   </div>
   <h1 class="tagline">Tell us when your cargo is ready. We will show you what you can still catch.</h1>
@@ -1348,7 +1393,7 @@ button.cat:first-child{border-left:0}
 <footer>
   <div class="wrap">
     <a class="fl" href="#">
-      <svg width="24" height="24" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>
+      <svg width="24" height="24" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="22" fill="#1A56DB"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0v11a22 22 0 0 1-22 22H26A22 22 0 0 1 4 78z" fill="#0E8A4F"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2.2"/><path d="M31 21h13v21l15-21h15L57 45l19 33H61L44 51v27H31z" fill="#fff"/></svg>
       KARGOS
     </a>
     <div class="links"><a href="#companies">Companies</a><a href="#results">Routes</a><a href="#providers">Advertise</a></div>
@@ -1448,6 +1493,12 @@ var PORTS = [
 var PORT = {};
 PORTS.forEach(function (p) { PORT[p.code] = p; });
 var PK = ["PKKHI", "PKBQM", "PKGWD"];
+/* real port positions, latitude and longitude, for the route map */
+var LL = { PKKHI:[24.85,66.99], PKBQM:[24.79,67.34], PKGWD:[25.12,62.32], AEJEA:[25.01,55.06], QAHMD:[25.03,51.60],
+  IQUQR:[30.03,47.93], OMSLL:[16.94,54.00], INMUN:[22.84,69.72], SAJED:[21.48,39.19], EGPSD:[31.26,32.30], TRMER:[36.80,34.63],
+  LKCMB:[6.93,79.84], BDCGP:[22.31,91.80], SGSIN:[1.26,103.83], MYPKG:[3.00,101.39], CNNGB:[29.87,121.55], CNSHA:[31.23,121.47],
+  NLRTM:[51.92,4.48], DEHAM:[53.55,9.99], GBFXT:[51.96,1.35], KEMBA:[-4.04,39.67], USNYC:[40.70,-74.01], USHOU:[29.76,-95.37],
+  UZTAS:[41.30,69.24], KZALA:[43.24,76.89] };
 var TERMINALS = ["KICT", "SAPT", "KGTL", "QICT", "GPT"];
 /* Which side of the country a terminal is on. KICT and SAPT are Keamari;
    QICT is Port Qasim, the better part of an hour away. For anyone booking a
@@ -1643,7 +1694,7 @@ var SAMPLE = {
   positions: "Positions are worked out from the published rotation, not live tracking. Sample data."
 };
 var VF = '<svg class="vf" viewBox="0 0 16 16" aria-label="Verified"><circle cx="8" cy="8" r="8" fill="#1A56DB"/><path d="M4.8 8.3l2.1 2.1 4.3-4.6" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>';
-var MARK = '<svg width="30" height="30" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="18" fill="#1A56DB"/><rect x="16" y="16" width="72" height="72" rx="8" fill="#0E8A4F"/><path d="M32 26h12v21l15-21h14L56 50l18 28H60L44 54v24H32z" fill="#fff"/></svg>';
+var MARK = '<svg width="30" height="30" viewBox="0 0 104 104" aria-hidden="true"><rect x="4" y="4" width="96" height="96" rx="22" fill="#1A56DB"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0v11a22 22 0 0 1-22 22H26A22 22 0 0 1 4 78z" fill="#0E8A4F"/><path d="M4 67c16-7 32-7 48 0s32 7 48 0" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2.2"/><path d="M31 21h13v21l15-21h15L57 45l19 33H61L44 51v27H31z" fill="#fff"/></svg>';
 
 /* ===========================================================
    THE SAILINGS
@@ -1669,6 +1720,8 @@ SERVICES.forEach(function (s) {
 });
 
 var ROW = {};
+/* how many sailings the compare view takes side by side */
+var MAXPICK = 6;
 var SOLD = {};
 /* One row per provider per sailing: a vessel sold by three companies is
    three offers, which is how a shipper shops for it. */
@@ -1866,7 +1919,7 @@ function route() {
   if (h.indexOf("cmp/") === 0) {
     /* a shared comparison has to work cold, so the rows it names are built first */
     rowsFor({ from: "", to: "", a: addDays(TODAY, -21), b: addDays(TODAY, 42), bookable: false });
-    S.picks = h.slice(4).split(",").filter(function (k) { return ROW[k]; }).slice(0, 4);
+    S.picks = h.slice(4).split(",").filter(function (k) { return ROW[k]; }).slice(0, MAXPICK);
     v = "results"; openCmp = S.picks.length > 1;
   }
   else if (h.indexOf("r/") === 0) { readLaneHash(h); v = "results"; }
@@ -1887,7 +1940,7 @@ function route() {
   if (v !== "company") disarmDock();
 
   if (v === "results") { if (changed) showResults(); else renderResults(); }
-  else if (v === "company") { if (changed) { C.id = h.slice(3); C.day = null; C.tab = "up"; C.more = false; C.owner = false; C.tier = null; C.look = ""; } renderCompany(); }
+  else if (v === "company") { if (changed) { C.id = h.slice(3); C.day = null; C.lens = false; C.tab = "up"; C.more = false; C.owner = false; C.tier = null; C.look = ""; } renderCompany(); }
   else if (v === "companies") renderCompanies();
   else renderHomeState();
 
@@ -2558,7 +2611,7 @@ function renderResults() {
 
 function srowHtml(r, loud, first) {
   var picked = S.picks.indexOf(r.key) > -1;
-  var full = !picked && S.picks.length >= 4;
+  var full = !picked && S.picks.length >= MAXPICK;
   /* red only when it is genuinely today-or-never; at two days it was on
      two thirds of every list and stopped meaning anything */
   var urgent = loud && r.cut - NOW < 12 * 36e5;
@@ -2733,7 +2786,7 @@ function renderCompany() {
       '<section class="sec" aria-label="Services"><div class="head"><h2>' + (shapeOf(f) === "carrier" ? "Their routes" : "Services they buy space on") + '</h2><div class="rule"></div></div><div class="svcs">' +
         ownSvcs.map(function (s) {
           var own = s.op === f.id;
-          return '<article class="svc"><div class="svc__h"><b><i style="background:' + s.color + '"></i>' + esc(s.name) + "</b>" +
+          return '<article class="svc" data-lsvc="' + s.id + '" style="--sc:' + s.color + '"><div class="svc__h"><b><i style="background:' + s.color + '"></i>' + esc(s.name) + "</b>" +
             "<small>" + (s.mode === "road" ? "By road" : "Every week") + " · leaves " + WD[s.wd] + " " + s.etd + "</small>" +
             '<button type="button" class="btn btn-line btn-sm" data-sails="' + f.id + '" data-svc="' + s.id + '">Vessels running</button></div>' +
             '<div class="rot">' + s.rot.map(function (x, i) {
@@ -2752,7 +2805,7 @@ function renderCompany() {
 
       '<section class="sec" aria-label="Lanes"><div class="head"><h2>Where they go</h2><div class="rule"></div></div><div class="lanes">' +
         lanes.map(function (l) {
-          return '<button type="button" class="lanec" data-lane="' + l.a + "|" + l.b + '"><small>' + esc(PORT[l.b].region) + "</small>" +
+          return '<button type="button" class="lanec" data-lane="' + l.a + "|" + l.b + '" data-lsvcs="' + l.svcs.join(" ") + '"><small>' + esc(PORT[l.b].region) + "</small>" +
             "<b>" + esc(PORT[l.b].name) + "</b><span>from " + esc(PORT[l.a].name) + " · " + sc(l.a) + " → " + sc(l.b) + "</span>" +
             "<small>" + plural(l.days, "day") + (l.direct ? " · straight there" : " · changes ship on the way") + "</small></button>";
         }).join("") + "</div></section>"));
@@ -2765,6 +2818,7 @@ function renderCompany() {
     "</main>" +
     '<div class="drail" id="drail" aria-label="Departure days" aria-hidden="true">' + railHtml() + "</div>";
   $("#vCompany").innerHTML = html;
+  applyLens();
   dock.open = false;
   setDockTop();
   armDock();
@@ -2844,6 +2898,7 @@ function setDay(k, fromRail) {
   var chip = $('#drail .dchip[data-cday="' + k + '"]');
   if (chip && dock.shown) chip.scrollIntoView({ block: "nearest", inline: "center", behavior: REDUCE ? "auto" : "smooth" });
   if (!fromRail && !dock.shown && chip) chip.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+  setLens(true);
 }
 function stepDay(dir) {
   var list = C.railDays;
@@ -2880,6 +2935,34 @@ function dayPanelHtml() {
 }
 
 /* ---------- the day rail ---------- */
+/* The rail is the page's lens: once you pick a day, the sailings, routes and
+   destinations below light up for that day and the rest steps back, so the
+   rail keeps working after the calendar has scrolled away. */
+function lensTxt() {
+  var rows = dayRowsNow(), d = new Date(C.day + "T00:00");
+  return "<i></i><span>" + pad(d.getDate()) + " " + MON[d.getMonth()] + " lit below</span><b aria-hidden=\"true\">&#10005;</b>" +
+    '<span class="sr">, ' + plural(rows.length, "sailing") + ". Show every day</span>";
+}
+function applyLens() {
+  var main = $("#vCompany");
+  if (!main) return;
+  var on = !!C.lens, svcs = {};
+  if (on) dayRowsNow().forEach(function (r) { svcs[r.svc.id] = 1; });
+  main.classList.toggle("lens", on);
+  $$("[data-bday]", main).forEach(function (li) { li.classList.toggle("lit", on && li.getAttribute("data-bday") === C.day); });
+  $$("[data-lsvc]", main).forEach(function (a) { a.classList.toggle("lit", on && !!svcs[a.getAttribute("data-lsvc")]); });
+  $$("[data-lsvcs]", main).forEach(function (b) {
+    b.classList.toggle("lit", on && b.getAttribute("data-lsvcs").split(" ").some(function (id) { return svcs[id]; }));
+  });
+  var lb = $("#railLens");
+  if (lb) { lb.hidden = !on; if (on) lb.innerHTML = lensTxt(); }
+}
+function setLens(v) {
+  var need = v && C.tab === "up" && !C.more && !$('#vCompany [data-bday="' + C.day + '"]');
+  C.lens = v;
+  if (need) { keepFocus(renderCompany); return; }
+  applyLens();
+}
 function nowTileHtml() {
   var d = new Date(C.day + "T00:00");
   return "<b>" + pad(d.getDate()) + "</b><small>" + WD[d.getDay()].toUpperCase() + " " + MON[d.getMonth()].toUpperCase() + "</small>";
@@ -2909,6 +2992,7 @@ function railHtml() {
       '<button type="button" class="drail__step" data-dstep="1" aria-label="Next day with a sailing"><svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="m1.5 1 5 5-5 5"/></svg></button>' +
       '<button type="button" class="drail__open" id="railOpen" aria-expanded="' + dock.open + '" aria-controls="railPanel">' +
         '<span id="railSum">' + railSumHtml() + "</span>" + chev + "</button>" +
+      '<button type="button" class="drail__lens" id="railLens" data-lens="off"' + (C.lens ? "" : " hidden") + ">" + lensTxt() + "</button>" +
     "</div>" +
     '<div class="drail__wrap"><div class="drail__panel" id="railPanel"><div class="wrap drail__scroll" id="railList">' + depList(dayRowsNow()) + "</div></div></div>";
 }
@@ -3001,10 +3085,11 @@ function clearerBlocks(f) {
 
 function boardHtml(list, tab) {
   if (!list.length) return '<p class="note" style="padding:22px 18px">' + (tab === "up" ? "No sailings scheduled in the next six weeks." : "Nothing has left in the last three weeks.") + "</p>";
-  var shown = C.more ? list : list.slice(0, BOARD_FEW);
+  var lensHidden = C.lens && list.slice(BOARD_FEW).some(function (r) { return iso(r.etd) === C.day; });
+  var shown = C.more || lensHidden ? list : list.slice(0, BOARD_FEW);
   return '<ul class="dep dep--board">' + shown.map(function (r) {
     var st = statusOf(r), open = st[0] === "open" || st[0] === "soon";
-    return '<li><button type="button" data-open="' + r.key + '">' +
+    return '<li data-bday="' + iso(r.etd) + '"><button type="button" data-open="' + r.key + '">' +
       '<span class="tm">' + fmtD(r.etd) + "<small>" + WD[r.etd.getDay()] + " " + hm(r.etd) + "</small></span>" +
       '<span class="v"><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b><small>" + esc(r.svc.name) + " · voy " + esc(r.voy) + "</small></span>" +
       '<span class="tags"><span class="tag r">' + esc(routeShort(r.svc)) + '</span>' +
@@ -3166,7 +3251,7 @@ function renderTray() {
   var picks = S.picks.map(function (k) { return ROW[k]; }).filter(Boolean);
   if (VIEW !== "results" || !picks.length) { t.hidden = true; return; }
   t.hidden = false;
-  t.innerHTML = '<span class="tray__n">' + picks.length + " of 4</span><ul>" + picks.map(function (r) {
+  t.innerHTML = '<span class="tray__n">' + picks.length + " of " + MAXPICK + "</span><ul>" + picks.map(function (r) {
     return "<li>" + av(r.firm) + "<span><b>" + esc(r.vessel) + "</b><small>" + fmtD(r.etd) + " · " + r.days + "d</small></span>" +
       '<button type="button" data-unpick="' + r.key + '" aria-label="Remove ' + esc(r.vessel) + '">✕</button></li>';
   }).join("") + "</ul>" +
@@ -3175,8 +3260,8 @@ function renderTray() {
 function togglePick(key) {
   var i = S.picks.indexOf(key);
   if (i > -1) S.picks.splice(i, 1);
-  else if (S.picks.length < 4) S.picks.push(key);
-  else toast("You can compare four sailings at a time. Remove one first.");
+  else if (S.picks.length < MAXPICK) S.picks.push(key);
+  else toast("You can compare " + MAXPICK + " sailings at a time. Remove one first.");
   if (VIEW === "results") keepFocus(renderResults);
   renderTray();
   if ($("#cmp").open) { if (S.picks.length < 2) $("#cmp").close(); else openCompare(); }
@@ -3204,20 +3289,106 @@ function openCompare() {
     ["Takes", null, null, function (r) { return esc(r.cargo.join(", ")); }],
     ["Usually replies in", null, null, function (r) { return esc(r.firm.reply); }]
   ];
-  $("#cmp").innerHTML = '<div class="sh__top"><div class="sh__t"><b>Compare ' + picks.length + " sailings</b><small>The better of each row is marked. " + SAMPLE.tag + ".</small></div>" +
-    '<button type="button" class="cmp__share" type="button" data-cmpshare>Copy link</button>' +
+  $("#cmp").innerHTML = '<div class="sh__top"><div class="sh__t"><b>Compare ' + picks.length + " sailings</b><small>Hover a ship to see its route. The better of each row is marked. " + SAMPLE.tag + ".</small></div>" +
+    '<button type="button" class="cmp__share" data-cmpshare>Copy link</button>' +
     '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
-    '<div class="cmpt"><table><thead><tr><th></th>' + picks.map(function (r) {
-      return '<td><div style="display:flex;gap:10px;align-items:center">' + av(r.firm) + "<div><b>" + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + "</small></div></div></td>";
-    }).join("") + "</tr></thead><tbody>" +
-    rowsDef.map(function (d) {
-      var marks = d[1] ? best(d[1], d[2]) : picks.map(function () { return false; });
-      return "<tr><th>" + d[0] + "</th>" + picks.map(function (r, i) { return '<td class="' + (marks[i] ? "best" : "") + '">' + d[3](r) + "</td>"; }).join("") + "</tr>";
-    }).join("") +
-    "<tr><th></th>" + picks.map(function (r) { return '<td><button type="button" class="btn btn-blue btn-sm" data-quote="' + r.key + '">' + (quotesOnly(r.firm) ? "Ask" : "Request") + "</button></td>"; }).join("") + "</tr>" +
-    "</tbody></table></div>";
+    '<div class="cmp__body">' +
+      '<div class="cmp__top">' +
+        '<div class="cmpmap" id="cmpMap">' + cmpMapSvg(picks) + "</div>" +
+        '<ul class="cmp__ships">' + picks.map(function (r, i) {
+          return '<li><button type="button" class="cmp__ship" data-hl="' + i + '" data-open="' + r.key + '" style="--pc:' + PICKC[i] + '">' +
+            '<i aria-hidden="true"></i><span><b>' + (r.svc.mode === "road" ? "" : "MV ") + esc(r.vessel) + "</b>" +
+            "<small>" + esc(r.firm.name) + " · " + fmtD(r.etd) + " · " + plural(r.days, "day") + "</small>" +
+            "<small>" + esc(r.svc.rot.slice(0, r.j + 1).map(function (x) { return sc(x[0]); }).join(" → ")) + "</small></span></button></li>";
+        }).join("") + "</ul>" +
+      "</div>" +
+      '<div class="cmpt"><table><thead><tr><th></th>' + picks.map(function (r, i) {
+        return '<td data-hl="' + i + '" style="--pc:' + PICKC[i] + '"><div class="cmp__hd">' + av(r.firm) + "<div><b>" + esc(r.vessel) + "</b><small>" + esc(r.firm.name) + "</small></div></div></td>";
+      }).join("") + "</tr></thead><tbody>" +
+      rowsDef.map(function (d) {
+        var marks = d[1] ? best(d[1], d[2]) : picks.map(function () { return false; });
+        return "<tr><th>" + d[0] + "</th>" + picks.map(function (r, i) { return '<td class="' + (marks[i] ? "best" : "") + '">' + d[3](r) + "</td>"; }).join("") + "</tr>";
+      }).join("") +
+      "<tr><th></th>" + picks.map(function (r) { return '<td><button type="button" class="btn btn-blue btn-sm" data-quote="' + r.key + '">' + (quotesOnly(r.firm) ? "Ask" : "Request") + "</button></td>"; }).join("") + "</tr>" +
+      "</tbody></table></div>" +
+    "</div>";
   if (!$("#cmp").open) $("#cmp").showModal();
 }
+
+/* One colour per sailing in the compare view, bright enough to read on the
+   night map and distinct from each other. */
+var PICKC = ["#4F8BFF", "#35E08A", "#FFB24D", "#FF6B8A", "#B794F6", "#2DD4BF"];
+/* Every sailing's route, drawn between the real port positions. The view is
+   fitted to the ports actually in play, and routes that share a leg bow by
+   different amounts so they stay apart. */
+function cmpMapSvg(picks) {
+  var W = 720, H = 380, codes = {};
+  picks.forEach(function (r) { r.svc.rot.slice(0, r.j + 1).forEach(function (x) { codes[x[0]] = 1; }); });
+  var list = Object.keys(codes).filter(function (c) { return LL[c]; });
+  var lons = list.map(function (c) { return LL[c][1]; }), lats = list.map(function (c) { return LL[c][0]; });
+  var lo0 = Math.min.apply(null, lons), lo1 = Math.max.apply(null, lons), la0 = Math.min.apply(null, lats), la1 = Math.max.apply(null, lats);
+  var padLo = Math.max(4, (lo1 - lo0) * 0.14), padLa = Math.max(4, (la1 - la0) * 0.2);
+  lo0 -= padLo; lo1 += padLo; la0 -= padLa; la1 += padLa;
+  var k = Math.min(W / (lo1 - lo0), H / (la1 - la0));
+  var cx = (lo0 + lo1) / 2, cy = (la0 + la1) / 2;
+  var X = function (c) { return W / 2 + (LL[c][1] - cx) * k; };
+  var Y = function (c) { return H / 2 - (LL[c][0] - cy) * k; };
+  var paths = picks.map(function (r, i) {
+    var calls = r.svc.rot.slice(0, r.j + 1).map(function (x) { return x[0]; }).filter(function (c) { return LL[c]; });
+    var d = "M" + X(calls[0]).toFixed(1) + " " + Y(calls[0]).toFixed(1);
+    for (var n = 1; n < calls.length; n++) {
+      var x1 = X(calls[n - 1]), y1 = Y(calls[n - 1]), x2 = X(calls[n]), y2 = Y(calls[n]);
+      var dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+      var bow = Math.min(len * 0.18, 60) * (1 + i * 0.35) * (i % 2 ? -1 : 1);
+      var qx = (x1 + x2) / 2 - dy / len * bow, qy = (y1 + y2) / 2 + dx / len * bow;
+      d += " Q" + qx.toFixed(1) + " " + qy.toFixed(1) + " " + x2.toFixed(1) + " " + y2.toFixed(1);
+    }
+    return '<path class="rt" data-ri="' + i + '" d="' + d + '" stroke="' + PICKC[i] + '"/>';
+  }).join("");
+  /* labels take the first free corner around their dot; a crowded one is left
+     to the dot, since the ship list names every call anyway */
+  var boxes = list.map(function (c) { return [X(c) - 7, Y(c) - 7, X(c) + 7, Y(c) + 7]; });
+  var hit = function (q) { return boxes.some(function (o) { return q[0] < o[2] && q[2] > o[0] && q[1] < o[3] && q[3] > o[1]; }); };
+  var order = list.slice().sort(function (a, b) { return (PK.indexOf(b) > -1) - (PK.indexOf(a) > -1); });
+  var lab = {};
+  order.forEach(function (c) {
+    var x = X(c), y = Y(c);
+    [[9, -8, 0], [9, 16, 0], [-9, -8, 1], [-9, 16, 1], [-13, 4, 1], [13, 4, 0]].some(function (o) {
+      var x0 = o[2] ? x + o[0] - 26 : x + o[0], y0 = y + o[1] - 10, q = [x0, y0, x0 + 26, y0 + 12];
+      if (q[0] < 0 || q[2] > W || q[1] < 0 || q[3] > H || hit(q)) return false;
+      boxes.push(q); lab[c] = o; return true;
+    });
+  });
+  var ports = list.map(function (c) {
+    var pk = PK.indexOf(c) > -1, o = lab[c];
+    return '<g class="pt' + (pk ? " pk" : "") + '" transform="translate(' + X(c).toFixed(1) + " " + Y(c).toFixed(1) + ')">' +
+      '<circle r="' + (pk ? 6 : 4.5) + '"/>' +
+      (o ? '<text x="' + o[0] + '" y="' + o[1] + '"' + (o[2] ? ' text-anchor="end"' : "") + ">" + sc(c) + "</text>" : "<title>" + esc(pn(c)) + "</title>") + "</g>";
+  }).join("");
+  return '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Routes of the sailings being compared">' +
+    '<defs><pattern id="cmpdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#1C2C55"/></pattern></defs>' +
+    '<rect width="' + W + '" height="' + H + '" fill="url(#cmpdots)"/>' + paths + ports + "</svg>";
+}
+/* hover or focus a ship, anywhere in the compare view, to light its route */
+function cmpHighlight(i) {
+  var map = $("#cmpMap");
+  if (!map) return;
+  map.classList.toggle("hl", i !== null);
+  $$(".rt", map).forEach(function (p) { p.classList.toggle("on", String(i) === p.getAttribute("data-ri")); });
+  $$("#cmp [data-hl]").forEach(function (el) { el.classList.toggle("on", String(i) === el.getAttribute("data-hl")); });
+}
+["mouseover", "focusin"].forEach(function (ev) {
+  document.addEventListener(ev, function (e) {
+    var el = e.target.closest && e.target.closest("#cmp [data-hl]");
+    if (el) cmpHighlight(+el.getAttribute("data-hl"));
+  });
+});
+["mouseout", "focusout"].forEach(function (ev) {
+  document.addEventListener(ev, function (e) {
+    var el = e.target.closest && e.target.closest("#cmp [data-hl]");
+    if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) cmpHighlight(null);
+  });
+});
 
 /* ===========================================================
    SAILINGS POP-UP
@@ -3370,6 +3541,7 @@ document.addEventListener("click", function (e) {
   if ((el = t.closest("[data-cday]"))) { setDay(el.getAttribute("data-cday"), !!t.closest("#drail")); return; }
   if ((el = t.closest("[data-dstep]"))) { stepDay(+el.getAttribute("data-dstep")); return; }
   if (t.closest("#railOpen")) { setDockOpen(!dock.open); return; }
+  if (t.closest("[data-lens]")) { setLens(false); return; }
   if (t.closest("[data-bmore]")) { C.more = !C.more; keepFocus(renderCompany); return; }
   if ((el = t.closest("[data-look]"))) {
     C.look = el.getAttribute("data-look");
