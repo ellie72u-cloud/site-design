@@ -311,43 +311,43 @@ footer a:hover{color:#fff}
 .veil{position:fixed;inset:0;z-index:90;pointer-events:none;display:none;background:var(--night)}
 /* promoted only while it is repainting, not for the rest of the visit */
 .intro .veil{display:block;will-change:background}
-.veil.fade{transition:opacity .35s ease;opacity:0}
+.veil.fade{transition:opacity .6s cubic-bezier(.4,0,.2,1);opacity:0}
 .intro .hero > .logo,.intro .hero > .tagline,.intro .hero > .search{z-index:95}
 .intro .logo .word{color:#fff}
 .intro .tagline{color:rgba(255,255,255,.7)}
-.intro.lit .logo .word{color:var(--ink);transition:color .7s ease .1s}
-.intro.lit .tagline{color:var(--sub);transition:color .7s ease .1s}
+.intro.lit .logo .word{color:var(--ink);transition:color 1s ease .2s}
+.intro.lit .tagline{color:var(--sub);transition:color 1s ease .2s}
 .cable{position:absolute;left:35px;bottom:50%;width:2px;height:100vh;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.6));transform-origin:bottom;transform:scaleY(0);pointer-events:none;display:none}
 .intro .cable{display:block}
-.play .cable{animation:cable-in .22s ease-out .18s forwards,cable-out .3s ease-in .92s forwards}
+.play .cable{animation:cable-in .34s cubic-bezier(.3,0,.2,1) .25s forwards,cable-out .42s ease-in 1.3s forwards}
 @keyframes cable-in{to{transform:scaleY(1)}}
 @keyframes cable-out{to{transform:scaleY(0);opacity:0}}
-.play .logo > svg{opacity:0;transform:translateY(-52vh);animation:drop .56s cubic-bezier(.45,.02,.3,1) .2s forwards,bounce .22s ease-out .76s}
+.play .logo > svg{opacity:0;transform:translateY(-52vh);animation:drop .82s cubic-bezier(.34,0,.18,1) .3s forwards,bounce .42s cubic-bezier(.3,0,.3,1) 1.1s}
 @keyframes drop{0%{opacity:0;transform:translateY(-52vh)}12%{opacity:1}100%{opacity:1;transform:none}}
-@keyframes bounce{0%{transform:translateY(0)}45%{transform:translateY(-9px)}100%{transform:translateY(0)}}
-.play .logo .word span{opacity:0;transform:rotateX(-92deg);transform-origin:50% 0;backface-visibility:hidden;animation:flip .26s cubic-bezier(.2,.75,.3,1) forwards;animation-delay:calc(.6s + var(--i) * .055s)}
+@keyframes bounce{0%{transform:translateY(0)}40%{transform:translateY(-6px)}75%{transform:translateY(1px)}100%{transform:translateY(0)}}
+.play .logo .word span{opacity:0;transform:rotateX(-92deg);transform-origin:50% 0;backface-visibility:hidden;animation:flip .4s cubic-bezier(.2,.75,.3,1) forwards;animation-delay:calc(.9s + var(--i) * .08s)}
 @keyframes flip{to{opacity:1;transform:none}}
-.play .tagline{opacity:0;animation:fadein .45s ease-out 1s forwards}
+.play .tagline{opacity:0;transform:translateY(6px);animation:rise .7s var(--ease) 1.45s forwards}
 @keyframes fadein{to{opacity:1}}
 .hero > .hair{position:absolute;left:50%;top:50%;width:0;height:2px;background:#fff;transform:translate(-50%,-50%);border-radius:2px;opacity:0;pointer-events:none;z-index:96;display:none}
 .intro .hero > .hair{display:block}
-.play .hero > .hair{animation:hair-draw .22s ease-out 1s forwards,hair-go .18s ease-in 1.22s forwards}
+.play .hero > .hair{animation:hair-draw .34s cubic-bezier(.3,0,.2,1) 1.5s forwards,hair-go .26s ease-in 1.84s forwards}
 @keyframes hair-draw{from{width:0;opacity:1}to{width:86%;opacity:1}}
 @keyframes hair-go{to{width:100%;opacity:0}}
-.play .hero > .search{opacity:0;transform:scaleX(.06);animation:unroll .34s cubic-bezier(.2,.8,.25,1) 1.16s forwards;box-shadow:0 0 0 7px rgba(255,255,255,.08),0 22px 60px -14px rgba(0,0,0,.72)}
+.play .hero > .search{opacity:0;transform:scaleX(.06);animation:unroll .56s cubic-bezier(.2,.8,.25,1) 1.78s forwards;box-shadow:0 0 0 7px rgba(255,255,255,.08),0 22px 60px -14px rgba(0,0,0,.72)}
 @keyframes unroll{0%{transform:scaleX(.06);opacity:0}25%{opacity:1}100%{transform:none;opacity:1}}
-.play .hero > .search > *:not(.trace):not(.sugg){opacity:0;animation:fadein .24s ease-out 1.42s forwards}
+.play .hero > .search > *:not(.trace):not(.sugg){opacity:0;animation:fadein .4s ease-out 2.15s forwards}
 .trace{position:absolute;left:-1px;top:-1px;pointer-events:none;overflow:visible;display:none}
 .intro .trace{display:block}
 .trace path{fill:none;stroke:var(--orange);stroke-width:2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 5px rgba(242,90,15,.7))}
-.play .trace path{animation:trace .62s cubic-bezier(.55,0,.25,1) 1.48s forwards}
-.intro.lit .trace{opacity:0;transition:opacity .9s ease .35s}
+.play .trace path{animation:trace 1s cubic-bezier(.55,0,.25,1) 2.25s forwards}
+.intro.lit .trace{opacity:0;transition:opacity 1.2s ease .6s}
 @keyframes trace{to{stroke-dashoffset:0}}
 /* what the light reaches, loading in as it arrives */
 .intro .topnav,.intro .hero > .filters,.intro .hero > .try{opacity:0}
-.intro.lit .topnav{animation:rise .6s var(--ease) .25s forwards}
-.intro.lit .hero > .filters{animation:rise .6s var(--ease) .3s forwards}
-.intro.lit .hero > .try{animation:rise .6s var(--ease) .42s forwards}
+.intro.lit .topnav{animation:rise .8s var(--ease) .5s forwards}
+.intro.lit .hero > .filters{animation:rise .8s var(--ease) .35s forwards}
+.intro.lit .hero > .try{animation:rise .8s var(--ease) .55s forwards}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .skip{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:97;display:none;
   font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.62);background:none;border:1px solid rgba(255,255,255,.24);border-radius:999px;padding:8px 16px}
@@ -1251,12 +1251,27 @@ button.cat:first-child{border-left:0}
 .drail__lens:hover{border-color:var(--green)}
 .drail__lens[hidden]{display:none}
 #vCompany [data-bday],#vCompany .svc,#vCompany .lanec{transition:opacity .3s var(--ease),filter .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
-.lens [data-bday]:not(.lit),.lens .svc:not(.lit),.lens .lanec:not(.lit){opacity:.4;filter:saturate(.35)}
+.lens [data-bday]:not(.lit),.lens .svc:not(.lit),.lens .lanec:not(.lit),.lens #coBoard [data-bmore]{display:none}
+.lensnote{flex:none;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--green)}
+.lensnote:empty{display:none}
+.lensnote button{border:0;background:none;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .lens [data-bday].lit button{box-shadow:inset 4px 0 0 var(--blue)}
 .lens [data-bday].lit .v b{color:var(--blue)}
 .lens .svc.lit{border-color:var(--sc);box-shadow:0 0 0 1px var(--sc),0 10px 28px -14px var(--sc)}
 .lens .lanec.lit{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
 @media (max-width:860px){.drail__lens span{display:none}.drail__lens{padding:0 11px}}
+.coid > div{min-width:0}
+@media (max-width:560px){
+  .coid h1{font-size:clamp(26px,8.2vw,40px);overflow-wrap:break-word}
+  /* the selected chip already says which day; give the room to more days */
+  .drail__now{display:none}
+  .drail__in{gap:8px}
+  .drail__open{padding:0 10px}
+}
+.cmp__xl{display:inline-flex;align-items:center;gap:7px;margin-left:auto;background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+.cmp__xl:hover{background:#0B7342!important}
+.cmp__xl[aria-busy="true"]{opacity:.75;cursor:progress}
+@media (max-width:560px){.cmp__xl span{display:none}.cmp__xl{padding:0 11px}}
 </style>
 
 <div class="veil" id="veil" aria-hidden="true"></div>
@@ -2777,13 +2792,13 @@ function renderCompany() {
         }).join("") + "</div></div>" +
         '<div class="dayp" aria-live="polite" id="dayPanel">' + dayPanelHtml() + "</div></div></section>" +
 
-      '<section class="sec" aria-label="Departure board"><div class="head"><h2>' + (shapeOf(f) === "carrier" ? "Every sailing" : "Sailings they can book you on") + '</h2><div class="rule"></div></div>' +
+      '<section class="sec" id="coBoard" aria-label="Departure board"><div class="head"><h2>' + (shapeOf(f) === "carrier" ? "Every sailing" : "Sailings they can book you on") + '</h2><div class="rule"></div><span class="lensnote" data-lensnote></span></div>' +
       '<div class="board"><div class="board__tabs" role="tablist">' +
         '<button type="button" role="tab" class="tab" data-btab="up" aria-selected="' + (C.tab === "up") + '">Upcoming <small>' + up.length + "</small></button>" +
         '<button type="button" role="tab" class="tab" data-btab="past" aria-selected="' + (C.tab === "past") + '">Recently departed <small>' + past.length + "</small></button>" +
       "</div>" + boardHtml(C.tab === "up" ? up : past, C.tab) + "</div></section>" +
 
-      '<section class="sec" aria-label="Services"><div class="head"><h2>' + (shapeOf(f) === "carrier" ? "Their routes" : "Services they buy space on") + '</h2><div class="rule"></div></div><div class="svcs">' +
+      '<section class="sec" aria-label="Services"><div class="head"><h2>' + (shapeOf(f) === "carrier" ? "Their routes" : "Services they buy space on") + '</h2><div class="rule"></div><span class="lensnote" data-lensnote></span></div><div class="svcs">' +
         ownSvcs.map(function (s) {
           var own = s.op === f.id;
           return '<article class="svc" data-lsvc="' + s.id + '" style="--sc:' + s.color + '"><div class="svc__h"><b><i style="background:' + s.color + '"></i>' + esc(s.name) + "</b>" +
@@ -2803,7 +2818,7 @@ function renderCompany() {
             "</div></article>";
         }).join("") + "</div></section>" +
 
-      '<section class="sec" aria-label="Lanes"><div class="head"><h2>Where they go</h2><div class="rule"></div></div><div class="lanes">' +
+      '<section class="sec" aria-label="Lanes"><div class="head"><h2>Where they go</h2><div class="rule"></div><span class="lensnote" data-lensnote></span></div><div class="lanes">' +
         lanes.map(function (l) {
           return '<button type="button" class="lanec" data-lane="' + l.a + "|" + l.b + '" data-lsvcs="' + l.svcs.join(" ") + '"><small>' + esc(PORT[l.b].region) + "</small>" +
             "<b>" + esc(PORT[l.b].name) + "</b><span>from " + esc(PORT[l.a].name) + " · " + sc(l.a) + " → " + sc(l.b) + "</span>" +
@@ -2898,7 +2913,7 @@ function setDay(k, fromRail) {
   var chip = $('#drail .dchip[data-cday="' + k + '"]');
   if (chip && dock.shown) chip.scrollIntoView({ block: "nearest", inline: "center", behavior: REDUCE ? "auto" : "smooth" });
   if (!fromRail && !dock.shown && chip) chip.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
-  setLens(true);
+  setLens(true, !!fromRail && dock.shown);
 }
 function stepDay(dir) {
   var list = C.railDays;
@@ -2956,12 +2971,36 @@ function applyLens() {
   });
   var lb = $("#railLens");
   if (lb) { lb.hidden = !on; if (on) lb.innerHTML = lensTxt(); }
+  /* a re-render rebuilds the rail at scroll 0: put the day back in view,
+     sideways only, so the page itself never moves */
+  var days = $("#railDays"), chip = days && $('.dchip[data-cday="' + C.day + '"]', days);
+  if (chip) days.scrollLeft = chip.offsetLeft - (days.clientWidth - chip.offsetWidth) / 2;
+  var d = new Date(C.day + "T00:00"), day = pad(d.getDate()) + " " + MON[d.getMonth()];
+  $$("[data-lensnote]", main).forEach(function (n) {
+    var sec = n.closest("section"), all = $$("[data-bday],[data-lsvc],[data-lsvcs]", sec), lit = all.filter(function (x) { return x.classList.contains("lit"); });
+    var hid = all.length - lit.length;
+    n.innerHTML = !on ? "" : (lit.length ? day + " only" : "Nothing here on " + day) +
+      (hid ? ' · <button type="button" data-lens="off">Show ' + (lit.length ? "the other " : "all ") + hid + "</button>" : "");
+  });
 }
-function setLens(v) {
-  var need = v && C.tab === "up" && !C.more && !$('#vCompany [data-bday="' + C.day + '"]');
+function setLens(v, jump) {
+  /* a day that has already gone lives on the other tab: go there rather
+     than light up an empty list */
+  var tab = v ? (C.day < iso(TODAY) ? "past" : "up") : C.tab;
+  var need = v && (tab !== C.tab || (!C.more && !$('#vCompany [data-bday="' + C.day + '"]')));
+  C.tab = tab;
   C.lens = v;
-  if (need) { keepFocus(renderCompany); return; }
-  applyLens();
+  if (need) keepFocus(renderCompany); else applyLens();
+  /* picked from the rail: the page below just got shorter, so land on the
+     day's sailings rather than wherever the old, longer page left you */
+  var b = $("#vCompany [data-bday].lit") || $("#coBoard"), month = $("#vCompany .month");
+  if (jump && b) {
+    var top = dockTopPx(), rail = $("#drail") ? $("#drail").offsetHeight : 0;
+    var y = b.getBoundingClientRect().top + scrollY - top - rail - 12;
+    /* never so far up that the calendar returns and takes the rail away */
+    if (month) y = Math.max(y, month.getBoundingClientRect().bottom + scrollY - top + 2);
+    scrollTo({ top: Math.max(0, y), behavior: REDUCE ? "auto" : "smooth" });
+  }
 }
 function nowTileHtml() {
   var d = new Date(C.day + "T00:00");
@@ -3290,6 +3329,7 @@ function openCompare() {
     ["Usually replies in", null, null, function (r) { return esc(r.firm.reply); }]
   ];
   $("#cmp").innerHTML = '<div class="sh__top"><div class="sh__t"><b>Compare ' + picks.length + " sailings</b><small>Hover a ship to see its route. The better of each row is marked. " + SAMPLE.tag + ".</small></div>" +
+    '<button type="button" class="cmp__share cmp__xl" data-cmpxl><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span>Download Excel</span></button>' +
     '<button type="button" class="cmp__share" data-cmpshare>Copy link</button>' +
     '<button type="button" class="x" data-close aria-label="Close">✕</button></div>' +
     '<div class="cmp__body">' +
@@ -3368,6 +3408,200 @@ function cmpMapSvg(picks) {
   return '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Routes of the sailings being compared">' +
     '<defs><pattern id="cmpdots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#1C2C55"/></pattern></defs>' +
     '<rect width="' + W + '" height="' + H + '" fill="url(#cmpdots)"/>' + paths + ports + "</svg>";
+}
+/* ===========================================================
+   COMPARISON AS A SPREADSHEET
+   A forwarder forwards: the client wants a sheet they can open, add their
+   own rates to and send on, with where it came from in the corner.
+   =========================================================== */
+var XL_SRC = "https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js";
+var xlLib = null;
+function loadExcel() {
+  if (xlLib) return xlLib;
+  xlLib = new Promise(function (ok, no) {
+    if (window.ExcelJS) return ok(window.ExcelJS);
+    var sc = document.createElement("script");
+    sc.src = XL_SRC; sc.async = true;
+    sc.onload = function () { window.ExcelJS ? ok(window.ExcelJS) : no(new Error("ExcelJS missing")); };
+    sc.onerror = function () { xlLib = null; no(new Error("load failed")); };
+    document.head.appendChild(sc);
+  });
+  return xlLib;
+}
+/* the mark, drawn once to a PNG the workbook can carry */
+function markPng(px) {
+  return new Promise(function (ok, no) {
+    var svg = MARK.replace(/width="\d+" height="\d+"/, 'width="' + px + '" height="' + px + '" xmlns="http://www.w3.org/2000/svg"');
+    var img = new Image();
+    img.onload = function () {
+      var c = document.createElement("canvas"); c.width = c.height = px;
+      c.getContext("2d").drawImage(img, 0, 0, px, px);
+      ok(c.toDataURL("image/png"));
+    };
+    img.onerror = no;
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  });
+}
+function xlArgb(hex) { return "FF" + hex.replace("#", "").toUpperCase(); }
+function xlStamp(d) { return fmtD(d) + " " + d.getFullYear() + ", " + hm(d); }
+async function cmpExcel(btn) {
+  var picks = S.picks.map(function (k) { return ROW[k]; }).filter(Boolean);
+  if (picks.length < 2 || btn.getAttribute("aria-busy") === "true") return;
+  var label = $("span", btn), was = label.textContent;
+  btn.setAttribute("aria-busy", "true"); label.textContent = "Preparing…";
+  try {
+    var X = await loadExcel(), logo = await markPng(256);
+    var wb = new X.Workbook();
+    wb.creator = "KARGOS"; wb.created = new Date();
+    var n = picks.length, last = n + 1;
+    var NAVY = "FF070D1F", SUB = "FF5F6B7A", LINE = "FFDDE3EC", GOOD = "FF0E8A4F", GOODBG = "FFE3F6EC";
+    var thin = { style: "thin", color: { argb: LINE } };
+    var box = { top: thin, left: thin, bottom: thin, right: thin };
+
+    /* ---- sheet 1: the comparison ---- */
+    var ws = wb.addWorksheet("Comparison", {
+      views: [{ state: "frozen", xSplit: 1, ySplit: 7, showGridLines: false }],
+      pageSetup: { orientation: "landscape", fitToPage: true, fitToWidth: 1, fitToHeight: 0, margins: { left: .4, right: .4, top: .5, bottom: .5, header: .2, footer: .2 } },
+      headerFooter: { oddFooter: "&L&8KARGOS · Sailing comparison&R&8Page &P of &N" }
+    });
+    ws.columns = [{ width: 22 }].concat(picks.map(function () { return { width: 30 }; }));
+    ws.getRow(1).height = 26; ws.getRow(2).height = 18; ws.getRow(3).height = 18; ws.getRow(4).height = 10;
+    ws.addImage(wb.addImage({ base64: logo, extension: "png" }), { tl: { col: 0.12, row: 0.15 }, ext: { width: 58, height: 58 } });
+    ws.mergeCells(1, 2, 1, last); ws.mergeCells(2, 2, 2, last); ws.mergeCells(3, 2, 3, last);
+    var t = ws.getCell(1, 2);
+    t.value = "KARGOS  ·  Sailing comparison";
+    t.font = { name: "Calibri", size: 18, bold: true, color: { argb: NAVY } };
+    var dests = [], seen = {};
+    picks.forEach(function (r) { if (!seen[r.to]) { seen[r.to] = 1; dests.push(PORT[r.to].name); } });
+    ws.getCell(2, 2).value = n + " sailings from " + PORT[picks[0].svc.rot[0][0]].name + (picks.some(function (r) { return r.svc.rot[0][0] !== picks[0].svc.rot[0][0]; }) ? " and nearby ports" : "") + " to " + dests.join(", ");
+    ws.getCell(2, 2).font = { size: 11, color: { argb: NAVY } };
+    ws.getCell(3, 2).value = "Made " + xlStamp(new Date()) + ". " + SAMPLE.tag + ". Times are local.";
+    ws.getCell(3, 2).font = { size: 9, italic: true, color: { argb: SUB } };
+
+    /* ship header: each column wears the colour it wears on the map */
+    var h1 = ws.getRow(6), h2 = ws.getRow(7);
+    h1.height = 24; h2.height = 30;
+    ws.getCell(5, 1).value = ""; 
+    h1.getCell(1).value = "Ship"; h2.getCell(1).value = "Sold by";
+    [h1.getCell(1), h2.getCell(1)].forEach(function (c) { c.font = { bold: true, size: 9, color: { argb: SUB } }; c.alignment = { vertical: "middle" }; c.border = box; });
+    picks.forEach(function (r, i) {
+      var a = h1.getCell(i + 2), b = h2.getCell(i + 2);
+      ws.getCell(5, i + 2).fill = { type: "pattern", pattern: "solid", fgColor: { argb: xlArgb(PICKC[i]) } };
+      ws.getRow(5).height = 6;
+      a.value = (r.svc.mode === "road" ? "" : "MV ") + r.vessel;
+      a.font = { bold: true, size: 12, color: { argb: NAVY } };
+      b.value = r.firm.name + "\n" + r.svc.name + " · voy " + r.voy;
+      b.font = { size: 9, color: { argb: SUB } };
+      [a, b].forEach(function (c) { c.alignment = { vertical: "middle", wrapText: true }; c.border = box; });
+    });
+
+    var best = function (vals, low) {
+      var m = low ? Math.min.apply(null, vals) : Math.max.apply(null, vals);
+      return vals.map(function (v) { return v === m && vals.filter(function (x) { return x === m; }).length < vals.length; });
+    };
+    var rows = [
+      ["Sails", picks.map(function (r) { return +r.etd; }), true, function (r) { return fmtWD(r.etd) + " " + r.etd.getFullYear() + ", " + hm(r.etd); }],
+      ["Arrives", picks.map(function (r) { return +r.eta; }), true, function (r) { return fmtWD(r.eta) + " " + r.eta.getFullYear() + ", " + PORT[r.to].name; }],
+      ["Journey", picks.map(function (r) { return r.days; }), true, function (r) { return plural(r.days, "day"); }],
+      ["Route", picks.map(function (r) { return r.via.length; }), true, function (r) { return viaText(r); }],
+      ["Port calls", null, null, function (r) { return r.svc.rot.slice(0, r.j + 1).map(function (x) { return pn(x[0]); }).join(" → "); }],
+      ["Cargo in by", picks.map(function (r) { return +r.cut; }), false, function (r) { return fmtWD(r.cut) + ", " + hm(r.cut); }],
+      ["Time you have", picks.map(function (r) { return +r.cut - NOW; }), false, function (r) {
+        var d = Math.round((r.cut - NOW) / DAY);
+        return r.cut <= NOW ? "Gate shut" : d < 1 ? untilLabel(r.cut) : plural(d, "day");
+      }],
+      ["Terminal", null, null, function (r) { return r.term + (TERM_WHERE[r.term] ? ", " + TERM_WHERE[r.term] : ""); }],
+      ["Takes", null, null, function (r) { return r.cargo.map(function (c) { return c + " (" + CARGO_PLAIN[c] + ")"; }).join(", "); }],
+      ["Usually replies in", null, null, function (r) { return r.firm.reply; }],
+      ["Status", null, null, function (r) { return statusOf(r)[1]; }],
+      ["Your rate (fill in)", null, null, function () { return ""; }],
+      ["Your notes", null, null, function () { return ""; }]
+    ];
+    rows.forEach(function (d, k) {
+      var row = ws.getRow(8 + k), marks = d[1] ? best(d[1], d[2]) : picks.map(function () { return false; });
+      var blank = d[0].indexOf("Your") === 0;
+      row.height = blank ? 28 : d[0] === "Port calls" || d[0] === "Takes" ? 34 : 22;
+      var th = row.getCell(1);
+      th.value = d[0];
+      th.font = { bold: true, size: 9, color: { argb: blank ? "FF1A56DB" : SUB } };
+      th.alignment = { vertical: "middle", wrapText: true };
+      th.border = box;
+      if (k % 2) th.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF6F8FB" } };
+      picks.forEach(function (r, i) {
+        var c = row.getCell(i + 2);
+        c.value = d[3](r);
+        c.alignment = { vertical: "middle", wrapText: true, horizontal: typeof c.value === "number" ? "left" : undefined };
+        c.border = box;
+        c.font = { size: 10, color: { argb: NAVY } };
+        if (k % 2) c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF6F8FB" } };
+        if (blank) c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFFBEA" } };
+        if (marks[i]) {
+          c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: GOODBG } };
+          c.font = { size: 10, bold: true, color: { argb: GOOD } };
+          c.value = c.value + "   ✓ Best";
+        }
+      });
+    });
+    var end = 8 + rows.length + 1;
+    ws.mergeCells(end, 1, end, last);
+    ws.getCell(end, 1).value = "✓ Best marks the better of each row: earliest to sail and arrive, shortest journey, fewest changes, most time to get your boxes to the gate.";
+    ws.getCell(end, 1).font = { size: 9, color: { argb: SUB } };
+    ws.mergeCells(end + 1, 1, end + 1, last);
+    var link = location.href.split("#")[0] + "#cmp/" + S.picks.join(",");
+    ws.getCell(end + 1, 1).value = { text: "Open this comparison on KARGOS", hyperlink: link };
+    ws.getCell(end + 1, 1).font = { size: 10, underline: true, color: { argb: "FF1A56DB" } };
+
+    /* ---- sheet 2: every call, one row each, for filtering ---- */
+    var ps = wb.addWorksheet("Port calls", { views: [{ state: "frozen", ySplit: 4, showGridLines: false }] });
+    ps.columns = [{ width: 24 }, { width: 26 }, { width: 8 }, { width: 22 }, { width: 8 }, { width: 18 }, { width: 10 }];
+    ps.getRow(1).height = 26; ps.getRow(2).height = 18;
+    ps.addImage(wb.addImage({ base64: logo, extension: "png" }), { tl: { col: 0.08, row: 0.15 }, ext: { width: 40, height: 40 } });
+    ps.getCell("B1").value = "Port calls, in order";
+    ps.getCell("B1").font = { size: 14, bold: true, color: { argb: NAVY } };
+    ps.getCell("B2").value = SAMPLE.tag + ".";
+    ps.getCell("B2").font = { size: 9, italic: true, color: { argb: SUB } };
+    var hd = ps.getRow(4);
+    ["Ship", "Sold by", "Stop", "Port", "Code", "Date", "Day"].forEach(function (x, i) {
+      var c = hd.getCell(i + 1); c.value = x;
+      c.font = { bold: true, size: 10, color: { argb: "FFFFFFFF" } };
+      c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: NAVY } };
+      c.border = box;
+    });
+    var rr = 5;
+    picks.forEach(function (r, i) {
+      r.svc.rot.slice(0, r.j + 1).forEach(function (x, s) {
+        var row = ps.getRow(rr++), dd = r.dep.dates[s];
+        [ (r.svc.mode === "road" ? "" : "MV ") + r.vessel, r.firm.name, s + 1, pn(x[0]), sc(x[0]),
+          dd ? fmtWD(dd) + " " + dd.getFullYear() : "", s ? "day " + x[1] : "loads" ].forEach(function (v, k) {
+          var c = row.getCell(k + 1); c.value = v; c.border = box;
+          c.font = { size: 10, color: { argb: NAVY }, bold: k === 0 && s === 0 };
+        });
+        row.getCell(1).border = { top: thin, bottom: thin, right: thin, left: { style: "thick", color: { argb: xlArgb(PICKC[i]) } } };
+      });
+    });
+
+    var buf = await wb.xlsx.writeBuffer();
+    var name = "KARGOS comparison " + iso(new Date()) + ".xlsx";
+    var dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null;
+    if (dl) {
+      try { await dl.save({ filename: name, data: new Blob([buf]) }); toast("Saved " + name); }
+      catch (e) {
+        if (e && e.code === "declined") toast("Download cancelled.");
+        else if (e && e.code === "rate_limited") toast("A save is already waiting for you.");
+        else toast("This view can't save files. Copy the link instead.");
+      }
+    } else {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      a.download = name; document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+      toast("Downloaded " + name);
+    }
+  } catch (e) {
+    toast("Couldn't build the sheet. Check your connection and try again.");
+  } finally {
+    btn.removeAttribute("aria-busy"); label.textContent = was;
+  }
 }
 /* hover or focus a ship, anywhere in the compare view, to light its route */
 function cmpHighlight(i) {
@@ -3530,6 +3764,7 @@ document.addEventListener("click", function (e) {
     }
     return;
   }
+  if ((el = t.closest("[data-cmpxl]"))) { cmpExcel(el); return; }
   if (t.closest("[data-cmpshare]")) {
     /* a forwarder sends a client three options, not three screenshots */
     var url = location.href.split("#")[0] + "#cmp/" + S.picks.join(",");
@@ -3541,7 +3776,7 @@ document.addEventListener("click", function (e) {
   if ((el = t.closest("[data-cday]"))) { setDay(el.getAttribute("data-cday"), !!t.closest("#drail")); return; }
   if ((el = t.closest("[data-dstep]"))) { stepDay(+el.getAttribute("data-dstep")); return; }
   if (t.closest("#railOpen")) { setDockOpen(!dock.open); return; }
-  if (t.closest("[data-lens]")) { setLens(false); return; }
+  if (t.closest("[data-lens]")) { setLens(false, !!t.closest("#drail")); return; }
   if (t.closest("[data-bmore]")) { C.more = !C.more; keepFocus(renderCompany); return; }
   if ((el = t.closest("[data-look]"))) {
     C.look = el.getAttribute("data-look");
@@ -3699,7 +3934,7 @@ function introFinish() {
     ROOT.classList.remove("intro", "play", "lit");
     v.className = "veil";
     v.removeAttribute("style");
-  }, 290);
+  }, 560);
 }
 var introRAF = 0;
 function easeInOut(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
@@ -3710,21 +3945,24 @@ function introLight() {
   var w = s.width / 2, h = s.height / 2;
   /* far enough that the lit area clears every corner of the screen */
   var reach = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 60;
-  var t0 = performance.now(), DUR = 1500;
+  var t0 = performance.now(), DUR = 2700;
   ROOT.classList.add("lit");
   function frame(now) {
     var p = Math.min(1, (now - t0) / DUR);
-    var e = easeInOut(p);
+    /* a slow first breath off the border, then an even, unhurried spread */
+    var e = easeInOut(Math.pow(p, 1.12));
     var grow = e * reach;
     /* the ellipse keeps the pill's proportions at first, then rounds out */
     var rx = w + grow, ry = h + grow * (1 + (w - h) / reach);
-    var feather = 70 + e * 320;
+    var feather = 90 + e * 380;
     var k = (rx / (rx + feather) * 100).toFixed(2);
-    var gl = (+k + (100 - k) * 0.28).toFixed(2);
-    var md = (+k + (100 - k) * 0.68).toFixed(2);
+    /* a long, even falloff: five stops so the edge reads as light
+       arriving, not a hole cut in the dark */
+    var at = function (f) { return (+k + (100 - k) * f).toFixed(2) + "%"; };
     var rim = (0.10 * (1 - e)).toFixed(3);
     v.style.background = "radial-gradient(" + (rx + feather).toFixed(1) + "px " + (ry + feather * (ry / rx)).toFixed(1) + "px at " +
-      cx.toFixed(1) + "px " + cy.toFixed(1) + "px, rgba(5,8,15,0) 0%, rgba(5,8,15,0) " + k + "%, rgba(53,224,138," + rim + ") " + gl + "%, rgba(5,8,15,.72) " + md + "%, #05080F 100%)";
+      cx.toFixed(1) + "px " + cy.toFixed(1) + "px, rgba(5,8,15,0) 0%, rgba(5,8,15,0) " + k + "%, rgba(53,224,138," + rim + ") " + at(0.16) +
+      ", rgba(5,8,15,.22) " + at(0.36) + ", rgba(5,8,15,.55) " + at(0.58) + ", rgba(5,8,15,.84) " + at(0.8) + ", #05080F 100%)";
     if (p < 1 && introOn) introRAF = requestAnimationFrame(frame);
   }
   introRAF = requestAnimationFrame(frame);
@@ -3756,8 +3994,8 @@ function introStart() {
   $(".hair").style.top = form.offsetTop + ht / 2 + "px";
   introOn = true;
   ROOT.classList.add("intro", "play");
-  introT.push(setTimeout(introLight, 2080));
-  introT.push(setTimeout(introFinish, 3750));
+  introT.push(setTimeout(introLight, 3150));
+  introT.push(setTimeout(introFinish, 6000));
   ["keydown", "pointerdown", "wheel", "touchstart"].forEach(function (ev) {
     addEventListener(ev, function () { introFinish(); }, { once: true, passive: true });
   });
