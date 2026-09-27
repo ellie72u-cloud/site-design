@@ -1015,77 +1015,131 @@ dialog::backdrop{background:rgba(5,8,15,.5)}
 }
 
 /* ===========================================================
-   THEME: blue and green.
-   Blue carries structure and selection, green carries the action
-   and "go". Each company keeps its own colour everywhere it
-   appears, so a shipper can find the line they use at a glance.
+   THEME: Night Port.
+   Night navy carries the structure, the port photo sits behind the
+   search, blue is every action, green means go, amber and red live
+   only on the status line, orange only marks paid placement, and
+   each company keeps its own colour on its card.
    =========================================================== */
 :root{
-  --navy:#0B2A5B;--navy-2:#123A78;
-  --blue:#1558D6;--blue-2:#0F46AD;--blue-soft:#E7EFFD;
-  --green:#0E8A4F;--green-2:#0A6E3E;--green-soft:#E2F4EA;--green-lt:#5EE39A;
-  --soft:#F1F5FB;--line:#DCE4F0;--line-2:#C5D1E3;--ground:#EAF0F8;
+  --night:#070D1F;--night-2:#0C1630;--board:#05080F;--board-line:#1B2440;--board-row:#121A30;--board-sub:#6B7699;
+  --blue:#1A56DB;--blue-2:#1646B8;--blue-soft:#E8EFFD;--blue-lt:#7EA2FF;
+  --green:#0E8A4F;--green-2:#0A6E3E;--green-soft:#E2F4EA;--go:#35E08A;
+  --orange:#FF6414;--orange-ink:#B33C09;--flap:#FFD9A8;
+  --ground:#EEF1F6;--soft:#F4F6FA;--line:#E1E6EE;--line-2:#CBD3E0;
   --amber:#B45309;--red:#B91C1C;
 }
-:focus-visible{outline-color:var(--green)}
-.btn-blue{background:var(--green)}
-.btn-blue:hover{background:var(--green-2)}
-.btn-ink{background:var(--navy)}
+.btn-blue{background:var(--blue)}
+.btn-blue:hover{background:var(--blue-2)}
+.btn-ink{background:var(--night)}
 .btn-ink:hover{background:var(--blue)}
 .btn-line:hover{border-color:var(--blue)}
 .f:hover,.tab:hover,.rchip:hover,.fsel:hover{border-color:var(--blue)}
 .f[aria-pressed="true"],.rchip[aria-pressed="true"],.tab[aria-selected="true"],.fsel.on{background-color:var(--blue);border-color:var(--blue);color:#fff}
-.hero{background-image:linear-gradient(#E4ECF8 1px,transparent 1px),linear-gradient(90deg,#E4ECF8 1px,transparent 1px)}
-.try button{border-bottom-color:var(--green)}
-.try button:hover{color:var(--green-2)}
-.cat:hover{background:var(--navy)}
-.cat:hover .n,.cat:hover small{color:var(--green-lt)}
-.apph__nav a[aria-current="page"]{text-decoration-color:var(--green)}
+.cat:hover{background:var(--night)}
 .mday.today{box-shadow:inset 0 0 0 2px var(--green)}
-.mday.on,.dchip[aria-pressed="true"],.drail__now{background:var(--navy)}
-footer{background:var(--navy)}
+.mday.on,.dchip[aria-pressed="true"],.drail__now{background:var(--night)}
 
-/* results page: a blue ground, so the white cards stand off it */
+/* home: the night port, with the search as the only bright thing */
+#vHome > .topnav{background:var(--night);padding-block:18px}
+#vHome > .topnav .coord{color:rgba(255,255,255,.6)}
+#vHome > .topnav .coord::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--go);box-shadow:0 0 0 4px rgba(53,224,138,.18)}
+#vHome > .topnav a{color:rgba(255,255,255,.85)}
+#vHome > .topnav a:hover{color:#fff}
+.hero{background:var(--night) url(img/hero.jpg) center 62%/cover no-repeat;padding-top:clamp(36px,6vh,80px);padding-bottom:clamp(44px,7vh,90px)}
+.hero::after{background:radial-gradient(ellipse 52% 42% at 50% 46%,rgba(7,13,31,.2),rgba(7,13,31,.6) 72%),linear-gradient(180deg,rgba(7,13,31,.72) 0%,rgba(7,13,31,.15) 32%,rgba(7,13,31,.25) 68%,rgba(7,13,31,.96) 100%)}
+.logo .word,.intro.lit .logo .word{color:#fff}
+.tagline,.intro.lit .tagline{color:rgba(255,255,255,.8)}
+.search{border-color:transparent;box-shadow:0 0 0 8px rgba(255,255,255,.08),0 24px 70px -10px rgba(0,0,0,.7),0 0 120px rgba(120,160,255,.25)}
+.search:hover,.search:focus-within{border-color:transparent;box-shadow:0 0 0 8px rgba(255,255,255,.16),0 24px 70px -10px rgba(0,0,0,.7),0 0 140px rgba(120,160,255,.4)}
+#vHome .filters .f{border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.07);color:rgba(255,255,255,.92);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#vHome .filters .f:hover{background:rgba(255,255,255,.14)}
+#vHome .filters .f[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--ink)}
+.try{color:rgba(255,255,255,.62)}
+.try button{color:#fff;border-bottom-color:var(--orange)}
+.try button:hover{color:#FFB283}
+.recent .lbl{color:rgba(255,255,255,.55)}
+.recent__a{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff}
+.recent__a:hover{border-color:#fff}
+.recent__x{color:rgba(255,255,255,.6)}
+.recent__x:hover{color:#fff}
+.prov{background:var(--night);color:#fff;border-top:0}
+.prov::before{height:8px;background:repeating-linear-gradient(-45deg,var(--board) 0 10px,var(--orange) 10px 20px)}
+.prov .lbl{color:#FFB283}
+.prov-top p{color:rgba(255,255,255,.72)}
+.prov .sample{color:rgba(255,255,255,.5)}
+.prov .nums{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.14)}
+.prov .nums div{border-color:rgba(255,255,255,.14)}
+.prov .nums small{color:rgba(255,255,255,.55)}
+.prov .tier{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.16);color:#fff}
+.prov .tier .pd,.prov .tier li{color:rgba(255,255,255,.72)}
+.prov .tier ul,.prov .tier li{border-color:rgba(255,255,255,.12)}
+.prov .tier .price small{color:rgba(255,255,255,.5)}
+.prov .tier.pop{background:var(--night-2);border-color:var(--orange);box-shadow:6px 6px 0 var(--orange)}
+.prov .tier.pop .lbl{color:#fff!important}
+.prov .btn-line{background:transparent;border-color:rgba(255,255,255,.35);color:#fff}
+.prov .btn-line:hover{background:#fff;color:var(--ink)}
+.prov .btn-ink{background:var(--orange)}
+.prov .btn-ink:hover{background:#E4520A}
+footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
+
+/* every app page: a night header with the search bar glowing in it */
+.apph{background:rgba(7,13,31,.95);border-bottom-color:var(--board-row)}
+.apph__mark{color:#fff}
+.apph__nav a{color:rgba(255,255,255,.7)}
+.apph__nav a:hover,.apph__nav a[aria-current="page"]{color:#fff}
+.apph__nav a[aria-current="page"]{text-decoration-color:var(--go)}
+.qbar{border-color:transparent;box-shadow:0 0 0 5px rgba(255,255,255,.07)}
+.qbar:focus-within{box-shadow:0 0 0 5px rgba(255,255,255,.14),0 0 60px rgba(120,160,255,.3)}
+
+/* results: the lane on the port photo, then a quiet ground for the cards */
 #vResults{background:var(--ground)}
-.rband{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 62%,#0B5A45 100%);color:#fff;padding-bottom:26px}
-.rband .lane > span:first-child{color:rgba(255,255,255,.72)}
-.rband .lane > span:last-child{color:var(--green-lt)}
-.rband .lane small,.rband .lane > span:first-child small{color:rgba(255,255,255,.62)}
-.rband .lane svg{color:var(--green-lt)}
+.rband{background:linear-gradient(180deg,rgba(7,13,31,.7),rgba(7,13,31,.95)),var(--night) url(img/hero.jpg) center 40%/cover no-repeat;color:#fff;padding-bottom:28px}
+.rband .lane > span:first-child{color:rgba(255,255,255,.7)}
+.rband .lane > span:last-child{color:#fff}
+.rband .lane small,.rband .lane > span:first-child small{color:rgba(255,255,255,.6)}
+.rband .lane svg{color:var(--go)}
 .rband .rsub{color:rgba(255,255,255,.82)}
 .rband .rsub b,.rband .lede b{color:#fff}
-.rband .lede{color:rgba(255,255,255,.86)}
+.rband .lede{color:rgba(255,255,255,.85)}
 .rband .sample{color:rgba(255,255,255,.55)}
-.fbar{margin-top:0;background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 8px 18px -14px rgba(11,42,91,.4)}
-.fbar .lbl{color:var(--navy)}
-#vResults .key{color:#48607F}
+.fbar{margin-top:0;background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 8px 18px -14px rgba(7,13,31,.4)}
+.fbar .lbl{color:var(--night)}
 
-/* the departure board, in navy, with each company in its own colour */
-.cal{background:var(--navy);border-color:var(--navy);color:#fff}
+/* the calendar is the port's departure board: near-black, amber flap digits */
+.cal{background:var(--board);border:1px solid var(--board-line);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.cal__head{background:#0A1022;border-bottom:1px solid var(--board-row);padding-bottom:14px}
 .cal__head b{color:#fff}
-.cal__head span{color:rgba(255,255,255,.7)}
-.cal__head .cal__hint{color:var(--green-lt)}
-.cal__gap{color:rgba(255,255,255,.62)}
-.cal__day:hover:not(:disabled){background:rgba(255,255,255,.08)}
-.cal__wd{color:rgba(255,255,255,.58)}
-.cal__dn{color:#fff}
-.cal__day.is-empty .cal__dn{color:rgba(255,255,255,.3)}
-.cal__day.is-today::before,.cal__day.is-today .cal__dn{color:var(--green-lt)}
-.cal__day.is-mon{box-shadow:inset 1px 0 0 rgba(255,255,255,.12)}
-.cal__day.is-on,.cal__day.is-on:hover{background:var(--green)}
-.cal__stack i{height:10px;box-shadow:0 0 0 1px rgba(255,255,255,.4)}
-.cal__stack em{color:rgba(255,255,255,.75)}
-.cal__legend{border-top-color:rgba(255,255,255,.14);color:#fff}
-.cal__legend i{width:12px;height:12px;box-shadow:0 0 0 1px rgba(255,255,255,.45)}
-.cal__legend small{color:rgba(255,255,255,.6)}
+.cal__head span{color:#9AA6C8}
+.cal__head .cal__hint{color:var(--go)}
+.cal__gap{padding-top:10px;color:var(--board-sub)}
+.cal__day:hover:not(:disabled){background:#0D1530}
+.cal__wd{color:var(--board-sub)}
+.cal__dn{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 4px;border-radius:4px;font-size:20px;background:linear-gradient(#1A2138 50%,#141A2E 50%);color:var(--flap);box-shadow:inset 0 -1px 0 rgba(0,0,0,.6)}
+.cal__day.is-empty .cal__dn{color:#3A4566}
+.cal__day.is-today::before,.cal__day.is-today .cal__dn{color:var(--go)}
+.cal__day.is-mon{box-shadow:inset 1px 0 0 var(--board-row)}
+.cal__day.is-on,.cal__day.is-on:hover{background:var(--blue)}
+.cal__day.is-on .cal__dn{background:#fff;color:var(--night)}
+.cal__day.is-on .cal__wd,.cal__day.is-on em{color:#fff}
+.cal__stack i{height:10px;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+.cal__stack em{color:#9AA6C8}
+.cal__legend{background:#0A1022;border-top-color:var(--board-row);color:#E8ECF7}
+.cal__legend i{width:12px;height:12px}
+.cal__legend small{color:var(--board-sub)}
 
-/* company cards: the header is the company's colour */
-.pc{border-color:transparent;box-shadow:0 1px 2px rgba(11,42,91,.08),0 12px 26px -20px rgba(11,42,91,.5)}
+/* company cards: the header is the company's colour, the body stays plain,
+   and every card in the grid is the same size */
+.pcs{grid-auto-rows:1fr;align-items:stretch}
+.pc{display:flex;flex-direction:column;border-color:var(--line);box-shadow:0 1px 2px rgba(7,13,31,.06),0 12px 26px -22px rgba(7,13,31,.5)}
+.pc .sl{flex:1}
 .pc::before{display:none}
-.pc:hover{border-color:transparent;transform:translateY(-2px);box-shadow:0 0 0 2px var(--fc),0 16px 30px -18px rgba(11,42,91,.55)}
-.pc.is-ad{border-color:transparent;box-shadow:0 0 0 2px var(--orange),0 12px 26px -20px rgba(11,42,91,.5)}
-.pc__top{background:var(--fc);color:#fff;padding:16px 16px 14px;align-items:center}
+.pc:hover{border-color:transparent;transform:translateY(-2px);box-shadow:0 0 0 2px var(--fc),0 16px 30px -18px rgba(7,13,31,.5)}
+.pc.is-ad{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange),0 12px 26px -22px rgba(7,13,31,.5)}
+.pc__top{background:var(--fc);color:#fff;padding:16px 16px 14px;align-items:center;flex-wrap:wrap}
 .pc__top .av{background:rgba(255,255,255,.18)!important;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6)}
+.pc__id{min-width:150px}
+.pc__id a{overflow-wrap:anywhere}
 .pc__id a,.pc__id a:hover{color:#fff}
 .pc__id a:hover{text-decoration:underline;text-underline-offset:3px}
 .pc__id small{color:rgba(255,255,255,.82)}
@@ -1093,26 +1147,22 @@ footer{background:var(--navy)}
 .pc__top .badge.feat{background:#fff}
 .pc__top .badge--nb{color:rgba(255,255,255,.88)}
 .pc__top .badge--nb::before{background:rgba(255,255,255,.6)}
-.pc__pitch{background:color-mix(in srgb,var(--fc) 7%,#fff);border-bottom-color:color-mix(in srgb,var(--fc) 20%,#fff)}
-.srow__main:hover .vsl{color:var(--fc)}
-.pc__foot{background:color-mix(in srgb,var(--fc) 6%,#fff);border-top-color:color-mix(in srgb,var(--fc) 18%,#fff)}
+.pc__pitch{background:#fff;border-bottom-color:var(--line)}
+.srow__main:hover .vsl{color:var(--blue)}
+.pc__foot{background:var(--soft);border-top-color:var(--line)}
 .pc__foot b{color:var(--fc)}
-/* booking status on the edge of every row: green open, amber soon, red last call */
+/* booking status is the line on the left and the cut-off text, nothing more */
 .srow{border-left:4px solid var(--rs,transparent)}
 .srow.s-open{--rs:var(--green)}
-.srow.s-soon{--rs:#D97706;background:#FFFBF1}
-.srow.s-last{--rs:#DC2626;background:#FFF4F4}
+.srow.s-soon{--rs:#F59E0B}
+.srow.s-last{--rs:#DC2626}
 .cut.s-open{color:var(--green-2)}
 .cut.s-soon{color:var(--amber);font-weight:600}
 .cut.s-last{color:var(--red);font-weight:600}
-.nx{display:block;width:max-content;margin-bottom:5px;padding:2px 7px;border-radius:4px;background:var(--green);color:#fff;font:600 9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.nx{display:block;width:max-content;margin-bottom:5px;padding:2px 7px;border-radius:4px;background:var(--night);color:#fff;font:600 9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .ckey{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:12px;font-size:12.5px;color:var(--ink-2)}
 .ckey span{display:inline-flex;align-items:center;gap:6px}
 .ckey i{width:4px;height:14px;border-radius:2px}
-/* a long name and a badge share the header: the badge drops below rather than over it */
-.pc__top{flex-wrap:wrap}
-.pc__id{min-width:150px}
-.pc__id a{overflow-wrap:anywhere}
 </style>
 
 <div class="veil" id="veil" aria-hidden="true"></div>
@@ -2317,7 +2367,7 @@ function renderResults() {
     fsel("fSort", "", [["best", "Best match"], ["soon", "Leaves soonest"], ["fast", "Quickest journey"], ["cut", "Closing first"], ["feat", "Featured first"]], "Sort").replace('value="' + S.sort + '"', 'value="' + S.sort + '" selected') +
     "</div></div>" + '<div class="wrap">' +
     '<div class="ckey"><span class="lbl">Row colour</span><span><i style="background:var(--green)"></i>Booking open</span>' +
-    '<span><i style="background:#D97706"></i>Closes within 2 days</span><span><i style="background:#DC2626"></i>Closes within 12 hours</span></div>' +
+    '<span><i style="background:#F59E0B"></i>Closes within 2 days</span><span><i style="background:#DC2626"></i>Closes within 12 hours</span></div>' +
     CARGO_KEY + "</div>";
   $("#rTop").innerHTML = top + fbar;
 
