@@ -1163,6 +1163,31 @@ footer{background:#03050B;border-top:1px solid var(--board-row);color:#7C849C}
 .ckey{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin-top:12px;font-size:12.5px;color:var(--ink-2)}
 .ckey span{display:inline-flex;align-items:center;gap:6px}
 .ckey i{width:4px;height:14px;border-radius:2px}
+
+/* home sections: full-width bands, each opening on a blue or green bar */
+#vHome main > section{position:relative;padding:46px 0 48px;background:var(--bb,#fff);box-shadow:0 0 0 100vmax var(--bb,#fff);clip-path:inset(0 -100vmax)}
+#vHome main > section::before{content:"";position:absolute;top:0;left:50%;width:100vw;height:4px;transform:translateX(-50%);background:var(--bar)}
+#vHome main > section:nth-child(odd){--bar:var(--blue)}
+#vHome main > section:nth-child(even){--bar:var(--green)}
+#vHome main > section:nth-child(2){--bb:#EDF2FB}
+#vHome main > section:nth-child(4){--bb:#EAF5EF}
+#vHome main > section .head .no{color:var(--bar);font-weight:600}
+#vHome main > section .head .rule{background:color-mix(in srgb,var(--bar) 35%,transparent)}
+
+/* spotlight: two slots side by side, each a compact panel */
+.spots{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.spot--half{grid-template-columns:1fr}
+.spot--half .spot-l{padding:22px 24px 18px 30px}
+.spot--half h3{margin:14px 0 6px;font-size:32px}
+.spot--half p{font-size:14px;line-height:1.5}
+.spot--half .ctas{margin-top:14px}
+.spot--half .ctas .btn{padding:8px 16px;font-size:13px}
+.spot--half .spot-r{border-left:0;border-top:1px solid var(--line)}
+.spot--half .route{padding:26px 24px 12px 30px}
+.spot--half .rl .p b{font-size:28px}
+.spot--half .facts b{font-size:17px}
+@media (max-width:900px){.spots{grid-template-columns:1fr}}
+.mrow > span:first-child{white-space:nowrap}
 </style>
 
 <div class="veil" id="veil" aria-hidden="true"></div>
@@ -1484,7 +1509,7 @@ var FIRMS = [
     pitch:"Own-box reefer and dry on Gulf lanes", cargo:["Dry","Reefer","DG"], svcs:["GFX","RSL","AJS","GLP"], verified:true,
     since:2016, boxes:"900 TEU own", offices:["Karachi"], reply:"~3 hrs",
     about:"Buys slots across four services and ships on its own boxes, so equipment is available at short notice." },
-  { id:"OE", name:"Oceanic Express", short:"Oceanic Express", type:"Shipping line", color:"#0E7490", featured:true,
+  { id:"OE", name:"Oceanic Express", short:"Oceanic Express", type:"Shipping line", color:"#0E7490", sponsor:true, featured:true,
     pitch:"Red Sea, Europe, China and US East from QICT", cargo:["Dry","Reefer","OOG","DG"], svcs:["RSL","CHD","EUD","TAT"], verified:true,
     since:1998, boxes:"11,500 TEU", offices:["Port Qasim","Jeddah","Rotterdam"], reply:"~4 hrs",
     about:"The long-haul carrier on this coast: four strings, all loading at QICT, reaching Europe and the US East Coast." },
@@ -2074,31 +2099,39 @@ function toast(msg) {
    HOME
    =========================================================== */
 function renderHome() {
-  /* spotlight: Gulfstar's next direct sailing to Jebel Ali, from the data */
-  var gl = FIRM.GL;
-  var next = rowsFor({ from: "PKKHI", to: "AEJEA", a: TODAY, b: addDays(TODAY, 28), bookable: true, firm: "GL" })
-    .filter(function (r) { return r.direct; }).sort(function (a, b) { return a.etd - b.etd; })[0];
-  $("#spotSlot").innerHTML =
-    '<article class="spot">' +
+  /* spotlight: two paid slots, each built from that line's next sailing */
+  var spot = function (f, from, to, svcId, head, blurb) {
+    var next = rowsFor({ from: from, to: to, a: TODAY, b: addDays(TODAY, 35), bookable: true, firm: f.id })
+      .filter(function (r) { return r.svc.id === svcId; }).sort(function (x, y) { return x.etd - y.etd; })[0];
+    var days = next ? next.days : SVC[svcId].rot.filter(function (x) { return x[0] === to; })[0][1];
+    var how = next && !next.direct ? "VIA " + plural(next.via.length, "CALL").toUpperCase() : "DIRECT";
+    return '<article class="spot spot--half">' +
       '<div class="spot-l">' +
-        '<div class="who">' + av(gl) + "<div><b>" + gl.name + "</b><small>Shipping line · Karachi</small></div>" +
+        '<div class="who">' + av(f) + "<div><b>" + esc(f.name) + "</b><small>" + esc(f.type) + " · " + esc(f.offices[0]) + "</small></div>" +
           '<span class="sp">Sponsored</span></div>' +
-        '<h3><span class="ln"><span>Weekly direct reefer</span></span><span class="ln"><span>to the Gulf. <em>' + (next ? next.days : 4) + " days.</em></span></span></h3>" +
-        "<p>Own-fleet reefer and dry from KICT to Jebel Ali, Hamad and Umm Qasr, sailing every " + WD[SVC.GFX.wd] + " at " + SVC.GFX.etd + ".</p>" +
+        '<h3><span class="ln"><span>' + head + ' <em>' + days + " days.</em></span></span></h3>" +
+        "<p>" + blurb + "</p>" +
         '<div class="ctas">' + (next ? '<button class="btn btn-blue" type="button" data-quote="' + next.key + '">Request a quote</button>' : "") +
-          '<button class="btn btn-line" type="button" data-sails="GL">Vessels running</button>' +
-          '<a class="btn btn-line" href="#co-GL">View profile</a></div>' +
+          '<button class="btn btn-line" type="button" data-sails="' + f.id + '">Vessels running</button>' +
+          '<a class="btn btn-line" href="#co-' + f.id + '">Profile</a></div>' +
       "</div>" +
       '<div class="spot-r"><div class="route"><div class="rl">' +
-        '<div class="p"><b>KHI</b><small>Karachi</small></div>' +
-        '<div class="ln"><i aria-hidden="true"></i><span>DIRECT · ' + (next ? next.days : 4) + " DAYS</span></div>" +
-        '<div class="p" style="text-align:right"><b>JEA</b><small>Jebel Ali</small></div>' +
+        '<div class="p"><b>' + sc(from) + "</b><small>" + esc(PORT[from].name) + "</small></div>" +
+        '<div class="ln"><i aria-hidden="true"></i><span>' + how + " · " + days + " DAYS</span></div>" +
+        '<div class="p" style="text-align:right"><b>' + sc(to) + "</b><small>" + esc(PORT[to].name) + "</small></div>" +
       "</div></div>" +
       '<div class="facts">' +
         "<div><small>Next sailing</small><b>" + (next ? fmtWD(next.etd) : "—") + "</b></div>" +
         "<div><small>Cut-off</small><b>" + (next ? WD[next.cut.getDay()] + " " + hm(next.cut) : "—") + "</b></div>" +
-        "<div><small>Replies</small><b>" + gl.reply + "</b></div>" +
+        "<div><small>Replies</small><b>" + f.reply + "</b></div>" +
       "</div></div></article>";
+  };
+  $("#spotSlot").innerHTML = '<div class="spots">' +
+    spot(FIRM.GL, "PKKHI", "AEJEA", "GFX", "Direct reefer to the Gulf.",
+      "Own-fleet reefer and dry from KICT, sailing every " + WD[SVC.GFX.wd] + " at " + SVC.GFX.etd + ".") +
+    spot(FIRM.OE, "PKBQM", "NLRTM", "EUD", "Port Qasim to Europe.",
+      "Rotterdam, Hamburg and Felixstowe from QICT, sailing every " + WD[SVC.EUD.wd] + " at " + SVC.EUD.etd + ".") +
+    "</div>";
 
   $("#featSlot").innerHTML = FIRMS.filter(function (f) { return f.featured; }).map(function (f) {
     var l = lanesOf(f.svcs)[0];
@@ -2157,7 +2190,9 @@ function renderHomeState() {
 
 /* spotlight entrance */
 function armSpot() {
-  var spot = $(".spot");
+  $$(".spot").forEach(armOne);
+}
+function armOne(spot) {
   if (!spot || REDUCE || !("IntersectionObserver" in window)) return;
   spot.classList.add("armed");
   var so = new IntersectionObserver(function (es) {
