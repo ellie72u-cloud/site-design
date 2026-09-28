@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Only the weights this page actually sets: display 800, mono 500/600, body 400/500/600. -->
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head><body>
 <style>
 /* KARGOS Hybrid is a deliberately single, light look: white ground,
@@ -1705,7 +1705,7 @@ button.cat:first-child{border-left:0}
 .navx{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:transparent;color:inherit;font:500 13px var(--body);white-space:nowrap}
 .navx:hover{border-color:#fff}
 .apph .navx,.topnav .navx{color:rgba(255,255,255,.88)}
-.navx--lang .l-ur{font:600 15px/1 "Noto Nastaliq Urdu",serif;padding-bottom:2px}
+.navx--lang .l-ur{font:600 15px/1 "Geeza Pro","Noto Naskh Arabic","Segoe UI","Noto Nastaliq Urdu",serif;padding-bottom:2px}
 .ur .navx--lang .l-ur,html:not(.ur) .navx--lang .l-en{display:none}
 .foln{min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--go);color:var(--night);font:700 11px/18px var(--body);text-align:center}
 .apph__nav{align-items:center}
@@ -2026,6 +2026,19 @@ h1 [data-ur],h2 [data-ur],h3 [data-ur]{font-weight:600;line-height:1.5;font-size
   .drail__fil{padding-block:12px 14px;gap:8px}
   .drail__fil .fsort{margin-left:0;flex:1 1 100%}
   .drail__fil .fsort .fsel{flex:1;min-width:0}
+}
+/* ===========================================================
+   PERFORMANCE
+   Below-the-fold blocks are laid out only when they come near the
+   screen. The calendar section is left alone: the day rail reads
+   its position on every scroll. Looping motion stops off screen and
+   for anyone who has asked for less motion.
+   =========================================================== */
+#vCompany .sec:not(#sched),#vCompanies .dir,#vCompanies .card,#vHome main > section:nth-of-type(n+3),.prov{content-visibility:auto;contain-intrinsic-size:auto 480px}
+#vCompanies .dir,#vCompanies .card{contain-intrinsic-size:auto 360px}
+.paused,.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 </style>
 
@@ -3184,7 +3197,7 @@ function syncQ() {
    colour and an empty frame that says whose it is. The gap is the point:
    it is the one thing on the page only they can fill. */
 function logoSlot(f) {
-  if (f.logo) return '<img class="lgo" src="' + esc(f.logo) + '" alt="' + esc(f.name) + '">';
+  if (f.logo) return '<img class="lgo" src="' + esc(f.logo) + '" alt="' + esc(f.name) + '" loading="lazy" decoding="async">';
   return '<span class="lgo lgo--empty" aria-hidden="true" style="--lc:' + lookColor(f) + '">' +
     "<b>" + esc(f.short.slice(0, 2).toUpperCase()) + "</b></span>";
 }
@@ -3703,6 +3716,7 @@ function qminWhen() {
 function showResults() {
   $("#vResults").innerHTML = apph("results") + '<div id="rTop"></div><main class="wrap page" id="rMain" style="padding-top:0"></main>' +
     '<div class="drail drail--r" id="rrail" aria-label="Sailing days" aria-hidden="true"></div>';
+  pcsDefer = true;
   renderResults();
 }
 function sortCards(groups) {
@@ -3915,7 +3929,15 @@ function renderResults() {
   } else {
     var groups = {};
     rows.forEach(function (r) { (groups[r.firm.id] = groups[r.firm.id] || []).push(r); });
-    main += '<div class="pcs">' + sortCards(groups).map(function (id) { return cardHtml(FIRM[id], sortRows(groups[id])); }).join("") + "</div>";
+    var cards = sortCards(groups).map(function (id) { return cardHtml(FIRM[id], sortRows(groups[id])); });
+    /* On arrival the first two rows go in with the page and the rest follow a
+       frame later, so a phone paints what is on screen before it lays out 20
+       more cards. A re-render (a filter, a compare tick) draws them all at
+       once: the reader may be scrolled down among them, and a list that
+       briefly shrinks would move the page under their thumb. */
+    var cut = pcsDefer ? PCS_FIRST : cards.length;
+    main += '<div class="pcs" id="pcs">' + cards.slice(0, cut).join("") + "</div>";
+    var restCards = cards.slice(cut);
   }
   if (!missed.length && S.ready && S.ready !== iso(TODAY)) {
     main += '<p class="allclear">Nothing has closed for cargo ready ' + fmtWD(readyDate()) + ". Every sailing above is still open to you.</p>";
@@ -3936,8 +3958,18 @@ function renderResults() {
   }
   main += '<p class="sample" style="margin-top:26px">' + SAMPLE.sched + "</p>";
   $("#rMain").innerHTML = main;
+  pcsDefer = false;
+  var tok = ++pcsTok;
+  if (restCards && restCards.length) {
+    var more = function () {
+      if (tok !== pcsTok || !$("#pcs")) return;
+      $("#pcs").insertAdjacentHTML("beforeend", restCards.join(""));
+    };
+    if (window.requestIdleCallback) requestIdleCallback(more, { timeout: 200 }); else setTimeout(more, 30);
+  }
   paintRail();
 }
+var PCS_FIRST = 6, pcsTok = 0, pcsDefer = false;
 
 /* ===========================================================
    THE DAY RAIL ON RESULTS
@@ -5790,16 +5822,36 @@ document.addEventListener("submit", function (e) {
 });
 
 /* dialogs close on the backdrop */
-["sheet", "cmp", "sails"].forEach(function (id) {
+["sheet", "cmp", "sails", "fol"].forEach(function (id) {
   var d = document.getElementById(id);
   d.addEventListener("click", function (e) { if (e.target === d) d.close(); });
 });
 
 
+/* A phone resizes the page every time its address bar slides, which is most
+   of a scroll; measure once it settles, not on every one. */
+var resizeT = 0;
 addEventListener("resize", function () {
-  if (VIEW === "company" || VIEW === "results") { setDockTop(); armDock(); }
-  if (VIEW === "companies") setDirTop();
+  clearTimeout(resizeT);
+  resizeT = setTimeout(function () {
+    if (VIEW === "company" || VIEW === "results") { setDockTop(); armDock(); }
+    if (VIEW === "companies") setDirTop();
+  }, 150);
 }, { passive: true });
+
+/* looping motion (the sailing box, route dashes, live blips) pauses when
+   its block leaves the screen */
+if ("IntersectionObserver" in window) {
+  var motionIO = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { e.target.classList.toggle("paused", !e.isIntersecting); });
+  });
+  var watchMotion = function () { $$(".spot,.spots > *,.cmpmap").forEach(function (el) { if (!el.__mio) { el.__mio = 1; motionIO.observe(el); } }); };
+  watchMotion();
+  var motionQ = 0;
+  new MutationObserver(function () {
+    if (!motionQ) motionQ = requestAnimationFrame(function () { motionQ = 0; watchMotion(); });
+  }).observe(document.body, { childList: true, subtree: true });
+}
 
 /* sticky search past the hero */
 if ("IntersectionObserver" in window) {
@@ -6082,8 +6134,18 @@ var urMO = new MutationObserver(function (muts) {
   if (LANG !== "ur") return;
   muts.forEach(function (m) { m.addedNodes.forEach(function (x) { urWalk(x); }); });
 });
+/* The Urdu face is several hundred KB; nobody reading in English should pay
+   for it, so it is fetched the first time Urdu is switched on. */
+function urFont() {
+  if (document.getElementById("urFont")) return;
+  var l = document.createElement("link");
+  l.id = "urFont"; l.rel = "stylesheet";
+  l.href = "https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&display=swap";
+  document.head.appendChild(l);
+}
 function setLang(l) {
   LANG = l;
+  if (l === "ur") urFont();
   try { localStorage.setItem("kargos.lang", l); } catch (e) {}
   ROOT.classList.toggle("ur", l === "ur");
   if (l === "ur") { urWalk(document.body); urMO.observe(document.body, { childList: true, subtree: true }); }
