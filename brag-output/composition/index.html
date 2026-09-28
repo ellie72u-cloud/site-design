@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>KARGOS — From, To, When</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Big Shoulders Display';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BigShouldersDisplay-800-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/IBMPlexMono-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Inter-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/Inter-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Inter-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/Inter-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Noto Nastaliq Urdu';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/NotoNastaliqUrdu-500-arabic.woff2') format('woff2');unicode-range:U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1}
+
+:root{--night:#05080F;--navy:#070D1F;--blue:#1A56DB;--orange:#F25A0F;--go:#35E08A;--ink:#111315;
+  --display:'Big Shoulders Display',Impact,sans-serif;--mono:'IBM Plex Mono',monospace;--body:'Inter',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--night);color:#fff;font-family:var(--body);-webkit-font-smoothing:antialiased}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--night)}
+.clip{position:absolute;inset:0}
+/* the yard: the site's own hero tile */
+#yard{position:absolute;left:-240px;top:-160px;width:2400px;height:1400px;background:url('assets/yard.svg') 0 0/306px 159px repeat;opacity:.78}
+#shade{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 55% at 50% 48%,rgba(7,13,31,.55),rgba(7,13,31,.82) 70%,rgba(5,8,15,.96) 100%),
+  linear-gradient(180deg,rgba(5,8,15,.9) 0%,rgba(7,13,31,.35) 30%,rgba(7,13,31,.45) 70%,rgba(5,8,15,.95) 100%)}
+#glow{position:absolute;left:260px;top:40px;width:1400px;height:1000px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(26,86,219,.42),rgba(26,86,219,0));opacity:.5}
+#dim{position:absolute;inset:0;background:var(--night);opacity:0}
+/* type */
+.kick{display:flex;align-items:center;gap:14px;font:500 22px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--go)}
+.kick i{width:10px;height:10px;border-radius:50%;background:var(--go);box-shadow:0 0 0 6px rgba(53,224,138,.18)}
+.h{font:800 80px/.95 var(--display);text-transform:uppercase;letter-spacing:.01em;color:#fff}
+.h .ln{display:block;overflow:hidden;padding-bottom:4px}
+.h .ln > span{display:block}
+.h em{font-style:normal;color:var(--orange)}
+.cap{position:absolute;left:120px;top:92px;width:1680px}
+.cap .h{margin-top:18px}
+.side{position:absolute;left:120px;top:0;bottom:0;width:600px;display:flex;flex-direction:column;justify-content:center}
+.side .h{margin-top:20px;font-size:72px}
+.nw{white-space:nowrap}
+.shot{position:absolute;display:block;border-radius:18px;box-shadow:0 40px 90px -20px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.08)}
+.fadeb{position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(180deg,rgba(5,8,15,0),rgba(5,8,15,.96))}
+/* 1 hook */
+#s1 .wrap{position:absolute;left:160px;top:250px;width:1600px}
+#coord{font:500 24px var(--mono);letter-spacing:.14em;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:14px}
+#coord i{width:12px;height:12px;border-radius:50%;background:var(--go);box-shadow:0 0 0 6px rgba(53,224,138,.2)}
+#l1{margin-top:34px;font:800 188px/.86 var(--display);letter-spacing:.005em;color:#fff;white-space:nowrap}
+#l1 span{display:inline-block}
+#l2{margin-top:26px;font:800 96px/.95 var(--display);color:#fff}
+#l2 em{font-style:normal;color:var(--orange)}
+#l3{margin-top:30px;font:500 46px/1.9 'Noto Nastaliq Urdu',serif;color:rgba(255,255,255,.78);direction:rtl;text-align:left;unicode-bidi:plaintext;width:max-content}
+/* 2 logo + bar */
+#logo{position:absolute;left:0;right:0;top:210px;display:flex;justify-content:center;align-items:center;gap:30px}
+#mark{position:relative;width:132px;height:132px}
+#mark svg{width:132px;height:132px;display:block}
+#cable{position:absolute;left:65px;bottom:100%;width:3px;height:900px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.7))}
+#word{display:flex;font:800 172px/.85 var(--display);letter-spacing:.005em;color:#fff;perspective:900px}
+#word span{display:inline-block;transform-origin:50% 0}
+#tag{position:absolute;left:0;right:0;top:420px;text-align:center;font:400 34px/1.4 var(--body);color:rgba(255,255,255,.82)}
+#bar{position:absolute;left:330px;top:540px;width:1260px;height:118px;border-radius:999px;background:#fff;display:flex;align-items:stretch;padding:9px;
+  box-shadow:0 0 0 12px rgba(255,255,255,.08),0 34px 90px -14px rgba(0,0,0,.7),0 0 160px rgba(120,160,255,.28)}
+.seg{position:relative;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 34px;color:var(--ink)}
+.seg + .seg::before{content:"";position:absolute;left:0;top:28px;bottom:28px;width:2px;background:#E3E4E6}
+.seg small{font:500 17px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#656A70}
+.seg b{font:500 30px var(--body);color:var(--ink);display:flex;align-items:center;gap:14px}
+.seg b.ph{font-weight:400;color:#9AA0A6;white-space:nowrap}
+.seg--from{width:300px}.seg--to{flex:1}.seg--when{width:280px}
+#go{flex:none;border-radius:999px;background:var(--blue);color:#fff;font:500 30px var(--body);display:flex;align-items:center;gap:14px;padding:0 44px}
+#trace{position:absolute;left:330px;top:540px;width:1260px;height:118px;overflow:visible}
+#trace rect{fill:none;stroke:var(--orange);stroke-width:4;filter:drop-shadow(0 0 8px rgba(242,90,15,.8))}
+#chips{position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;gap:14px}
+.chip{display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 22px;border:1.5px solid rgba(255,255,255,.28);border-radius:12px;background:rgba(5,8,15,.55);
+  font:500 21px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.chip i{width:13px;height:13px;border-radius:3px}
+#cursor{position:absolute;left:0;top:0;width:46px;height:46px;z-index:20}
+/* 3 board */
+#board{position:absolute;left:150px;top:330px;display:flex;align-items:center;gap:52px}
+#from b{display:block;font:800 128px/.86 var(--display);color:rgba(255,255,255,.66)}
+#from small{display:block;white-space:nowrap;margin-top:16px;font:500 22px var(--mono);letter-spacing:.14em;color:rgba(255,255,255,.62)}
+#arrow{width:170px;height:40px;flex:none}
+#dest{position:relative;width:1050px;height:340px;perspective:1100px}
+.d{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.d b{display:block;font:800 228px/.86 var(--display);color:#fff;white-space:nowrap}
+.d small{display:block;margin-top:22px;font:500 28px var(--mono);letter-spacing:.18em;color:var(--go)}
+#dAny b{color:#fff}
+#regions{position:absolute;left:150px;top:760px;display:flex;flex-wrap:wrap;gap:12px;width:1650px}
+.rg{font:500 20px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 18px;background:rgba(5,8,15,.5)}
+/* rings / highlights */
+.ring{position:absolute;border:4px solid var(--orange);border-radius:14px;box-shadow:0 0 0 6px rgba(242,90,15,.22),0 0 30px rgba(242,90,15,.55)}
+/* 11 outro */
+#o-logo{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;align-items:center;gap:26px}
+#o-logo svg{width:104px;height:104px}
+#o-logo b{font:800 128px/.85 var(--display);color:#fff}
+#o-title{position:absolute;left:0;right:0;top:470px;text-align:center;font:800 200px/.9 var(--display);color:#fff;letter-spacing:.01em}
+#o-title em{font-style:normal;color:var(--orange)}
+#o-sub{position:absolute;left:0;right:0;top:720px;text-align:center;font:500 30px var(--mono);letter-spacing:.2em;color:rgba(255,255,255,.8)}
+#o-sub i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--go);margin-right:18px;vertical-align:2px;box-shadow:0 0 0 6px rgba(53,224,138,.2)}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="33">
+
+  <section id="bg" class="clip" data-start="0" data-duration="33" data-track-index="0">
+    <div id="yard"></div><div id="glow"></div><div id="shade"></div><div id="dim"></div>
+  </section>
+
+  <!-- 1 · the question -->
+  <section id="s1" class="clip" data-start="0" data-duration="3" data-track-index="1">
+    <div class="wrap">
+      <div id="coord"><i></i>24°50′N 66°58′E · KARACHI</div>
+      <div id="l1"><span>C</span><span>A</span><span>R</span><span>G</span><span>O</span><span>&nbsp;</span><span>R</span><span>E</span><span>A</span><span>D</span><span>Y</span><span>.</span></div>
+      <div id="l2">WHICH SHIP CAN YOU <em>STILL CATCH?</em></div>
+      <div id="l3">کون سا جہاز ابھی پکڑا جا سکتا ہے؟</div>
+    </div>
+  </section>
+
+  <!-- 2 · KARGOS and the bar -->
+  <section id="s2" class="clip" data-start="3" data-duration="3.6" data-track-index="2">
+    <div id="s2in">
+      <div id="logo">
+        <div id="mark"><span id="cable" data-layout-allow-overflow></span><svg viewBox="0 0 104 104"><rect x="4" y="4" width="96" height="96" rx="24" fill="#0E8A4F"/><g fill="#05080F"><rect x="20" y="20" width="64" height="6" rx="3" opacity=".34"/><rect x="20" y="78" width="64" height="6" rx="3" opacity=".34"/><rect x="21" y="31" width="10" height="42" rx="4"/><rect x="37" y="31" width="10" height="42" rx="4"/><rect x="53" y="31" width="10" height="42" rx="4"/><rect x="69" y="31" width="10" height="42" rx="4"/></g><rect x="5.5" y="5.5" width="93" height="93" rx="22.5" fill="none" stroke="#05080F" stroke-opacity=".16" stroke-width="3"/></svg></div>
+        <div id="word"><span>K</span><span>A</span><span>R</span><span>G</span><span>O</span><span>S</span></div>
+      </div>
+      <div id="tag">Tell us when your cargo is ready. We will show you what you can still catch.</div>
+      <div id="bar">
+        <div class="seg seg--from"><small>From</small><b>All Pakistan <svg width="18" height="12" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" fill="none" stroke="#5B6066" stroke-width="1.5"/></svg></b></div>
+        <div class="seg seg--to"><small>To</small><b class="ph">Port, country or company</b></div>
+        <div class="seg seg--when"><small>Cargo ready</small><b>Mon 28 Sep</b></div>
+        <div id="go"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Search</div>
+      </div>
+      <svg id="trace" viewBox="0 0 1260 118"><rect id="traceRect" x="1" y="1" width="1258" height="116" rx="58" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+      <div id="chips">
+        <span class="chip"><i style="background:#0F9F8F"></i>Reefer</span>
+        <span class="chip"><i style="background:#E03A3A"></i>DG</span>
+        <span class="chip"><i style="background:#F25A0F"></i>OOG</span>
+        <span class="chip"><i style="background:#8B3FD9"></i>LCL</span>
+        <span class="chip"><i style="background:#0E8A4F"></i>Direct only</span>
+      </div>
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.3L4 18z" fill="#fff" stroke="#05080F" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- 3 · every destination -->
+  <section id="s3" class="clip" data-start="6.6" data-duration="5.25" data-track-index="3">
+    <div id="s3in">
+      <div id="board">
+        <div id="from"><b>PAKISTAN</b><small>KARACHI · PORT QASIM · GWADAR</small></div>
+        <svg id="arrow" viewBox="0 0 170 40"><path id="arrowPath" d="M4 20H150" stroke="#35E08A" stroke-width="6" stroke-dasharray="16 12" fill="none"/><path d="M140 6l20 14-20 14" stroke="#35E08A" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="dest"><div class="d"><b>JEBEL ALI</b><small>GULF</small></div><div class="d"><b>JEDDAH</b><small>RED SEA</small></div><div class="d"><b>MERSIN</b><small>MEDITERRANEAN</small></div><div class="d"><b>ROTTERDAM</b><small>EUROPE</small></div><div class="d"><b>NEW YORK</b><small>US EAST COAST</small></div><div class="d"><b>SHANGHAI</b><small>FAR EAST</small></div><div class="d"><b>MOMBASA</b><small>EAST AFRICA</small></div><div class="d" id="dAny"><b>ANYWHERE</b><small>EVERY DESTINATION WE LIST</small></div></div>
+      </div>
+      <div id="regions"><span class="rg">Gulf</span><span class="rg">Red Sea</span><span class="rg">Mediterranean</span><span class="rg">Europe</span><span class="rg">US East Coast</span><span class="rg">Far East</span><span class="rg">Indian Ocean</span><span class="rg">East Africa</span><span class="rg">Central Asia</span></div>
+    </div>
+  </section>
+
+  <!-- 4 · schedule check -->
+  <section id="s4" class="clip" data-start="11.85" data-duration="3.35" data-track-index="4">
+    <div id="s4in">
+      <img id="cal" class="shot" src="assets/ui/cal.png" alt="" style="left:120px;top:336px;width:1680px;height:474px">
+      <img id="c0" class="shot" src="assets/ui/card0.png" alt="" style="left:285px;top:330px;width:430px;height:967px">
+      <img id="c1" class="shot" src="assets/ui/card3.png" alt="" style="left:745px;top:330px;width:430px;height:967px">
+      <img id="c2" class="shot" src="assets/ui/card5.png" alt="" style="left:1205px;top:330px;width:430px;height:967px">
+      <div class="fadeb"></div>
+      <div class="cap"><div class="kick"><i></i>Schedule check</div>
+        <div class="h"><span class="ln"><span>Every sailing you can still catch.</span></span><span class="ln"><span>With its <em>cut-off.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 5 · filtering -->
+  <section id="s5" class="clip" data-start="15.2" data-duration="2.4" data-track-index="5">
+    <div id="s5in">
+      <img id="fa" class="shot" src="assets/ui/filter-a.png" alt="" style="left:120px;top:370px;width:1680px;height:350px">
+      <img id="fb" class="shot" src="assets/ui/filter-b.png" alt="" style="left:120px;top:370px;width:1680px;height:350px">
+      <div id="ringF" class="ring" style="left:276px;top:470px;width:420px;height:50px"></div>
+      <div class="cap"><div class="kick"><i></i>Filtering</div>
+        <div class="h"><span class="ln"><span>Filter by cargo, terminal, <em>direct only.</em></span></span></div></div>
+      <svg id="cursor5" style="position:absolute;left:0;top:0;width:46px;height:46px" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.3L4 18z" fill="#fff" stroke="#05080F" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- 6 · compare -->
+  <section id="s6" class="clip" data-start="17.6" data-duration="2.5" data-track-index="6">
+    <div id="s6in">
+      <img id="cmp" class="shot" src="assets/ui/compare.png" alt="" style="left:760px;top:158px;width:1060px;height:765px">
+      <div class="side"><div class="kick"><i></i>Compare</div>
+        <div class="h"><span class="ln"><span>Compare them.</span></span><span class="ln"><span>Send on WhatsApp.</span></span><span class="ln"><span><em>Download the Excel.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 7 · profiles + printed layout -->
+  <section id="s7" class="clip" data-start="20.1" data-duration="2.7" data-track-index="7">
+    <div id="s7in">
+      <img id="prof" class="shot" src="assets/ui/profile.png" alt="" style="left:120px;top:300px;width:1680px;height:790px">
+      <img id="msheet" class="shot" src="assets/ui/sheet.png" alt="" style="left:800px;top:320px;width:1000px;height:729px">
+      <div class="cap"><div class="kick"><i></i>Company profiles</div>
+        <div class="h"><span class="ln"><span>Every company's page.</span></span><span class="ln" id="p2"><span>In the <em>printed layout</em> you know.</span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 8 · following -->
+  <section id="s8" class="clip" data-start="22.8" data-duration="2.2" data-track-index="8">
+    <div id="s8in">
+      <img id="fol" class="shot" src="assets/ui/following.png" alt="" style="left:900px;top:150px;width:900px;height:788px">
+      <div class="side"><div class="kick"><i></i>Following</div>
+        <div class="h"><span class="ln"><span>Follow a sailing.</span></span><span class="ln"><span>See if it <em>moves.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 9 · provider panel -->
+  <section id="s9" class="clip" data-start="25" data-duration="2.7" data-track-index="9">
+    <div id="s9in">
+      <div id="pwrap" style="position:absolute;left:700px;top:184px;width:1140px;height:713px;border-radius:18px;overflow:hidden;box-shadow:0 40px 90px -20px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.08)">
+        <img id="pan" src="assets/ui/panel-sail.png" alt="" style="position:absolute;left:0;top:0;width:1140px;height:713px;display:block">
+      </div>
+      <div class="side"><div class="kick"><i></i>Provider panel</div>
+        <div class="h"><span class="ln"><span>Companies set their own <span class="nw">cut-offs.</span></span></span><span class="ln"><span><em>Live, not printed.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 10 · placements -->
+  <section id="s10" class="clip" data-start="27.7" data-duration="2.4" data-track-index="10">
+    <div id="s10in">
+      <img id="rate" class="shot" src="assets/ui/rate.png" alt="" style="left:720px;top:270px;width:1100px;height:529px">
+      <div class="side"><div class="kick"><i></i>For providers</div>
+        <div class="h"><span class="ln"><span>Placements by the week.</span></span><span class="ln"><span><em>Never inside the results.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 11 · from, to, when -->
+  <section id="s11" class="clip" data-start="30.1" data-duration="2.9" data-track-index="11">
+    <div id="s11in">
+      <div id="o-logo"><svg viewBox="0 0 104 104"><rect x="4" y="4" width="96" height="96" rx="24" fill="#0E8A4F"/><g fill="#05080F"><rect x="20" y="20" width="64" height="6" rx="3" opacity=".34"/><rect x="20" y="78" width="64" height="6" rx="3" opacity=".34"/><rect x="21" y="31" width="10" height="42" rx="4"/><rect x="37" y="31" width="10" height="42" rx="4"/><rect x="53" y="31" width="10" height="42" rx="4"/><rect x="69" y="31" width="10" height="42" rx="4"/></g><rect x="5.5" y="5.5" width="93" height="93" rx="22.5" fill="none" stroke="#05080F" stroke-opacity=".16" stroke-width="3"/></svg><b>KARGOS</b></div>
+      <div id="o-title">FROM. TO. <em>WHEN.</em></div>
+      <div id="o-sub"><i></i>KARACHI · PORT QASIM · GWADAR</div>
+    </div>
+  </section>
+
+  <!-- audio -->
+  <audio id="music" src="assets/music/happy-beats-business-moves-vol-12-by-ende-dot-app.mp3" data-start="0" data-duration="33" data-track-index="20" data-volume="0.32"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.6,"v":1},{"t":31.4,"v":1},{"t":33,"v":0}]}]}'></audio>
+  <audio id="sfx-k1" src="assets/sfx/keypress-003.wav" data-start="0.3" data-duration="0.245" data-track-index="30" data-volume="0.28"></audio>
+  <audio id="sfx-k2" src="assets/sfx/keypress-012.wav" data-start="0.4" data-duration="0.245" data-track-index="31" data-volume="0.24"></audio>
+  <audio id="sfx-k3" src="assets/sfx/keypress-007.wav" data-start="0.5" data-duration="0.245" data-track-index="32" data-volume="0.26"></audio>
+  <audio id="sfx-k4" src="assets/sfx/keypress-018.wav" data-start="0.6" data-duration="0.245" data-track-index="33" data-volume="0.24"></audio>
+  <audio id="sfx-k5" src="assets/sfx/keypress-024.wav" data-start="0.7" data-duration="0.245" data-track-index="34" data-volume="0.26"></audio>
+  <audio id="sfx-k6" src="assets/sfx/keypress-003.wav" data-start="0.8" data-duration="0.245" data-track-index="35" data-volume="0.24"></audio>
+  <audio id="sfx-land" src="assets/sfx/impactSoft_medium_001.ogg" data-start="3.95" data-duration="0.178" data-track-index="36" data-volume="0.55"></audio>
+  <audio id="sfx-clk" src="assets/sfx/click_003.ogg" data-start="6.1" data-duration="0.05" data-track-index="37" data-volume="0.7"></audio>
+  <audio id="sfx-flap0" src="assets/sfx/click_002.ogg" data-start="7.09" data-duration="0.05" data-track-index="38" data-volume="0.2"></audio>
+  <audio id="sfx-flap1" src="assets/sfx/click_002.ogg" data-start="7.64" data-duration="0.05" data-track-index="39" data-volume="0.2"></audio>
+  <audio id="sfx-flap2" src="assets/sfx/click_002.ogg" data-start="8.19" data-duration="0.05" data-track-index="40" data-volume="0.2"></audio>
+  <audio id="sfx-flap3" src="assets/sfx/click_002.ogg" data-start="8.74" data-duration="0.05" data-track-index="41" data-volume="0.2"></audio>
+  <audio id="sfx-flap4" src="assets/sfx/click_002.ogg" data-start="9.29" data-duration="0.05" data-track-index="42" data-volume="0.2"></audio>
+  <audio id="sfx-flap5" src="assets/sfx/click_002.ogg" data-start="9.83" data-duration="0.05" data-track-index="43" data-volume="0.2"></audio>
+  <audio id="sfx-flap6" src="assets/sfx/click_002.ogg" data-start="10.37" data-duration="0.05" data-track-index="44" data-volume="0.2"></audio>
+  <audio id="sfx-any" src="assets/sfx/impactSoft_medium_004.ogg" data-start="10.93" data-duration="0.142" data-track-index="45" data-volume="0.6"></audio>
+  <audio id="sfx-cs1" src="assets/sfx/card-slide-1.ogg" data-start="13.11" data-duration="0.596" data-track-index="46" data-volume="0.4"></audio>
+  <audio id="sfx-cs2" src="assets/sfx/card-slide-1.ogg" data-start="13.64" data-duration="0.596" data-track-index="47" data-volume="0.28"></audio>
+  <audio id="sfx-cs3" src="assets/sfx/card-slide-1.ogg" data-start="14.2" data-duration="0.596" data-track-index="48" data-volume="0.28"></audio>
+  <audio id="sfx-f1" src="assets/sfx/click_003.ogg" data-start="15.9" data-duration="0.05" data-track-index="49" data-volume="0.55"></audio>
+  <audio id="sfx-f2" src="assets/sfx/click_003.ogg" data-start="16.4" data-duration="0.05" data-track-index="50" data-volume="0.55"></audio>
+  <audio id="sfx-cmpd" src="assets/sfx/drop_001.ogg" data-start="17.65" data-duration="0.105" data-track-index="51" data-volume="0.45"></audio>
+  <audio id="sfx-sh" src="assets/sfx/card-slide-1.ogg" data-start="21.28" data-duration="0.596" data-track-index="52" data-volume="0.38"></audio>
+  <audio id="sfx-fold" src="assets/sfx/drop_001.ogg" data-start="22.85" data-duration="0.105" data-track-index="53" data-volume="0.38"></audio>
+  <audio id="sfx-pan" src="assets/sfx/bong_001.ogg" data-start="25.05" data-duration="0.118" data-track-index="54" data-volume="0.45"></audio>
+  <audio id="sfx-rated" src="assets/sfx/drop_001.ogg" data-start="27.75" data-duration="0.105" data-track-index="55" data-volume="0.38"></audio>
+  <audio id="sfx-olog" src="assets/sfx/impactSoft_medium_001.ogg" data-start="30.5" data-duration="0.178" data-track-index="56" data-volume="0.5"></audio>
+  <audio id="sfx-bell" src="assets/sfx/impactBell_heavy_000.ogg" data-start="31.05" data-duration="1.475" data-track-index="57" data-volume="0.55"></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var E = "power3.out";
+
+  /* background: slow drift, audio-reactive glow */
+  tl.fromTo("#yard", { x: 0, y: 0 }, { x: -140, y: -40, duration: 33, ease: "none" }, 0);
+  var AE = window.AUDIO_E || [];
+  for (var f = 0; f < AE.length; f++) {
+    tl.call((function (v) { return function () { gsap.set("#glow", { opacity: 0.38 + v[0] * 0.32, scale: 1 + v[1] * 0.06 }); }; })(AE[f]), [], f / 30);
+  }
+  /* the UI scenes sit on a darker ground so the white screens carry */
+  tl.to("#dim", { opacity: 0.45, duration: 0.5 }, 11.8).to("#dim", { opacity: 0, duration: 0.6 }, 30.0);
+
+  /* 1 · the question */
+  tl.from("#coord", { opacity: 0, y: 14, duration: 0.5, ease: E }, 0.1);
+  gsap.utils.toArray("#l1 span").forEach(function (s, i) { tl.from(s, { opacity: 0, duration: 0.01 }, 0.3 + i * 0.05); });
+  tl.from("#l2", { opacity: 0, y: 40, duration: 0.55, ease: E }, 1.25);
+  tl.from("#l3", { opacity: 0, y: 20, duration: 0.55, ease: E }, 1.6);
+  tl.to("#s1 .wrap", { opacity: 0, y: -60, duration: 0.3, ease: "power2.in" }, 2.68);
+
+  /* 2 · the box on its cable, the flip, the bar */
+  tl.fromTo("#mark", { y: -620, opacity: 0 }, { y: 0, opacity: 1, duration: 0.82, ease: "power4.out" }, 3.15);
+  tl.to("#mark", { y: -10, duration: 0.14, ease: "power1.out", yoyo: true, repeat: 1 }, 3.97);
+  tl.fromTo("#cable", { y: 0, opacity: 1 }, { y: -1100, opacity: 0, duration: 0.5, ease: "power2.in" }, 4.1);
+  gsap.utils.toArray("#word span").forEach(function (s, i) {
+    tl.fromTo(s, { rotationX: -92, opacity: 0 }, { rotationX: 0, opacity: 1, duration: 0.4, ease: "back.out(1.4)" }, 3.75 + i * 0.07);
+  });
+  tl.from("#tag", { opacity: 0, y: 12, duration: 0.5, ease: E }, 4.35);
+  tl.fromTo("#bar", { scaleX: 0.06, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55, ease: "power3.out" }, 4.55);
+  tl.from("#bar > *", { opacity: 0, duration: 0.35, stagger: 0.05 }, 4.9);
+  tl.to("#traceRect", { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.inOut" }, 5.0);
+  tl.to("#trace", { opacity: 0, duration: 0.4 }, 6.2);
+  tl.from(".chip", { opacity: 0, y: 12, duration: 0.35, stagger: 0.05, ease: E }, 5.2);
+  tl.fromTo("#cursor", { x: 1520, y: 920, opacity: 0 }, { x: 1470, y: 610, opacity: 1, duration: 0.6, ease: "power2.inOut" }, 5.55);
+  tl.to("#go", { scale: 0.94, duration: 0.08, yoyo: true, repeat: 1 }, 6.1);
+  tl.to("#cursor", { scale: 0.85, duration: 0.08, yoyo: true, repeat: 1 }, 6.1);
+  tl.to("#s2in", { opacity: 0, scale: 1.06, duration: 0.28, ease: "power2.in" }, 6.3);
+
+  /* 3 · the board — beat-grid: 7.09 7.64 8.19 8.74 9.29 9.83 10.37; beat-locked: ANYWHERE 10.93 */
+  tl.from("#from", { opacity: 0, x: -40, duration: 0.45, ease: E }, 6.7);
+  tl.fromTo("#arrowPath", { attr: { "stroke-dashoffset": 60 } }, { attr: { "stroke-dashoffset": 0 }, duration: 5, ease: "none" }, 6.7);
+  tl.from("#arrow", { opacity: 0, x: -20, duration: 0.4, ease: E }, 6.8);
+  var beats = [7.09, 7.64, 8.19, 8.74, 9.29, 9.83, 10.37, 10.93];
+  var ds = gsap.utils.toArray(".d");
+  ds.forEach(function (d) { tl.set(d, { opacity: 0, rotationX: -90 }, 6.6); });
+  ds.forEach(function (d, i) {
+    tl.to(d, { opacity: 1, rotationX: 0, duration: 0.2, ease: "power2.out" }, beats[i]);
+    if (i < ds.length - 1) tl.to(d, { opacity: 0, rotationX: 90, duration: 0.16, ease: "power2.in" }, beats[i + 1] - 0.02);
+  });
+  tl.fromTo("#dAny", { scale: 1 }, { scale: 1.04, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, 10.93);
+  gsap.utils.toArray(".rg").forEach(function (r, i) { tl.from(r, { opacity: 0, y: 10, duration: 0.25 }, 7.09 + i * 0.1); });
+  tl.to("#s3in", { opacity: 0, y: -50, duration: 0.28, ease: "power2.in" }, 11.55);
+
+  /* 4 · schedule check — beat-locked: first card 13.11; beat-grid: 13.64, 14.20 */
+  tl.fromTo("#cal", { clipPath: "inset(0 100% 0 0 round 18px)", opacity: 1 }, { clipPath: "inset(0 0% 0 0 round 18px)", duration: 0.9, ease: "power2.inOut" }, 11.95);
+  tl.from("#s4 .kick", { opacity: 0, y: 10, duration: 0.3 }, 11.9);
+  tl.from("#s4 .h .ln > span", { yPercent: 105, duration: 0.5, stagger: 0.12, ease: E }, 12.0);
+  tl.to("#cal", { opacity: 0.18, y: -30, scale: 0.97, duration: 0.5, ease: "power2.inOut" }, 12.95);
+  ["#c0", "#c1", "#c2"].forEach(function (c, i) {
+    tl.fromTo(c, { y: 720, rotation: [-4, 0, 4][i], opacity: 0 }, { y: 0, rotation: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, [13.11, 13.64, 14.2][i]);
+  });
+  tl.to("#s4in", { opacity: 0, duration: 0.22 }, 14.96);
+
+  /* 5 · filtering */
+  tl.from("#s5 .kick", { opacity: 0, duration: 0.3 }, 15.25);
+  tl.from("#s5 .h .ln > span", { yPercent: 105, duration: 0.45, ease: E }, 15.3);
+  tl.from("#fa", { opacity: 0, y: 40, duration: 0.45, ease: E }, 15.3);
+  tl.set("#fb", { opacity: 0 }, 15.2);
+  tl.set("#ringF", { opacity: 0 }, 15.2);
+  tl.fromTo("#cursor5", { x: 900, y: 900, opacity: 0 }, { x: 392, y: 612, opacity: 1, duration: 0.45, ease: "power2.inOut" }, 15.45);
+  tl.to("#cursor5", { x: 806, y: 612, duration: 0.35, ease: "power2.inOut" }, 16.05);
+  tl.to("#fb", { opacity: 1, duration: 0.18 }, 16.42);
+  tl.fromTo("#ringF", { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.25 }, 16.5);
+  tl.to("#s5in", { opacity: 0, duration: 0.22 }, 17.36);
+
+  /* 6 · compare */
+  tl.fromTo("#cmp", { opacity: 0, x: 80, scale: 0.97 }, { opacity: 1, x: 0, scale: 1, duration: 0.55, ease: E }, 17.65);
+  tl.to("#cmp", { scale: 1.03, duration: 2.1, ease: "none" }, 18.2);
+  tl.from("#s6 .kick", { opacity: 0, duration: 0.3 }, 17.65);
+  tl.from("#s6 .h .ln > span", { yPercent: 105, duration: 0.45, stagger: 0.14, ease: E }, 17.7);
+  tl.to("#s6in", { opacity: 0, duration: 0.22 }, 19.86);
+
+  /* 7 · profiles, then the printed layout */
+  tl.fromTo("#prof", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 20.15);
+  tl.from("#s7 .kick", { opacity: 0, duration: 0.3 }, 20.15);
+  tl.from("#s7 .h .ln:first-child > span", { yPercent: 105, duration: 0.45, ease: E }, 20.2);
+  tl.fromTo("#msheet", { y: 800, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 21.28);
+  tl.to("#prof", { opacity: 0.35, duration: 0.5 }, 21.3);
+  tl.from("#p2 > span", { yPercent: 105, duration: 0.45, ease: E }, 21.3);
+  tl.to("#s7in", { opacity: 0, duration: 0.22 }, 22.56);
+
+  /* 8 · following */
+  tl.fromTo("#fol", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 22.85);
+  tl.from("#s8 .kick", { opacity: 0, duration: 0.3 }, 22.85);
+  tl.from("#s8 .h .ln > span", { yPercent: 105, duration: 0.45, stagger: 0.14, ease: E }, 22.9);
+  tl.to("#s8in", { opacity: 0, duration: 0.22 }, 24.76);
+
+  /* 9 · the panel: push into the cut-off */
+  tl.fromTo("#pwrap", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.5, ease: E }, 25.05);
+  tl.fromTo("#pan", { scale: 1, x: 0, y: 0 }, { scale: 1.4, x: -20, y: -60, duration: 1.4, ease: "power2.inOut", transformOrigin: "50% 50%" }, 25.9);
+  tl.from("#s9 .kick", { opacity: 0, duration: 0.3 }, 25.05);
+  tl.from("#s9 .h .ln > span", { yPercent: 105, duration: 0.45, stagger: 0.14, ease: E }, 25.1);
+  tl.to("#s9in", { opacity: 0, duration: 0.22 }, 27.46);
+
+  /* 10 · placements */
+  tl.fromTo("#rate", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 27.75);
+  tl.from("#s10 .kick", { opacity: 0, duration: 0.3 }, 27.75);
+  tl.from("#s10 .h .ln > span", { yPercent: 105, duration: 0.45, stagger: 0.14, ease: E }, 27.8);
+  tl.to("#s10in", { opacity: 0, duration: 0.22 }, 29.86);
+
+  /* 11 · from, to, when — beat-locked: title 31.10 */
+  tl.fromTo("#o-logo", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, 30.5);
+  tl.fromTo("#o-title", { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power4.out" }, 31.05);
+  tl.from("#o-sub", { opacity: 0, y: 14, duration: 0.45, ease: E }, 31.5);
+
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
