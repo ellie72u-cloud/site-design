@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>LEFTOVRZ — Jet Set</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Barlow';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-400.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-700.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-800.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:900;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-900.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-400.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-700.woff2') format('woff2')}
+@font-face{font-family:'DM Serif Display';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/DMSerifDisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Permanent Marker';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/PermanentMarker-400.woff2') format('woff2')}
+:root{--paper:#ECE7DE;--ink:#141210;--acc:#F8C038;--red:#D63A2A;--disp:'Barlow Condensed',Impact,sans-serif;--mono:'Space Mono',monospace;--mk:'Permanent Marker',cursive;--serif:'DM Serif Display',serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Barlow',sans-serif}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--paper)}
+.clip{position:absolute;inset:0;overflow:hidden}
+.paper{background:var(--paper)}
+.in{position:absolute;inset:0}
+.mono{font:700 24px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+/* 1 · the record */
+#deck{position:absolute;left:510px;top:90px;width:900px;height:900px}
+#vinyl{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#0c0b0a 0 16%,transparent 16.2%),repeating-radial-gradient(circle,#191715 0 2px,#0f0e0d 2px 5px);box-shadow:0 30px 60px -10px rgba(0,0,0,.5)}
+#shine{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,rgba(255,255,255,0) 0deg,rgba(255,255,255,.10) 30deg,rgba(255,255,255,0) 70deg,rgba(255,255,255,0) 180deg,rgba(255,255,255,.08) 215deg,rgba(255,255,255,0) 250deg)}
+#label{position:absolute;left:50%;top:50%;width:330px;height:330px;margin:-165px 0 0 -165px;border-radius:50%;background:var(--acc);display:grid;place-items:center}
+#label img{width:230px}
+#label i{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--paper)}
+#arm{position:absolute;left:1330px;top:40px;width:120px;height:760px;transform-origin:60px 60px}
+#side{position:absolute;left:110px;top:120px;font:400 64px/1.05 var(--mk);transform:rotate(-6deg)}
+#side span{display:block;font-size:40px;color:#6a6258}
+/* 2 · ransom note */
+#rn{position:absolute;left:0;right:0;top:230px;display:grid;justify-items:center;gap:26px}
+.rw{display:flex;gap:10px}
+.rl{display:inline-grid;place-items:center;min-width:120px;height:170px;padding:0 16px;font-size:150px;line-height:1;box-shadow:4px 6px 0 rgba(0,0,0,.18);rotate:var(--r)}
+.sp{width:50px}
+.r-k{background:var(--ink);color:#fff;font-family:var(--disp);font-weight:900}
+.r-y{background:var(--acc);color:var(--ink);font-family:var(--serif)}
+.r-w{background:#fff;color:var(--ink);font-family:var(--disp);font-weight:700}
+.r-s{background:#d9d2c6;color:var(--ink);font-family:var(--mono);font-weight:700;font-size:120px}
+.r-k2{background:var(--ink);color:var(--acc);font-family:var(--serif)}
+.r-y2{background:var(--acc);color:var(--ink);font-family:var(--disp);font-weight:900}
+.r-w2{background:#fff;color:var(--red);font-family:var(--mk);font-size:130px}
+#hl{position:absolute;left:520px;top:840px;width:880px;height:40px;background:var(--acc);opacity:.85;transform-origin:0 50%}
+#kick2{position:absolute;left:0;right:0;top:140px;text-align:center}
+/* 3 · the wall */
+#cam{position:absolute;left:0;top:0;width:4600px;height:1080px}
+.poster{position:absolute;font:900 300px/.85 var(--disp);color:transparent;-webkit-text-stroke:3px rgba(20,18,16,.16);white-space:nowrap}
+.poster--o{-webkit-text-stroke:0;color:rgba(248,192,56,.28)}
+.pol{position:absolute;width:380px;padding:18px 18px 22px;background:#fbfaf7;box-shadow:0 22px 40px -12px rgba(0,0,0,.45);rotate:var(--r)}
+.pol img{display:block;width:344px;height:430px;object-fit:cover;object-view-box:inset(22% 6% 18% 6%)}
+.pol b{display:block;margin-top:14px;font:400 32px/1 var(--mk)}
+.pol .ptag{display:inline-block;margin-top:10px;font:700 20px/1 var(--mono);letter-spacing:.08em;background:var(--acc);padding:8px 10px}
+.tape{position:absolute;left:50%;top:-22px;width:150px;height:44px;margin-left:-75px;background:rgba(236,224,196,.82);transform:rotate(-4deg)}
+.note{position:absolute;font:400 78px/1 var(--mk);color:var(--ink);white-space:nowrap;rotate:var(--r)}
+.stamp{font:700 58px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--red);border:7px solid var(--red);padding:12px 20px;mix-blend-mode:multiply}
+.scrib{position:absolute;overflow:visible}
+.scrib path{fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.arrow path{stroke:var(--ink);stroke-width:7}
+/* 4 · cards */
+#h4{position:absolute;left:0;right:0;top:60px;text-align:center;font:400 90px/1 var(--mk)}
+#deck4{position:absolute;left:0;right:0;top:210px;display:flex;justify-content:center;gap:60px;perspective:1600px}
+.card{position:relative;width:440px;height:680px;transform-style:preserve-3d}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;overflow:hidden}
+.back{background:var(--ink);display:grid;place-items:center;border:14px solid var(--acc);transform:rotateY(180deg)}
+.back img{width:300px;filter:invert(1)}
+.front{background:var(--acc);padding:16px;display:flex;flex-direction:column}
+.front .cnum{font:700 16px/1 var(--mono);letter-spacing:.14em}
+.front .cimg{margin-top:10px;width:100%;height:380px;object-fit:cover;object-view-box:inset(18% 4% 14% 4%);border:4px solid var(--ink)}
+.front b{margin-top:14px;font:800 42px/.95 var(--disp);text-transform:uppercase}
+.front dl{margin-top:auto;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--ink);color:#fff;padding:12px 14px;font:700 22px/1.1 var(--mono)}
+.front dt{color:var(--acc)}
+/* 5 · graded */
+#h5{position:absolute;left:90px;top:110px;font:900 120px/1 var(--disp);text-transform:uppercase;width:900px}
+#h5 em{font-style:normal;background:var(--acc);padding:0 10px}
+.shot{position:absolute;background:#fbfaf7;padding:14px;box-shadow:0 22px 40px -12px rgba(0,0,0,.45)}
+.shot img{display:block;object-fit:cover}
+#sh1{left:110px;top:430px;rotate:-3deg} #sh1 img{width:860px;height:480px}
+#sh2{left:1180px;top:110px;rotate:4deg} #sh2 img{width:560px;height:313px}
+.grade{position:absolute;width:520px;background:var(--ink);color:#fff;padding:18px 22px;rotate:var(--r);box-shadow:6px 8px 0 rgba(0,0,0,.2)}
+.grade b{display:block;font:900 64px/.9 var(--disp);color:var(--acc)}
+.grade span{display:block;margin-top:8px;font:700 20px/1.3 var(--mono);letter-spacing:.04em}
+/* 6 · flyer */
+#flyer{position:absolute;left:420px;top:40px;width:1080px;height:1000px;background:#f7f5ef;box-shadow:0 30px 60px -16px rgba(0,0,0,.45);rotate:-2deg;padding:50px 60px}
+#flyer .kk{font:700 26px/1 var(--mono);letter-spacing:.2em}
+#flyer h3{margin-top:40px;font:900 130px/.85 var(--disp);text-transform:uppercase}
+#flyer .fri{margin-top:14px;font:900 190px/.82 var(--disp);text-transform:uppercase;background:var(--ink);color:#fff;display:inline-block;padding:10px 20px 0}
+#flyer .ph{position:absolute;right:50px;top:80px;width:360px;height:270px;object-view-box:inset(25% 5% 20% 5%);object-fit:cover;filter:grayscale(1) contrast(1.4);mix-blend-mode:multiply}
+#flyer p{margin-top:56px;font:700 26px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;max-width:640px}
+#tabs{position:absolute;left:60px;right:60px;bottom:0;height:170px;display:flex;border-top:3px dashed #555}
+.tab{flex:1;border-left:2px dashed #555;display:grid;place-items:center}
+.tab span{transform:rotate(-90deg);font:700 18px/1 var(--mono);letter-spacing:.1em;white-space:nowrap}
+#fhl{position:absolute;left:470px;top:530px;width:760px;height:120px;background:var(--acc);mix-blend-mode:multiply;transform-origin:0 50%;rotate:-2deg}
+/* 7 · stamp */
+#wm{position:absolute;left:260px;top:240px;width:1400px;height:324px;background:var(--ink);-webkit-mask:url('assets/img/wordmark-1.png') center/contain no-repeat;mask:url('assets/img/wordmark-1.png') center/contain no-repeat}
+#o1{position:absolute;left:0;right:0;top:650px;text-align:center}
+#o1 span{position:relative;font:900 110px/1 var(--disp);text-transform:uppercase}
+#ohl{position:absolute;left:560px;top:690px;width:800px;height:70px;background:var(--acc);transform-origin:0 50%}
+#o2{position:absolute;left:0;right:0;top:820px;text-align:center}
+/* texture */
+#grain{position:absolute;inset:-80px;opacity:.22;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .22 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E")}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse 80% 75% at 50% 50%,rgba(0,0,0,0),rgba(60,45,25,.28))}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="25.2">
+  <section id="s1" class="clip paper" data-start="0" data-duration="3.927" data-track-index="1">
+    <div id="s1in" class="in"><div id="side">side A —<span>left-over heat</span></div><div id="deck"><div id="vinyl"></div><div id="shine"></div><div id="label"><img src="assets/img/logo-0.png" alt=""><i></i></div></div><svg id="arm" viewBox="0 0 120 760"><circle cx="60" cy="60" r="46" fill="#bdb6aa" stroke="#141210" stroke-width="4"/><path d="M60 60 L60 600 L20 700" fill="none" stroke="#141210" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><rect x="0" y="690" width="52" height="60" rx="6" fill="#141210" transform="rotate(20 26 720)"/></svg></div>
+  </section>
+
+  <section id="s2" class="clip paper" data-start="3.927" data-duration="3.038" data-track-index="2">
+    <div id="s2in" class="in"><div id="kick2" class="mono">[ THE HOME FOR LEFT-OVER HEAT ]</div><div id="rn"><div class="rw" id="w1"><span class="rl r-k" style="--r:-6deg">L</span><span class="rl r-s" style="--r:7deg">E</span><span class="rl r-w2" style="--r:-8deg">F</span><span class="rl r-w" style="--r:4deg">T</span><span class="sp"></span><span class="rl r-y2" style="--r:-5deg">O</span><span class="rl r-y" style="--r:5deg">V</span><span class="rl r-k2" style="--r:-3deg">E</span><span class="rl r-k" style="--r:3deg">R</span></div><div class="rw" id="w2"><span class="rl r-w" style="--r:-3deg">I</span><span class="rl r-y2" style="--r:3deg">S</span><span class="sp"></span><span class="rl r-y" style="--r:-6deg">N</span><span class="rl r-k2" style="--r:7deg">O</span><span class="rl r-k" style="--r:-8deg">T</span></div><div class="rw" id="w3"><span class="rl r-y2" style="--r:3deg">L</span><span class="rl r-y" style="--r:-6deg">E</span><span class="rl r-k2" style="--r:7deg">F</span><span class="rl r-k" style="--r:-8deg">T</span><span class="sp"></span><span class="rl r-s" style="--r:4deg">B</span><span class="rl r-w2" style="--r:-5deg">E</span><span class="rl r-w" style="--r:5deg">H</span><span class="rl r-y2" style="--r:-3deg">I</span><span class="rl r-y" style="--r:3deg">N</span><span class="rl r-k2" style="--r:-6deg">D</span><span class="rl r-k" style="--r:7deg">.</span></div></div><div id="hl"></div></div>
+  </section>
+
+  <section id="s3" class="clip paper" data-start="6.965" data-duration="6.076" data-track-index="3">
+    <div id="s3in" class="in"><div id="cam"><div data-layout-ignore class="poster" style="left:60px;top:30px">CURATED GRAILS</div><div data-layout-ignore class="poster poster--o" style="left:1900px;top:740px">ELUSIVE STYLES</div><div data-layout-ignore class="poster" style="left:3300px;top:30px">DEADSTOCK</div><div data-layout-allow-overlap class="pol" id="p0" style="left:180px;top:170px;--r:-4deg"><i class="tape"></i><img src="assets/cat/i58.png" alt=""><b data-layout-allow-overlap>DOWNSHIFTER 10</b><span class="ptag" data-layout-allow-overlap>RS.6,500 · SIZE 40.5</span></div><div data-layout-allow-overlap class="pol" id="p1" style="left:780px;top:400px;--r:3deg"><i class="tape"></i><img src="assets/cat/i07.png" alt=""><b data-layout-allow-overlap>HOKA BONDI 7</b><span class="ptag" data-layout-allow-overlap>RS.6,500 · SIZE 41.5</span></div><div data-layout-allow-overlap class="pol" id="p2" style="left:1380px;top:150px;--r:-2deg"><i class="tape"></i><img src="assets/cat/i22.png" alt=""><b data-layout-allow-overlap>ROSHE RUN</b><span class="ptag" data-layout-allow-overlap>RS.4,500 · SIZE 46</span></div><div data-layout-allow-overlap class="pol" id="p3" style="left:1980px;top:410px;--r:4deg"><i class="tape"></i><img src="assets/cat/i09.png" alt=""><b data-layout-allow-overlap>LXCON ADIPRENE</b><span class="ptag" data-layout-allow-overlap>RS.5,000 · SIZE 40.5</span></div><div data-layout-allow-overlap class="pol" id="p4" style="left:2580px;top:170px;--r:-3deg"><i class="tape"></i><img src="assets/cat/i10.png" alt=""><b data-layout-allow-overlap>STAN SMITH CREPE</b><span class="ptag" data-layout-allow-overlap>RS.6,500 · SIZE 46</span></div><div data-layout-allow-overlap class="pol" id="p5" style="left:3180px;top:400px;--r:2deg"><i class="tape"></i><img src="assets/cat/i73.png" alt=""><b data-layout-allow-overlap>CLOUDFOAM PURE SPW</b><span class="ptag" data-layout-allow-overlap>RS.6,500 · SIZE 42.5</span></div><div data-layout-allow-overlap class="pol" id="p6" style="left:3780px;top:160px;--r:-4deg"><i class="tape"></i><img src="assets/cat/i70.png" alt=""><b data-layout-allow-overlap>A3 BOUNCE GIGARIDE</b><span class="ptag" data-layout-allow-overlap>RS.5,000 · SIZE 41.5</span></div><div class="note" id="n0" style="left:480px;top:95px;--r:-8deg">GRAIL!!</div><div class="note stamp" id="n4" style="left:1920px;top:360px;--r:-10deg">SOLD OUT</div><div class="note" id="n1" style="left:2260px;top:120px;--r:5deg">sample runs</div><div class="note" id="n3" style="left:2420px;top:975px;--r:-3deg">never made the floor</div><svg class="scrib" id="c1" style="left:710px;top:330px" width="520" height="640" viewBox="0 0 520 640"><path d="M260 20 C 470 20 510 180 500 330 C 490 520 380 620 250 615 C 110 610 20 520 22 330 C 24 150 110 30 280 40"/></svg><svg class="scrib" id="c2" style="left:3480px;top:90px" width="520" height="640" viewBox="0 0 520 640"><path d="M260 20 C 470 20 510 180 500 330 C 490 520 380 620 250 615 C 110 610 20 520 22 330 C 24 150 110 30 280 40"/></svg><svg class="scrib arrow" id="a1" style="left:430px;top:170px" width="200" height="140" viewBox="0 0 200 140"><path d="M10 20 C 80 10 150 40 170 110 M140 90 L172 116 L186 78"/></svg></div></div>
+  </section>
+
+  <section id="s4" class="clip paper" data-start="13.041" data-duration="3.038" data-track-index="4">
+    <div id="s4in" class="in"><div id="h4">just landed ↓</div><div id="deck4"><div class="card" id="card0"><div class="face back"><img src="assets/img/logo-0.png" alt=""></div><div class="face front"><div class="cnum">No. 01 · JUST LANDED</div><img class="cimg" src="assets/cat/i60.png" alt=""><b>NIKE DOWNSHIFTER 10</b><dl><dt>SIZE</dt><dd>40.5</dd><dt>PRICE</dt><dd>RS.6,500</dd></dl></div></div><div class="card" id="card1"><div class="face back"><img src="assets/img/logo-0.png" alt=""></div><div class="face front"><div class="cnum">No. 02 · JUST LANDED</div><img class="cimg" src="assets/cat/i36.png" alt=""><b>HOKA ONE ONE BONDI 7</b><dl><dt>SIZE</dt><dd>41.5</dd><dt>PRICE</dt><dd>RS.6,500</dd></dl></div></div><div class="card" id="card2"><div class="face back"><img src="assets/img/logo-0.png" alt=""></div><div class="face front"><div class="cnum">No. 03 · JUST LANDED</div><img class="cimg" src="assets/cat/i22.png" alt=""><b>NIKE ROSHE RUN</b><dl><dt>SIZE</dt><dd>46</dd><dt>PRICE</dt><dd>RS.4,500</dd></dl></div></div></div></div>
+  </section>
+
+  <section id="s5" class="clip paper" data-start="16.079" data-duration="3.038" data-track-index="5">
+    <div id="s5in" class="in"><div id="h5">Branded shoes, <em>graded honest.</em></div><div class="shot" id="sh1"><img src="assets/cat/i80.png" alt=""></div><div class="shot" id="sh2"><img src="assets/cat/i81.png" alt=""></div><div data-layout-allow-overlap class="grade" id="g0" style="left:1080px;top:560px;--r:-6deg"><b data-layout-allow-overlap>UNWORN</b><span>Factory fresh. Never worn, box included.</span></div><div data-layout-allow-overlap class="grade" id="g1" style="left:1230px;top:715px;--r:5deg"><b>EXCELLENT</b><span>Worn a handful of times. No visible wear.</span></div><div data-layout-allow-overlap class="grade" id="g2" style="left:1040px;top:870px;--r:-3deg"><b>GOOD</b><span>Light visible wear. Fully broken in, honestly.</span></div></div>
+  </section>
+
+  <section id="s6" class="clip paper" data-start="19.117" data-duration="3.038" data-track-index="6">
+    <div id="s6in" class="in"><div id="flyer"><i class="tape"></i><div class="kk" data-layout-allow-overlap>[ EVERY FRIDAY, 6PM ]</div><h3>NEXT DROP<br>LANDS IN</h3><div class="fri" data-layout-allow-overlap>FRIDAY 6PM</div><img class="ph" src="assets/cat/i58.png" alt=""><p>Get the drop list before it goes public</p><div id="tabs"><div class="tab" id="tab0"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab1"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab2"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab3"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab4"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab5"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab6"><span>LEFTOVRZ.COM</span></div><div class="tab" id="tab7"><span>LEFTOVRZ.COM</span></div></div></div><div id="fhl"></div></div>
+  </section>
+
+  <section id="s7" class="clip paper" data-start="22.155" data-duration="3.045" data-track-index="7">
+    <div id="s7in" class="in"><div id="wm"></div><div id="ohl"></div><div id="o1"><span>CURATED GRAILS</span></div><div id="o2" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div></div>
+  </section>
+
+  <section id="fx" class="clip" data-start="0" data-duration="25.2" data-track-index="12" style="background:transparent"><div id="vig"></div><div id="grain"></div></section>
+
+  <audio id="music" src="assets/music/jet-set.mp3" data-start="0" data-duration="25.2" data-track-index="20" data-volume="0.9"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":24.2,"v":1},{"t":25.2,"v":0}]}]}'></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var P = 60 / 158;
+  function k(n) { return +(0.13 + n * P).toFixed(3); }          /* beat n of JET SET's grid */
+  var POP = "back.out(2.2)", E = "power3.out";
+  function draw(sel, t, d) {
+    gsap.utils.toArray(sel + " path").forEach(function (p) {
+      var L = p.getTotalLength(); tl.set(p, { strokeDasharray: L, strokeDashoffset: L }, 0);
+      tl.to(p, { strokeDashoffset: 0, duration: d || 0.3, ease: "power2.out" }, t);
+    });
+  }
+  function slap(sel, t, s) { tl.fromTo(sel, { opacity: 0, scale: s || 1.8 }, { opacity: 1, scale: 1, duration: 0.14, ease: "power4.out", immediateRender: false }, t); tl.set(sel, { opacity: 0 }, 0); }
+  var seed = 3; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var f = 0; f < 756; f++) { (function (x, y) { tl.call(function () { gsap.set("#grain", { x: x, y: y }); }, [], f / 30); })(Math.round(rnd() * 80 - 40), Math.round(rnd() * 80 - 40)); }
+  var AB = window.AUDIO_B || [];
+  var ins = ["#s2in", "#s4in", "#s5in", "#s6in", "#s7in"];
+  for (var g = 0; g < AB.length; g++) { (function (v) { tl.call(function () { ins.forEach(function (s) { gsap.set(s, { scale: 1 + v * 0.014 }); }); }, [], g / 30); })(AB[g]); }
+
+  /* 1 · the intro: the record spins, the arm comes over, the needle lands on the drop (3.927) */
+  tl.fromTo("#deck", { rotation: 0 }, { rotation: 520, duration: k(10), ease: "none" }, 0);
+  tl.from("#side", { opacity: 0, x: -30, duration: 0.5, ease: E }, 0.3);
+  tl.fromTo("#arm", { rotation: 34 }, { rotation: 14, duration: 1.6, ease: "power2.inOut" }, 1.2);
+  tl.to("#arm", { y: 8, duration: 0.12, ease: "power2.in" }, k(10) - 0.5);
+  tl.to("#s1in", { scale: 2.6, transformOrigin: "960px 540px", duration: 0.38, ease: "power2.in" }, k(10) - 0.38);
+
+  /* 2 · ransom note: a word per strong beat */
+  tl.from("#kick2", { opacity: 0, duration: 0.2 }, k(10));
+  [["#w1", k(10)], ["#w2", k(12)], ["#w3", k(14)]].forEach(function (w) {
+    gsap.utils.toArray(w[0] + " .rl").forEach(function (l, i) { tl.from(l, { y: -60, opacity: 0, scale: 1.4, duration: 0.18, ease: POP }, w[1] + i * 0.028); });
+  });
+  tl.fromTo("#hl", { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "power2.out" }, k(16));
+  tl.to("#s2in", { x: -1920, duration: 0.22, ease: "power2.in" }, k(18) - 0.22);
+
+  /* 3 · the wall: one camera move, a polaroid every two beats, stamps on the triple hit */
+  tl.fromTo("#cam", { x: 0 }, { x: -2700, duration: k(34) - k(18), ease: "none" }, k(18));
+  tl.from(".poster", { opacity: 0, duration: 0.6 }, k(18));
+  gsap.utils.toArray(".pol").forEach(function (p, i) { tl.from(p, { y: -140, opacity: 0, rotation: 14, duration: 0.26, ease: POP }, k(18 + 2 * i) - 0.04); });
+  slap("#n0", k(20)); draw("#a1", k(20), 0.25);
+  draw("#c1", k(21), 0.4);
+  slap("#n4", k(25), 2.4); slap("#n1", k(26)); slap("#n3", k(27));
+  draw("#c2", k(31), 0.4);
+  tl.to("#s3in", { x: -1920, duration: 0.22, ease: "power2.in" }, k(34) - 0.22);
+
+  /* 4 · trading cards flip on the hits */
+  tl.from("#h4", { opacity: 0, y: -30, duration: 0.22, ease: POP }, k(34));
+  ["#card0", "#card1", "#card2"].forEach(function (c, i) {
+    var t = k(36 + 2 * i);
+    tl.fromTo(c, { y: 90, opacity: 0 }, { opacity: 1, y: 0, duration: 0.2, ease: E, immediateRender: false }, t - 0.25);
+    tl.set(c, { opacity: 0, rotationY: 180 }, 0);
+    tl.to(c, { rotationY: 0, duration: 0.4, ease: "back.out(1.6)" }, t);
+  });
+  tl.to(["#card0", "#card1", "#card2"], { y: -18, duration: 0.1, yoyo: true, repeat: 1, stagger: 0.05 }, k(41));
+  tl.to("#s4in", { y: 1100, duration: 0.22, ease: "power2.in" }, k(42) - 0.22);
+
+  /* 5 · graded honest: the shots land, the grades slap on the second triple hit */
+  tl.from("#h5", { opacity: 0, x: -60, duration: 0.25, ease: E }, k(42));
+  tl.from("#sh1", { y: 700, rotation: -12, duration: 0.3, ease: POP }, k(42));
+  tl.from("#sh2", { y: -600, rotation: 14, duration: 0.3, ease: POP }, k(44));
+  slap("#g0", k(47), 1.6); slap("#g1", k(48), 1.6); slap("#g2", k(49), 1.6);
+  tl.to("#s5in", { x: 1920, duration: 0.2, ease: "power2.in" }, k(50) - 0.2);
+
+  /* 6 · the flyer */
+  tl.from("#flyer", { y: -900, rotation: 6, duration: 0.32, ease: "back.out(1.2)" }, k(50));
+  tl.to("#flyer", { scale: 1.05, duration: k(58) - k(50) - 0.4, ease: "none" }, k(50) + 0.32);
+  tl.fromTo("#fhl", { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "power2.out" }, k(52));
+  tl.to("#tab5", { y: 900, rotation: 40, duration: 0.8, ease: "power2.in" }, k(55));
+  tl.to("#s6in", { opacity: 0, duration: 0.1 }, k(58) - 0.1);
+
+  /* 7 · the stamp on the biggest hit (22.155) */
+  tl.fromTo("#wm", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.12, ease: "power4.in", immediateRender: false }, k(58) - 0.12);
+  tl.set("#wm", { opacity: 0 }, 0);
+  tl.fromTo("#s7in", { y: 0 }, { y: 10, duration: 0.06, yoyo: true, repeat: 1 }, k(58));
+  tl.fromTo("#ohl", { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "power2.out" }, k(60));
+  tl.from("#o1", { opacity: 0, y: 20, duration: 0.2 }, k(60));
+  tl.from("#o2", { opacity: 0, duration: 0.3 }, k(62));
+
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
