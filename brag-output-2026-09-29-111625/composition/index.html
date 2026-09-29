@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>KARGOS — From, To, When</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Big Shoulders Display';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BigShouldersDisplay-800-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/IBMPlexMono-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Inter-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/Inter-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Inter-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Inter';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/Inter-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Noto Nastaliq Urdu';font-weight:500;font-style:normal;font-display:block;src:url('assets/fonts/NotoNastaliqUrdu-500-arabic.woff2') format('woff2');unicode-range:U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC, U+102E0-102FB, U+10E60-10E7E, U+10EC2-10EC4, U+10EFC-10EFF, U+1EE00-1EE03, U+1EE05-1EE1F, U+1EE21-1EE22, U+1EE24, U+1EE27, U+1EE29-1EE32, U+1EE34-1EE37, U+1EE39, U+1EE3B, U+1EE42, U+1EE47, U+1EE49, U+1EE4B, U+1EE4D-1EE4F, U+1EE51-1EE52, U+1EE54, U+1EE57, U+1EE59, U+1EE5B, U+1EE5D, U+1EE5F, U+1EE61-1EE62, U+1EE64, U+1EE67-1EE6A, U+1EE6C-1EE72, U+1EE74-1EE77, U+1EE79-1EE7C, U+1EE7E, U+1EE80-1EE89, U+1EE8B-1EE9B, U+1EEA1-1EEA3, U+1EEA5-1EEA9, U+1EEAB-1EEBB, U+1EEF0-1EEF1}
+
+:root{--night:#05080F;--navy:#070D1F;--blue:#1A56DB;--orange:#F25A0F;--go:#35E08A;--ink:#111315;
+  --display:'Big Shoulders Display',Impact,sans-serif;--mono:'IBM Plex Mono',monospace;--body:'Inter',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--night);color:#fff;font-family:var(--body);-webkit-font-smoothing:antialiased}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--night)}
+.clip{position:absolute;inset:0}
+/* the yard: the site's own hero tile */
+#yard{position:absolute;left:-240px;top:-160px;width:2400px;height:1400px;background:url('assets/yard.svg') 0 0/306px 159px repeat;opacity:.78}
+#shade{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 55% at 50% 48%,rgba(7,13,31,.55),rgba(7,13,31,.82) 70%,rgba(5,8,15,.96) 100%),
+  linear-gradient(180deg,rgba(5,8,15,.9) 0%,rgba(7,13,31,.35) 30%,rgba(7,13,31,.45) 70%,rgba(5,8,15,.95) 100%)}
+#glow{position:absolute;left:260px;top:40px;width:1400px;height:1000px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(26,86,219,.42),rgba(26,86,219,0));opacity:.5}
+#dim{position:absolute;inset:0;background:var(--night);opacity:0}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 70% at 50% 50%,rgba(0,0,0,0),rgba(0,0,0,.55));opacity:.6}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#s2in,#s3in,#s4in,#s5in,#s6in,#s7in,#s8in,#s9in,#s10in,#s11in{position:absolute;inset:0}
+/* type */
+.kick{display:flex;align-items:center;gap:14px;font:500 22px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--go)}
+.kick i{width:10px;height:10px;border-radius:50%;background:var(--go);box-shadow:0 0 0 6px rgba(53,224,138,.18)}
+.h{font:800 80px/.95 var(--display);text-transform:uppercase;letter-spacing:.01em;color:#fff}
+.h .ln{display:block;overflow:hidden;padding-bottom:4px}
+.h .ln > span{display:block}
+.h em{font-style:normal;color:var(--orange)}
+.cap{position:absolute;left:120px;top:92px;width:1680px}
+.cap .h{margin-top:18px}
+.side{position:absolute;left:120px;top:0;bottom:0;width:600px;display:flex;flex-direction:column;justify-content:center}
+.side .h{margin-top:20px;font-size:72px}
+.nw{white-space:nowrap}
+.shot{position:absolute;display:block;border-radius:18px;box-shadow:0 40px 90px -20px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.08)}
+.fadeb{position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(180deg,rgba(5,8,15,0),rgba(5,8,15,.96))}
+/* 1 hook */
+#s1 .wrap{position:absolute;left:160px;top:250px;width:1600px}
+#coord{font:500 24px var(--mono);letter-spacing:.14em;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:14px}
+#coord i{width:12px;height:12px;border-radius:50%;background:var(--go);box-shadow:0 0 0 6px rgba(53,224,138,.2)}
+#l1{margin-top:34px;font:800 188px/.86 var(--display);letter-spacing:.005em;color:#fff;white-space:nowrap}
+#l1 span{display:inline-block}
+#l2{margin-top:26px;font:800 96px/.95 var(--display);color:#fff}
+#l2 em{font-style:normal;color:var(--orange)}
+#l3{margin-top:30px;font:500 46px/1.9 'Noto Nastaliq Urdu',serif;color:rgba(255,255,255,.78);direction:rtl;text-align:left;unicode-bidi:plaintext;width:max-content}
+/* 2 logo + bar */
+#logo{position:absolute;left:0;right:0;top:210px;display:flex;justify-content:center;align-items:center;gap:30px}
+#mark{position:relative;width:132px;height:132px}
+#mark svg{width:132px;height:132px;display:block}
+#cable{position:absolute;left:65px;bottom:100%;width:3px;height:900px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.7))}
+#word{display:flex;font:800 172px/.85 var(--display);letter-spacing:.005em;color:#fff;perspective:900px}
+#word span{display:inline-block;transform-origin:50% 0}
+#tag{position:absolute;left:0;right:0;top:420px;text-align:center;font:400 34px/1.4 var(--body);color:rgba(255,255,255,.82)}
+#bar{position:absolute;left:330px;top:540px;width:1260px;height:118px;border-radius:999px;background:#fff;display:flex;align-items:stretch;padding:9px;
+  box-shadow:0 0 0 12px rgba(255,255,255,.08),0 34px 90px -14px rgba(0,0,0,.7),0 0 160px rgba(120,160,255,.28)}
+.seg{position:relative;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 34px;color:var(--ink)}
+.seg + .seg::before{content:"";position:absolute;left:0;top:28px;bottom:28px;width:2px;background:#E3E4E6}
+.seg small{font:500 17px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#656A70}
+.seg b{font:500 30px var(--body);color:var(--ink);display:flex;align-items:center;gap:14px}
+.seg b.ph{font-weight:400;color:#9AA0A6;white-space:nowrap}
+.seg--from{width:300px}.seg--to{flex:1}.seg--when{width:280px}
+#go{flex:none;border-radius:999px;background:var(--blue);color:#fff;font:500 30px var(--body);display:flex;align-items:center;gap:14px;padding:0 44px}
+#trace{position:absolute;left:330px;top:540px;width:1260px;height:118px;overflow:visible}
+#trace rect{fill:none;stroke:var(--orange);stroke-width:4;filter:drop-shadow(0 0 8px rgba(242,90,15,.8))}
+#chips{position:absolute;left:0;right:0;top:700px;display:flex;justify-content:center;gap:14px}
+.chip{display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 22px;border:1.5px solid rgba(255,255,255,.28);border-radius:12px;background:rgba(5,8,15,.55);
+  font:500 21px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.chip i{width:13px;height:13px;border-radius:3px}
+#cursor{position:absolute;left:0;top:0;width:46px;height:46px;z-index:20}
+/* 3 board */
+#board{position:absolute;left:150px;top:330px;display:flex;align-items:center;gap:52px}
+#from b{display:block;font:800 128px/.86 var(--display);color:rgba(255,255,255,.66)}
+#from small{display:block;white-space:nowrap;margin-top:16px;font:500 22px var(--mono);letter-spacing:.14em;color:rgba(255,255,255,.62)}
+#arrow{width:170px;height:40px;flex:none}
+#dest{position:relative;width:1050px;height:340px;perspective:1100px}
+.d{position:absolute;left:0;top:0;transform-origin:50% 50%}
+.d b{display:block;font:800 228px/.86 var(--display);color:#fff;white-space:nowrap}
+.d small{display:block;margin-top:22px;font:500 28px var(--mono);letter-spacing:.18em;color:var(--go)}
+#dAny b{color:#fff}
+#regions{position:absolute;left:150px;top:760px;display:flex;flex-wrap:wrap;gap:12px;width:1650px}
+.rg{font:500 20px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 18px;background:rgba(5,8,15,.5)}
+/* rings / highlights */
+.ring{position:absolute;border:4px solid var(--orange);border-radius:14px;box-shadow:0 0 0 6px rgba(242,90,15,.22),0 0 30px rgba(242,90,15,.55)}
+/* 11 outro */
+#o-logo{position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center;align-items:center;gap:26px}
+#o-logo svg{width:104px;height:104px}
+#o-logo b{font:800 128px/.85 var(--display);color:#fff}
+#o-title{position:absolute;left:0;right:0;top:470px;text-align:center;font:800 200px/.9 var(--display);color:#fff;letter-spacing:.01em}
+#o-title em{font-style:normal;color:var(--orange)}
+#o-sub{position:absolute;left:0;right:0;top:720px;text-align:center;font:500 30px var(--mono);letter-spacing:.2em;color:rgba(255,255,255,.8)}
+#o-sub i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--go);margin-right:18px;vertical-align:2px;box-shadow:0 0 0 6px rgba(53,224,138,.2)}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="33.6">
+
+  <section id="bg" class="clip" data-start="0" data-duration="33.6" data-track-index="0">
+    <div id="yard"></div><div id="glow"></div><div id="shade"></div><div id="dim"></div><div id="vig"></div>
+  </section>
+
+  <!-- 1 · the question -->
+  <section id="s1" class="clip" data-start="0" data-duration="3.3" data-track-index="1">
+    <div class="wrap">
+      <div id="coord"><i></i>24°50′N 66°58′E · KARACHI</div>
+      <div id="l1"><span>C</span><span>A</span><span>R</span><span>G</span><span>O</span><span>&nbsp;</span><span>R</span><span>E</span><span>A</span><span>D</span><span>Y</span><span>.</span></div>
+      <div id="l2">WHICH SHIP CAN YOU <em>STILL CATCH?</em></div>
+      <div id="l3">کون سا جہاز ابھی پکڑا جا سکتا ہے؟</div>
+    </div>
+  </section>
+
+  <!-- 2 · KARGOS and the bar -->
+  <section id="s2" class="clip" data-start="3.3" data-duration="3.62" data-track-index="2">
+    <div id="s2in">
+      <div id="logo">
+        <div id="mark"><span id="cable" data-layout-allow-overflow></span><svg viewBox="0 0 104 104"><rect x="4" y="4" width="96" height="96" rx="24" fill="#0E8A4F"/><g fill="#05080F"><rect x="20" y="20" width="64" height="6" rx="3" opacity=".34"/><rect x="20" y="78" width="64" height="6" rx="3" opacity=".34"/><rect x="21" y="31" width="10" height="42" rx="4"/><rect x="37" y="31" width="10" height="42" rx="4"/><rect x="53" y="31" width="10" height="42" rx="4"/><rect x="69" y="31" width="10" height="42" rx="4"/></g><rect x="5.5" y="5.5" width="93" height="93" rx="22.5" fill="none" stroke="#05080F" stroke-opacity=".16" stroke-width="3"/></svg></div>
+        <div id="word"><span>K</span><span>A</span><span>R</span><span>G</span><span>O</span><span>S</span></div>
+      </div>
+      <div id="tag">Tell us when your cargo is ready. We will show you what you can still catch.</div>
+      <div id="bar">
+        <div class="seg seg--from"><small>From</small><b>All Pakistan <svg width="18" height="12" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" fill="none" stroke="#5B6066" stroke-width="1.5"/></svg></b></div>
+        <div class="seg seg--to"><small>To</small><b class="ph">Port, country or company</b></div>
+        <div class="seg seg--when"><small>Cargo ready</small><b>Mon 28 Sep</b></div>
+        <div id="go"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Search</div>
+      </div>
+      <svg id="trace" viewBox="0 0 1260 118"><rect id="traceRect" x="1" y="1" width="1258" height="116" rx="58" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+      <div id="chips">
+        <span class="chip"><i style="background:#0F9F8F"></i>Reefer</span>
+        <span class="chip"><i style="background:#E03A3A"></i>DG</span>
+        <span class="chip"><i style="background:#F25A0F"></i>OOG</span>
+        <span class="chip"><i style="background:#8B3FD9"></i>LCL</span>
+        <span class="chip"><i style="background:#0E8A4F"></i>Direct only</span>
+      </div>
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.3L4 18z" fill="#fff" stroke="#05080F" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- 3 · every destination -->
+  <section id="s3" class="clip" data-start="6.92" data-duration="6.003" data-track-index="3">
+    <div id="s3in">
+      <div id="board">
+        <div id="from"><b>PAKISTAN</b><small>KARACHI · PORT QASIM · GWADAR</small></div>
+        <svg id="arrow" viewBox="0 0 170 40"><path id="arrowPath" d="M4 20H150" stroke="#35E08A" stroke-width="6" stroke-dasharray="16 12" fill="none"/><path d="M140 6l20 14-20 14" stroke="#35E08A" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="dest"><div class="d"><b>JEBEL ALI</b><small>GULF</small></div><div class="d"><b>JEDDAH</b><small>RED SEA</small></div><div class="d"><b>MERSIN</b><small>MEDITERRANEAN</small></div><div class="d"><b>ROTTERDAM</b><small>EUROPE</small></div><div class="d"><b>NEW YORK</b><small>US EAST COAST</small></div><div class="d"><b>SHANGHAI</b><small>FAR EAST</small></div><div class="d"><b>MOMBASA</b><small>EAST AFRICA</small></div><div class="d" id="dAny"><b>ANYWHERE</b><small>EVERY DESTINATION WE LIST</small></div></div>
+      </div>
+      <div id="regions"><span class="rg">Gulf</span><span class="rg">Red Sea</span><span class="rg">Mediterranean</span><span class="rg">Europe</span><span class="rg">US East Coast</span><span class="rg">Far East</span><span class="rg">Indian Ocean</span><span class="rg">East Africa</span><span class="rg">Central Asia</span></div>
+    </div>
+  </section>
+
+  <!-- 4 · schedule check -->
+  <section id="s4" class="clip" data-start="12.923" data-duration="3.692" data-track-index="4">
+    <div id="s4in">
+      <img id="cal" class="shot" src="assets/ui/cal.png" alt="" style="left:120px;top:336px;width:1680px;height:474px">
+      <img id="c0" class="shot" src="assets/ui/card0.png" alt="" style="left:285px;top:330px;width:430px;height:967px">
+      <img id="c1" class="shot" src="assets/ui/card3.png" alt="" style="left:745px;top:330px;width:430px;height:967px">
+      <img id="c2" class="shot" src="assets/ui/card5.png" alt="" style="left:1205px;top:330px;width:430px;height:967px">
+      <div class="fadeb"></div>
+      <div class="cap"><div class="kick"><i></i>Schedule check</div>
+        <div class="h"><span class="ln"><span>Every sailing you can still catch.</span></span><span class="ln"><span>With its <em>cut-off.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 5 · filtering -->
+  <section id="s5" class="clip" data-start="16.615" data-duration="1.847" data-track-index="5">
+    <div id="s5in">
+      <img id="fa" class="shot" src="assets/ui/filter-a.png" alt="" style="left:120px;top:370px;width:1680px;height:350px">
+      <img id="fb" class="shot" src="assets/ui/filter-b.png" alt="" style="left:120px;top:370px;width:1680px;height:350px">
+      <div id="ringF" class="ring" style="left:276px;top:470px;width:420px;height:50px"></div>
+      <div class="cap"><div class="kick"><i></i>Filtering</div>
+        <div class="h"><span class="ln"><span>Filter by cargo, terminal, <em>direct only.</em></span></span></div></div>
+      <svg id="cursor5" style="position:absolute;left:0;top:0;width:46px;height:46px" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.3L4 18z" fill="#fff" stroke="#05080F" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- 6 · compare -->
+  <section id="s6" class="clip" data-start="18.462" data-duration="1.846" data-track-index="6">
+    <div id="s6in">
+      <img id="cmp" class="shot" src="assets/ui/compare.png" alt="" style="left:760px;top:158px;width:1060px;height:765px">
+      <div class="side"><div class="kick"><i></i>Compare</div>
+        <div class="h"><span class="ln"><span>Compare them.</span></span><span class="ln"><span>Send on WhatsApp.</span></span><span class="ln"><span><em>Download the Excel.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 7 · profiles + printed layout -->
+  <section id="s7" class="clip" data-start="20.308" data-duration="3.692" data-track-index="7">
+    <div id="s7in">
+      <img id="prof" class="shot" src="assets/ui/profile.png" alt="" style="left:120px;top:300px;width:1680px;height:790px">
+      <img id="msheet" class="shot" src="assets/ui/sheet.png" alt="" style="left:800px;top:320px;width:1000px;height:729px">
+      <div class="cap"><div class="kick"><i></i>Company profiles</div>
+        <div class="h"><span class="ln"><span>Every company's page.</span></span><span class="ln" id="p2"><span>In the <em>printed layout</em> you know.</span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 8 · following -->
+  <section id="s8" class="clip" data-start="24" data-duration="1.846" data-track-index="8">
+    <div id="s8in">
+      <img id="fol" class="shot" src="assets/ui/following.png" alt="" style="left:900px;top:150px;width:900px;height:788px">
+      <div class="side"><div class="kick"><i></i>Following</div>
+        <div class="h"><span class="ln"><span>Follow a sailing.</span></span><span class="ln"><span>See if it <em>moves.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 9 · provider panel -->
+  <section id="s9" class="clip" data-start="25.846" data-duration="1.846" data-track-index="9">
+    <div id="s9in">
+      <div id="pwrap" style="position:absolute;left:700px;top:184px;width:1140px;height:713px;border-radius:18px;overflow:hidden;box-shadow:0 40px 90px -20px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.08)">
+        <img id="pan" src="assets/ui/panel-sail.png" alt="" style="position:absolute;left:0;top:0;width:1140px;height:713px;display:block">
+      </div>
+      <div class="side"><div class="kick"><i></i>Provider panel</div>
+        <div class="h"><span class="ln"><span>Companies set their own <span class="nw">cut-offs.</span></span></span><span class="ln"><span><em>Live, not printed.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 10 · placements -->
+  <section id="s10" class="clip" data-start="27.692" data-duration="1.846" data-track-index="10">
+    <div id="s10in">
+      <img id="rate" class="shot" src="assets/ui/rate.png" alt="" style="left:720px;top:270px;width:1100px;height:529px">
+      <div class="side"><div class="kick"><i></i>For providers</div>
+        <div class="h"><span class="ln"><span>Placements by the week.</span></span><span class="ln"><span><em>Never inside the results.</em></span></span></div></div>
+    </div>
+  </section>
+
+  <!-- 11 · from, to, when -->
+  <section id="s11" class="clip" data-start="29.538" data-duration="4.062" data-track-index="11">
+    <div id="s11in">
+      <div id="o-logo"><svg viewBox="0 0 104 104"><rect x="4" y="4" width="96" height="96" rx="24" fill="#0E8A4F"/><g fill="#05080F"><rect x="20" y="20" width="64" height="6" rx="3" opacity=".34"/><rect x="20" y="78" width="64" height="6" rx="3" opacity=".34"/><rect x="21" y="31" width="10" height="42" rx="4"/><rect x="37" y="31" width="10" height="42" rx="4"/><rect x="53" y="31" width="10" height="42" rx="4"/><rect x="69" y="31" width="10" height="42" rx="4"/></g><rect x="5.5" y="5.5" width="93" height="93" rx="22.5" fill="none" stroke="#05080F" stroke-opacity=".16" stroke-width="3"/></svg><b>KARGOS</b></div>
+      <div id="o-title">FROM. TO. <em>WHEN.</em></div>
+      <div id="o-sub"><i></i>KARACHI · PORT QASIM · GWADAR</div>
+    </div>
+  </section>
+
+  <section id="fx" class="clip" data-start="0" data-duration="33.6" data-track-index="12" style="pointer-events:none"><div id="flash"></div></section>
+
+  <!-- audio -->
+  <audio id="music" src="assets/music/kargos-phonk.mp3" data-start="0" data-duration="33.6" data-track-index="20" data-volume="0.85"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":32.9,"v":1},{"t":33.6,"v":0}]}]}'></audio>
+  <audio id="sfx-k1" src="assets/sfx/keypress-003.wav" data-start="0.3" data-duration="0.245" data-track-index="30" data-volume="0.26"></audio>
+  <audio id="sfx-k2" src="assets/sfx/keypress-012.wav" data-start="0.4" data-duration="0.245" data-track-index="31" data-volume="0.22"></audio>
+  <audio id="sfx-k3" src="assets/sfx/keypress-007.wav" data-start="0.5" data-duration="0.245" data-track-index="32" data-volume="0.24"></audio>
+  <audio id="sfx-k4" src="assets/sfx/keypress-018.wav" data-start="0.6" data-duration="0.245" data-track-index="33" data-volume="0.22"></audio>
+  <audio id="sfx-k5" src="assets/sfx/keypress-024.wav" data-start="0.7" data-duration="0.245" data-track-index="34" data-volume="0.24"></audio>
+  <audio id="sfx-k6" src="assets/sfx/keypress-003.wav" data-start="0.8" data-duration="0.245" data-track-index="35" data-volume="0.22"></audio>
+  <audio id="sfx-clk" src="assets/sfx/click_003.ogg" data-start="6.0" data-duration="0.005" data-track-index="36" data-volume="0.6"></audio>
+  <audio id="sfx-cs1" src="assets/sfx/card-slide-1.ogg" data-start="13.846" data-duration="0.596" data-track-index="37" data-volume="0.3"></audio>
+  <audio id="sfx-cs2" src="assets/sfx/card-slide-1.ogg" data-start="14.308" data-duration="0.596" data-track-index="38" data-volume="0.22"></audio>
+  <audio id="sfx-cs3" src="assets/sfx/card-slide-1.ogg" data-start="14.769" data-duration="0.596" data-track-index="39" data-volume="0.22"></audio>
+  <audio id="sfx-f1" src="assets/sfx/click_003.ogg" data-start="17.077" data-duration="0.005" data-track-index="40" data-volume="0.5"></audio>
+  <audio id="sfx-f2" src="assets/sfx/click_003.ogg" data-start="17.538" data-duration="0.005" data-track-index="41" data-volume="0.5"></audio>
+  <audio id="sfx-sh" src="assets/sfx/card-slide-1.ogg" data-start="22.154" data-duration="0.596" data-track-index="42" data-volume="0.3"></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var E = "power3.out";
+  var BAR = 60 / 130 * 4, BT = 60 / 130;
+  function b(n, beat) { return +(n * BAR + (beat || 0) * BT).toFixed(3); }
+
+  /* background: slow drift, kick-reactive glow and yard */
+  tl.fromTo("#yard", { x: 0, y: 0 }, { x: -140, y: -40, duration: 33.6, ease: "none" }, 0);
+  var AE = window.AUDIO_E || [];
+  for (var f = 0; f < AE.length; f++) {
+    tl.call((function (v) { return function () {
+      gsap.set("#glow", { opacity: 0.3 + v[0] * 0.5, scale: 1 + v[0] * 0.08 });
+      gsap.set("#vig", { opacity: 0.45 + v[0] * 0.35 });
+    }; })(AE[f]), [], f / 30);
+  }
+  tl.to("#dim", { opacity: 0.5, duration: 0.3 }, b(7)).to("#dim", { opacity: 0, duration: 0.4 }, b(16));
+
+  /* phonk hits: a white flash and a short camera shake on each drop, a lighter flash on each cut */
+  var SH = [[14, -9], [-12, 7], [9, 10], [-6, -8], [4, 5], [-2, -2], [0, 0]];
+  function hit(t, wraps, big) {
+    tl.fromTo("#flash", { opacity: big ? 0.55 : 0.16 }, { opacity: 0, duration: big ? 0.22 : 0.12, ease: "power2.out", immediateRender: false }, t);
+    wraps.forEach(function (w) {
+      SH.forEach(function (p, i) { tl.set(w, { x: p[0] * (big ? 1 : 0.5), y: p[1] * (big ? 1 : 0.5) }, t + i * 0.035); });
+    });
+  }
+  tl.set("#flash", { opacity: 0 }, 0);
+
+  /* 1 · the question (intro, filtered hook) */
+  tl.from("#coord", { opacity: 0, y: 14, duration: 0.5, ease: E }, 0.1);
+  gsap.utils.toArray("#l1 span").forEach(function (sp, i) { tl.from(sp, { opacity: 0, duration: 0.01 }, 0.3 + i * 0.05); });
+  tl.from("#l2", { opacity: 0, y: 40, duration: 0.45, ease: E }, b(0, 2));
+  tl.from("#l3", { opacity: 0, y: 20, duration: 0.45, ease: E }, b(0, 3));
+  tl.to("#s1 .wrap", { scale: 1.04, duration: 1.4, ease: "none" }, 1.6);
+  tl.to("#s1 .wrap", { opacity: 0, y: -60, duration: 0.28, ease: "power2.in" }, 3.0);
+
+  /* 2 · the box drops on drop A (3.692) */
+  tl.fromTo("#mark", { y: -620, opacity: 0 }, { y: 0, opacity: 1, duration: 0.74, ease: "power4.in" }, b(2) - 0.74);
+  tl.to("#mark", { y: -12, duration: 0.12, ease: "power1.out", yoyo: true, repeat: 1 }, b(2));
+  tl.fromTo("#cable", { y: 0, opacity: 1 }, { y: -1100, opacity: 0, duration: 0.45, ease: "power2.in" }, b(2) + 0.15);
+  gsap.utils.toArray("#word span").forEach(function (sp, i) {
+    tl.fromTo(sp, { rotationX: -92, opacity: 0 }, { rotationX: 0, opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, b(2) + i * 0.06);
+  });
+  hit(b(2), ["#s2in"], true);
+  tl.from("#tag", { opacity: 0, y: 12, duration: 0.4, ease: E }, b(2, 2));
+  tl.fromTo("#bar", { scaleX: 0.06, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.45, ease: "power3.out" }, b(2, 3));
+  tl.from("#bar > *", { opacity: 0, duration: 0.3, stagger: 0.04 }, b(2, 3) + 0.25);
+  tl.to("#traceRect", { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "power2.inOut" }, b(3));
+  tl.to("#trace", { opacity: 0, duration: 0.3 }, 6.3);
+  tl.from(".chip", { opacity: 0, y: 12, duration: 0.3, stagger: 0.04, ease: E }, b(3, 0.5));
+  tl.fromTo("#cursor", { x: 1520, y: 920, opacity: 0 }, { x: 1470, y: 610, opacity: 1, duration: 0.45, ease: "power2.inOut" }, 5.5);
+  tl.to("#go", { scale: 0.94, duration: 0.08, yoyo: true, repeat: 1 }, 6.0);
+  tl.to("#cursor", { scale: 0.85, duration: 0.08, yoyo: true, repeat: 1 }, 6.0);
+  tl.to("#s2in", { opacity: 0, scale: 1.08, duration: 0.25, ease: "power2.in" }, 6.62);
+
+  /* 3 · the board — beat-grid flips 7.385 … 10.154; beat-locked: ANYWHERE on the bar-6 hit, 11.077 */
+  tl.from("#from", { opacity: 0, x: -40, duration: 0.4, ease: E }, 6.95);
+  tl.fromTo("#arrowPath", { attr: { "stroke-dashoffset": 60 } }, { attr: { "stroke-dashoffset": 0 }, duration: 5.9, ease: "none" }, 6.95);
+  tl.from("#arrow", { opacity: 0, x: -20, duration: 0.35, ease: E }, 7.0);
+  var beats = [b(4), b(4, 1), b(4, 2), b(4, 3), b(5), b(5, 1), b(5, 2), b(6)];
+  var ds = gsap.utils.toArray(".d");
+  ds.forEach(function (d) { tl.set(d, { opacity: 0, rotationX: -90 }, 6.92); });
+  ds.forEach(function (d, i) {
+    tl.to(d, { opacity: 1, rotationX: 0, duration: 0.16, ease: "power2.out" }, beats[i]);
+    if (i < ds.length - 1) tl.to(d, { opacity: 0, rotationX: 90, duration: 0.14, ease: "power2.in" }, beats[i + 1] - 0.02);
+  });
+  tl.fromTo("#dAny", { scale: 1.12 }, { scale: 1, duration: 0.3, ease: "power4.out", immediateRender: false }, b(6));
+  hit(b(6), ["#s3in"], true);
+  gsap.utils.toArray(".rg").forEach(function (r, i) { tl.from(r, { opacity: 0, y: 10, duration: 0.2 }, b(4) + i * 0.1); });
+  tl.to("#s3in", { opacity: 0, y: -50, duration: 0.25, ease: "power2.in" }, b(7) - 0.28);
+
+  /* 4 · schedule check — cards on beats 3, 4 and the next downbeat */
+  hit(b(7), ["#s4in"], false);
+  tl.fromTo("#cal", { clipPath: "inset(0 100% 0 0 round 18px)" }, { clipPath: "inset(0 0% 0 0 round 18px)", duration: 0.7, ease: "power2.inOut" }, b(7) + 0.03);
+  tl.from("#s4 .kick", { opacity: 0, y: 10, duration: 0.25 }, b(7));
+  tl.from("#s4 .h .ln > span", { yPercent: 105, duration: 0.4, stagger: 0.1, ease: E }, b(7) + 0.05);
+  tl.to("#cal", { opacity: 0.18, y: -30, scale: 0.97, duration: 0.4, ease: "power2.inOut" }, b(7, 1.6));
+  ["#c0", "#c1", "#c2"].forEach(function (c, i) {
+    tl.fromTo(c, { y: 720, rotation: [-4, 0, 4][i], opacity: 0 }, { y: 0, rotation: 0, opacity: 1, duration: 0.42, ease: "power3.out" }, [b(7, 2), b(7, 3), b(8)][i]);
+  });
+  tl.to("#s4in", { opacity: 0, duration: 0.2 }, b(9) - 0.22);
+
+  /* 5 · filtering: clicks on beats 2 and 3, the count drops on beat 3 */
+  hit(b(9), ["#s5in"], false);
+  tl.from("#s5 .kick", { opacity: 0, duration: 0.25 }, b(9));
+  tl.from("#s5 .h .ln > span", { yPercent: 105, duration: 0.4, ease: E }, b(9) + 0.03);
+  tl.fromTo("#fa", { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 0.35, ease: E }, b(9) + 0.03);
+  tl.set("#fb", { opacity: 0 }, b(9));
+  tl.set("#ringF", { opacity: 0 }, b(9));
+  tl.fromTo("#cursor5", { x: 900, y: 900, opacity: 0 }, { x: 392, y: 612, opacity: 1, duration: 0.35, ease: "power2.inOut" }, b(9, 0.2));
+  tl.to("#cursor5", { x: 806, y: 612, duration: 0.3, ease: "power2.inOut" }, b(9, 1.2));
+  tl.to("#fb", { opacity: 1, duration: 0.12 }, b(9, 2));
+  tl.fromTo("#ringF", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.2 }, b(9, 2));
+  tl.to("#s5in", { opacity: 0, duration: 0.2 }, b(10) - 0.22);
+
+  /* 6 · compare */
+  hit(b(10), ["#s6in"], false);
+  tl.fromTo("#cmp", { opacity: 0, x: 80, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.4, ease: E }, b(10) + 0.02);
+  tl.to("#cmp", { scale: 1.03, duration: 1.5, ease: "none" }, b(10) + 0.42);
+  tl.from("#s6 .kick", { opacity: 0, duration: 0.25 }, b(10));
+  tl.from("#s6 .h .ln > span", { yPercent: 105, duration: 0.38, stagger: 0.1, ease: E }, b(10) + 0.03);
+  tl.to("#s6in", { opacity: 0, duration: 0.2 }, b(11) - 0.22);
+
+  /* 7 · profiles, then the printed layout on the next bar */
+  hit(b(11), ["#s7in"], false);
+  tl.fromTo("#prof", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: E }, b(11) + 0.02);
+  tl.from("#s7 .kick", { opacity: 0, duration: 0.25 }, b(11));
+  tl.from("#s7 .h .ln:first-child > span", { yPercent: 105, duration: 0.4, ease: E }, b(11) + 0.03);
+  tl.fromTo("#msheet", { y: 800, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, b(12));
+  tl.to("#prof", { opacity: 0.35, duration: 0.4 }, b(12));
+  tl.from("#p2 > span", { yPercent: 105, duration: 0.4, ease: E }, b(12) + 0.03);
+  hit(b(12), ["#s7in"], false);
+  tl.to("#s7in", { opacity: 0, duration: 0.2 }, b(13) - 0.22);
+
+  /* 8 · following */
+  hit(b(13), ["#s8in"], false);
+  tl.fromTo("#fol", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: E }, b(13) + 0.02);
+  tl.from("#s8 .kick", { opacity: 0, duration: 0.25 }, b(13));
+  tl.from("#s8 .h .ln > span", { yPercent: 105, duration: 0.38, stagger: 0.1, ease: E }, b(13) + 0.03);
+  tl.to("#s8in", { opacity: 0, duration: 0.2 }, b(14) - 0.22);
+
+  /* 9 · the panel over the breakdown: a slow push into the cut-off */
+  tl.fromTo("#pwrap", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.45, ease: E }, b(14) + 0.02);
+  tl.fromTo("#pan", { scale: 1, x: 0, y: 0 }, { scale: 1.4, x: -20, y: -60, duration: 1.2, ease: "power2.inOut", transformOrigin: "50% 50%" }, b(14, 1));
+  tl.from("#s9 .kick", { opacity: 0, duration: 0.25 }, b(14));
+  tl.from("#s9 .h .ln > span", { yPercent: 105, duration: 0.4, stagger: 0.12, ease: E }, b(14) + 0.03);
+  tl.to("#s9in", { opacity: 0, duration: 0.2 }, b(15) - 0.22);
+
+  /* 10 · placements over the build: the frame tightens as the riser climbs */
+  hit(b(15), ["#s10in"], false);
+  tl.fromTo("#rate", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: E }, b(15) + 0.02);
+  tl.fromTo("#s10in", { scale: 1 }, { scale: 1.05, duration: BAR - 0.3, ease: "power2.in" }, b(15) + 0.1);
+  tl.from("#s10 .kick", { opacity: 0, duration: 0.25 }, b(15));
+  tl.from("#s10 .h .ln > span", { yPercent: 105, duration: 0.38, stagger: 0.1, ease: E }, b(15) + 0.03);
+  tl.to("#s10in", { opacity: 0, duration: 0.18 }, b(16) - 0.2);
+
+  /* 11 · FROM. TO. WHEN. on the final drop */
+  tl.fromTo("#o-logo", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power4.out" }, b(16));
+  hit(b(16), ["#s11in"], true);
+  tl.fromTo("#o-title", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.28, ease: "power4.out" }, b(16, 2));
+  hit(b(16, 2), ["#s11in"], false);
+  tl.from("#o-sub", { opacity: 0, y: 14, duration: 0.4, ease: E }, b(17));
+  tl.to("#s11in", { opacity: 0, duration: 0.6 }, 33.0);
+
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
