@@ -6,3 +6,5 @@ brag-output/work-*/
 brag-output-*/composition/snapshots/
 brag-output-*/work/*.png
 brag-output-*/work/*.json
+brag-output-*/work/*.html
+brag-output-*/work/*.js

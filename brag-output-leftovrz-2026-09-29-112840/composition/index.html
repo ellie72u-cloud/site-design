@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>LEFTOVRZ Grails</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Barlow';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-400.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-700.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-800.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:900;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-900.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-400.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-700.woff2') format('woff2')}
+:root{--bg:#0A0806;--surface:#100D0A;--muted:#1A1611;--border:#3D372E;--fg:#FAFAFA;--fgm:#A1A1AA;--acc:#F8C038;
+  --disp:'Barlow Condensed',Impact,sans-serif;--body:'Barlow',sans-serif;--mono:'Space Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg)}
+.clip{position:absolute;inset:0;overflow:hidden}
+.in{position:absolute;inset:0}
+.yel{background:var(--acc)}
+.dots{position:absolute;inset:0;background-image:radial-gradient(#000 26%,transparent 29%);background-size:14px 14px;opacity:.08}
+.stripe{background:repeating-linear-gradient(135deg,var(--muted) 0 14px,#101010 14px 28px)}
+/* kinetic rows, the site's hero */
+.kin{position:absolute;inset:0;display:grid;align-content:center;gap:26px;overflow:hidden}
+.kr{white-space:nowrap}
+.kr span{display:inline-block;font:900 230px/.88 var(--disp);letter-spacing:-.03em;text-transform:uppercase}
+.kin--dark .kr span{color:var(--acc);opacity:.07}
+.kin--dark .kr--mid span{color:transparent;-webkit-text-stroke:2px var(--acc);opacity:.22}
+.kin--y .kr span{color:#000;opacity:.07}
+.kin--y .kr--mid span{color:transparent;-webkit-text-stroke:2px #000;opacity:.13}
+.mono{font:700 26px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+/* 1 */
+#hk{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+#hk b{display:block;font:900 212px/.84 var(--disp);letter-spacing:-.02em;text-transform:uppercase;color:#fff;text-align:center}
+#hk b.y{color:var(--acc)}
+/* brush wordmark with the site's red/blue split */
+.wm{position:absolute;width:1500px;height:347px}
+.wm i{position:absolute;inset:0;-webkit-mask:url('assets/img/wordmark-1.png') center/contain no-repeat;mask:url('assets/img/wordmark-1.png') center/contain no-repeat}
+.wm-r{background:#FF2818;mix-blend-mode:multiply}
+.wm-b{background:#0096FF;mix-blend-mode:multiply}
+.wm-k{background:#000}
+#wm2{left:210px;top:330px}
+#kick2{position:absolute;left:0;right:0;top:255px;text-align:center;color:#000;opacity:.8}
+#st2{position:absolute;left:0;right:0;top:720px;text-align:center;font:800 76px/.95 var(--disp);text-transform:uppercase;color:#000;letter-spacing:-.01em}
+/* 3 stickers */
+.stk{position:absolute;filter:drop-shadow(0 18px 24px rgba(0,0,0,.55))}
+#h3{position:absolute;left:90px;top:70px;font:900 150px/.85 var(--disp);text-transform:uppercase;color:#fff;letter-spacing:-.02em;z-index:5}
+#h3 em{font-style:normal;color:var(--acc)}
+.ptag{position:absolute;left:90px;bottom:80px;display:flex;align-items:stretch;z-index:6;opacity:0}
+.ptag b{font:800 44px/1 var(--disp);text-transform:uppercase;background:#fff;color:#000;padding:14px 20px}
+.ptag span{font:700 34px/1 var(--mono);background:var(--acc);color:#000;padding:18px 20px}
+.stamp{position:absolute;font:700 64px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:14px 22px;border:6px solid currentColor;z-index:7}
+#sold{left:1240px;top:720px;color:#ffaea4;background:rgba(10,8,6,.72)}
+/* 4 brands */
+#h4{position:absolute;left:90px;top:80px;font:900 130px/.85 var(--disp);text-transform:uppercase;color:#fff;letter-spacing:-.02em}
+#cats{position:absolute;left:90px;right:90px;top:300px;height:640px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--border);border:4px solid var(--border)}
+.cat{position:relative;display:grid;align-content:end;gap:10px;padding:36px;background:repeating-linear-gradient(135deg,var(--muted) 0 18px,#101010 18px 36px)}
+.cat b{font:900 110px/.85 var(--disp);color:#fff;letter-spacing:-.01em}
+.cimg{position:absolute;left:50%;top:44%;width:360px;transform:translate(-50%,-50%) rotate(-7deg);filter:drop-shadow(0 16px 20px rgba(0,0,0,.6))}
+.cimg--photo{width:230px;top:38%;border:10px solid #fff}
+.cat span{font:700 24px/1 var(--mono);letter-spacing:.18em;color:var(--fgm)}
+/* 5 clock */
+#kick5{position:absolute;left:0;right:0;top:170px;text-align:center;color:var(--fgm)}
+#h5{position:absolute;left:0;right:0;top:230px;text-align:center;font:900 170px/.85 var(--disp);text-transform:uppercase;letter-spacing:-.02em}
+#clock{position:absolute;left:50%;top:450px;margin-left:-640px;width:1280px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--border);border:4px solid var(--border)}
+#clock div{background:var(--surface);padding:30px 0 26px;display:grid;justify-items:center;gap:10px}
+#clock b{font:900 190px/.9 var(--disp);color:var(--acc);font-variant-numeric:tabular-nums}
+#clock span{font:700 22px/1 var(--mono);letter-spacing:.24em;color:var(--fgm)}
+#notify{position:absolute;left:50%;top:860px;margin-left:-640px;width:1280px;display:flex;gap:4px}
+#notify .inp{flex:1;background:var(--muted);border:3px solid var(--border);font:400 34px/1 var(--body);color:var(--fgm);padding:26px 28px}
+#notify .btn{background:var(--acc);color:#000;font:700 30px/1 var(--mono);letter-spacing:.14em;padding:30px 42px}
+#nlab{position:absolute;left:50%;top:810px;margin-left:-640px;color:var(--fgm);font-size:22px}
+/* 6 vote */
+#h6{position:absolute;left:0;right:0;top:70px;text-align:center;font:900 150px/.85 var(--disp);text-transform:uppercase;letter-spacing:-.02em}
+#sub6{position:absolute;left:0;right:0;top:215px;text-align:center;font:400 34px/1.3 var(--body);color:#d4d4d8}
+.pk{position:absolute;top:310px;width:720px;height:640px;background:var(--surface);border:4px solid var(--border);display:grid;grid-template-rows:1fr auto auto;padding:26px;gap:16px}
+.pk .art{position:relative}
+.pk .art img{position:absolute;left:50%;top:50%;width:600px;transform-origin:50% 50%}
+.pk b{font:800 46px/1 var(--disp);text-transform:uppercase}
+.pk .bar{height:16px;background:var(--muted)}
+.pk .bar i{display:block;height:100%;width:0;background:var(--acc)}
+.pk .pct{position:absolute;right:26px;bottom:52px;font:700 40px/1 var(--mono);color:var(--acc)}
+#pkA{left:150px} #pkB{left:1050px}
+#vs{position:absolute;left:0;right:0;top:590px;text-align:center;font:900 90px/1 var(--disp);color:var(--fgm)}
+#rest{left:230px;top:340px;color:var(--acc);background:rgba(10,8,6,.8);transform-origin:50% 50%}
+/* 7 sell */
+#h7{position:absolute;left:0;right:0;top:150px;text-align:center;font:900 200px/.84 var(--disp);text-transform:uppercase;color:#000;letter-spacing:-.025em}
+#sub7{position:absolute;left:0;right:0;top:620px;text-align:center;font:600 44px/1.3 var(--body);color:#000}
+#sell{position:absolute;left:50%;top:760px;margin-left:-250px;width:500px;text-align:center;background:#000;color:var(--acc);font:700 36px/1 var(--mono);letter-spacing:.14em;padding:34px 0}
+#cur{position:absolute;left:0;top:0;width:54px;height:54px;z-index:9}
+/* 8 outro */
+#wm8{left:210px;top:290px}
+#o1{position:absolute;left:0;right:0;top:690px;text-align:center;font:800 70px/1 var(--disp);text-transform:uppercase;color:#000}
+#o2{position:absolute;left:0;right:0;top:800px;display:flex;justify-content:center;gap:18px}
+#o2 span{font:700 30px/1 var(--mono);letter-spacing:.2em;background:#000;color:var(--acc);padding:16px 22px}
+/* fx */
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#grain{position:absolute;inset:-100px;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="22.8">
+  <section id="s1" class="clip" data-start="0" data-duration="3.429" data-track-index="1">
+    <div id="s1in" class="in"><div class="kin kin--dark" data-layout-ignore aria-hidden="true"><div class="kr" id="kin--dark1r1"><span>LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK ·</span></div><div class="kr kr--mid" id="kin--dark1r2"><span>SAMPLE RUNS · NEVER MADE THE FLOOR · SAMPLE RUNS · NEVER MADE THE FLOOR ·</span></div><div class="kr" id="kin--dark1r3"><span>CURATED GRAILS · ELUSIVE STYLES · CURATED GRAILS · ELUSIVE STYLES ·</span></div></div><div id="hk"><b id="w1">LEFT OVER</b><b id="w2">IS NOT</b><b id="w3" class="y">LEFT BEHIND.</b></div></div>
+  </section>
+
+  <section id="s2" class="clip" data-start="3.429" data-duration="1.714" data-track-index="2" style="background:#F8C038">
+    <div id="s2in" class="in"><div class="dots"></div><div class="kin kin--y" data-layout-ignore aria-hidden="true"><div class="kr" id="kin--y1r1"><span>LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK ·</span></div><div class="kr kr--mid" id="kin--y1r2"><span>SAMPLE RUNS · NEVER MADE THE FLOOR · SAMPLE RUNS · NEVER MADE THE FLOOR ·</span></div><div class="kr" id="kin--y1r3"><span>CURATED GRAILS · ELUSIVE STYLES · CURATED GRAILS · ELUSIVE STYLES ·</span></div></div><div id="kick2" class="mono">[ THE HOME FOR LEFT-OVER HEAT ]</div><div class="wm" id="wm2"><i class="wm-r"></i><i class="wm-b"></i><i class="wm-k"></i></div><div id="st2">LEFT OVER IS NOT LEFT BEHIND.</div></div>
+  </section>
+
+  <section id="s3" class="clip" data-start="5.143" data-duration="3.428" data-track-index="3">
+    <div id="s3in" class="in"><div class="kin kin--dark" data-layout-ignore aria-hidden="true"><div class="kr" id="kin--dark2r1"><span>LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK ·</span></div><div class="kr kr--mid" id="kin--dark2r2"><span>SAMPLE RUNS · NEVER MADE THE FLOOR · SAMPLE RUNS · NEVER MADE THE FLOOR ·</span></div><div class="kr" id="kin--dark2r3"><span>CURATED GRAILS · ELUSIVE STYLES · CURATED GRAILS · ELUSIVE STYLES ·</span></div></div><img class="stk" id="k0" src="assets/stk/nike-zoom-fly.png" alt="" style="left:560px;top:300px;width:600px"><img class="stk" id="k1" src="assets/stk/nike-downshifter-10.png" alt="" style="left:1040px;top:250px;width:600px"><img class="stk" id="k2" src="assets/stk/hoka-one-one-bondi-7.png" alt="" style="left:380px;top:560px;width:600px"><img class="stk" id="k3" src="assets/stk/adidas-stan-smith-crepe.png" alt="" style="left:1160px;top:560px;width:600px"><img class="stk" id="k4" src="assets/stk/nike-air-zoom-pegasus-36-shield.png" alt="" style="left:760px;top:420px;width:600px"><img class="stk" id="k5" src="assets/stk/nike-roshe-run.png" alt="" style="left:250px;top:300px;width:600px"><img class="stk" id="k6" src="assets/stk/adidas-originals-lxcon-adiprene.png" alt="" style="left:1300px;top:380px;width:600px"><img class="stk" id="k7" src="assets/stk/nike-air-max-200-winter.png" alt="" style="left:780px;top:600px;width:600px"><div id="h3">NEW <em>DROPS</em></div><div class="ptag" id="t0"><b>NIKE ZOOM FLY</b><span>RS.6,500</span></div><div class="ptag" id="t1"><b>NIKE DOWNSHIFTER 10</b><span>RS.4,500</span></div><div class="ptag" id="t2"><b>HOKA ONE ONE BONDI 7</b><span>RS.5,500</span></div><div class="ptag" id="t3"><b>ADIDAS STAN SMITH CREPE</b><span>RS.6,500</span></div><div class="ptag" id="t4"><b>NIKE AIR ZOOM PEGASUS 36 SHIELD</b><span>RS.5,000</span></div><div class="ptag" id="t5"><b>NIKE ROSHE RUN</b><span>RS.4,500</span></div><div class="ptag" id="t6"><b>ADIDAS ORIGINALS LXCON</b><span>RS.6,500</span></div><div class="ptag" id="t7"><b>NIKE AIR MAX 200 WINTER</b><span>RS.5,000</span></div><div id="sold" class="stamp">SOLD OUT</div></div>
+  </section>
+
+  <section id="s4" class="clip" data-start="8.571" data-duration="1.715" data-track-index="4">
+    <div id="s4in" class="in"><div id="h4">SHOP BY CATEGORY</div><div id="cats"><div class="cat" id="cat0"><img class="cimg" src="assets/stk/nike-air-zoom-pegasus-36-shield.png" alt=""><b>NIKE</b><span>17 PAIRS</span></div><div class="cat" id="cat1"><img class="cimg" src="assets/stk/adidas-stan-smith-crepe.png" alt=""><b>ADIDAS</b><span>6 PAIRS</span></div><div class="cat" id="cat2"><img class="cimg" src="assets/stk/hoka-one-one-bondi-7.png" alt=""><b>HOKA</b><span>9 PAIRS</span></div><div class="cat" id="cat3"><img class="cimg cimg--photo" src="assets/img/asics-gel-kayano-25-16.jpg" alt=""><b>ASICS</b><span>6 PAIRS</span></div></div></div>
+  </section>
+
+  <section id="s5" class="clip" data-start="10.286" data-duration="3.428" data-track-index="5">
+    <div id="s5in" class="in"><div id="kick5" class="mono">[ EVERY FRIDAY, 6PM ]</div><div id="h5">NEXT DROP LANDS IN</div><div id="clock"><div><b id="cd">03</b><span>DAYS</span></div><div><b id="ch">06</b><span>HRS</span></div><div><b id="cm">30</b><span>MIN</span></div><div><b id="cs">00</b><span>SEC</span></div></div><div id="nlab" class="mono">GET THE DROP LIST BEFORE IT GOES PUBLIC</div><div id="notify"><div class="inp" id="email">you@email.com</div><div class="btn" id="nbtn">NOTIFY ME</div></div></div>
+  </section>
+
+  <section id="s6" class="clip" data-start="13.714" data-duration="1.715" data-track-index="6">
+    <div id="s6in" class="in"><div id="h6">WHICH ONE COPS?</div><div id="sub6">Winner gets restocked. One tap, no sign-up.</div><div class="pk" id="pkA"><div class="art"><img src="assets/stk/nike-air-max-200-winter.png" alt="" id="vA"></div><b>NIKE AIR MAX 200 WINTER</b><div class="bar"><i id="barA"></i></div><span class="pct" id="pctA">53%</span></div><div id="vs">VS</div><div class="pk" id="pkB"><div class="art"><img src="assets/stk/nike-zoom-fly.png" alt="" id="vB"></div><b>NIKE ZOOM FLY</b><div class="bar"><i id="barB"></i></div><span class="pct" id="pctB">47%</span></div><div id="rest" class="stamp">RESTOCKED</div></div>
+  </section>
+
+  <section id="s7" class="clip" data-start="15.429" data-duration="1.714" data-track-index="7" style="background:#F8C038">
+    <div id="s7in" class="in"><div class="dots"></div><div id="h7">GOT HEAT SITTING<br>IN THE BOX?</div><div id="sub7">We buy clean pairs outright.</div><div id="sell">SELL YOUR PAIR</div><svg id="cur" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.6L16 20l-3 1.4-3.4-7.3L4 18z" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+  </section>
+
+  <section id="s8" class="clip" data-start="17.143" data-duration="5.657" data-track-index="8" style="background:#F8C038">
+    <div id="s8in" class="in"><div class="dots"></div><div class="kin kin--y" data-layout-ignore aria-hidden="true"><div class="kr" id="kin--y2r1"><span>LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK · LEFTOVRZ · DEADSTOCK ·</span></div><div class="kr kr--mid" id="kin--y2r2"><span>SAMPLE RUNS · NEVER MADE THE FLOOR · SAMPLE RUNS · NEVER MADE THE FLOOR ·</span></div><div class="kr" id="kin--y2r3"><span>CURATED GRAILS · ELUSIVE STYLES · CURATED GRAILS · ELUSIVE STYLES ·</span></div></div><div class="wm" id="wm8"><i class="wm-r"></i><i class="wm-b"></i><i class="wm-k"></i></div><div id="o1">CURATED GRAILS · DEADSTOCK · SAMPLE RUNS</div><div id="o2"><span>EVERY FRIDAY 6PM</span><span>LEFTOVRZ.COM</span></div></div>
+  </section>
+
+  <section id="fx" class="clip" data-start="0" data-duration="22.8" data-track-index="12"><div id="grain"></div><div id="flash"></div></section>
+
+  <audio id="music" src="assets/music/leftovrz-street.mp3" data-start="0" data-duration="22.8" data-track-index="20" data-volume="0.85"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":22.1,"v":1},{"t":22.8,"v":0}]}]}'></audio>
+  <audio id="sfx-sell" src="assets/click_003.ogg" data-start="16.286" data-duration="0.02" data-track-index="30" data-volume="0.6"></audio>
+  <audio id="sfx-notify" src="assets/click_003.ogg" data-start="12.857" data-duration="0.02" data-track-index="31" data-volume="0.5"></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var BAR = 60 / 140 * 4, BT = 60 / 140;
+  function b(n, beat) { return +(n * BAR + (beat || 0) * BT).toFixed(3); }
+  var SL = "power4.out";
+
+  /* grain: a new offset every frame, seeded, so it crawls like film */
+  var seed = 7;
+  function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var f = 0; f < 684; f++) {
+    (function (x, y) { tl.call(function () { gsap.set("#grain", { x: x, y: y }); }, [], f / 30); })(Math.round(rnd() * 90 - 45), Math.round(rnd() * 90 - 45));
+  }
+  /* kick pulses the halftone */
+  var AE = window.AUDIO_E || [];
+  for (var g = 0; g < AE.length; g++) {
+    tl.call((function (v) { return function () { gsap.set(".dots", { opacity: 0.05 + v[0] * 0.09 }); }; })(AE[g]), [], g / 30);
+  }
+  function flash(t, o) { tl.fromTo("#flash", { opacity: o }, { opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false }, t); }
+  tl.set("#flash", { opacity: 0 }, 0);
+  var SH = [[16, -10], [-13, 8], [10, 11], [-7, -8], [4, 5], [0, 0]];
+  function shake(t, w, k) { SH.forEach(function (p, i) { tl.set(w, { x: p[0] * k, y: p[1] * k }, t + i * 0.035); }); }
+  function slam(sel, t, rot) { tl.fromTo(sel, { scale: 1.5, opacity: 0, rotation: rot || 0 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.18, ease: SL, immediateRender: false }, t); tl.set(sel, { opacity: 0 }, 0); }
+  /* kinetic rows drift the whole film */
+  ["kin--dark", "kin--y"].forEach(function (c) {
+    gsap.utils.toArray("." + c + " .kr").forEach(function (r, i) { tl.fromTo(r, { x: i % 2 ? -900 : 0 }, { x: i % 2 ? 0 : -900, duration: 22.8, ease: "none" }, 0); });
+  });
+
+  /* 1 · hook — slams on beats */
+  slam("#w1", b(0, 1), -4); slam("#w2", b(0, 3), 3); slam("#w3", b(1, 1), -2);
+  shake(b(1, 1), "#s1in", 0.6);
+  tl.to("#hk", { scale: 1.05, duration: 1.2, ease: "none" }, b(1, 1) + 0.2);
+
+  /* 2 · the wordmark drop — the site's red/blue split, closing on the hit */
+  flash(b(2), 0.7); shake(b(2), "#s2in", 1);
+  tl.fromTo("#wm2", { scale: 1.25, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: SL, immediateRender: false }, b(2)); tl.set("#wm2", { opacity: 0 }, 0);
+  tl.fromTo("#wm2 .wm-r", { x: 26, y: -4 }, { x: 0, y: 0, duration: 0.7, ease: "power3.out" }, b(2));
+  tl.fromTo("#wm2 .wm-b", { x: -26, y: 4 }, { x: 0, y: 0, duration: 0.7, ease: "power3.out" }, b(2));
+  tl.fromTo("#wm2 .wm-k", { opacity: 0.35 }, { opacity: 1, duration: 0.5 }, b(2));
+  tl.from("#kick2", { opacity: 0, y: -16, duration: 0.25 }, b(2, 1));
+  tl.from("#st2", { opacity: 0, y: 30, duration: 0.25, ease: SL }, b(2, 2));
+  tl.to("#wm2", { skewX: -6, duration: 0.06, yoyo: true, repeat: 1 }, b(2, 2));
+
+  /* 3 · sticker blitz: a pair slapped down on every beat, the pile grows */
+  flash(b(3), 0.25);
+  slam("#h3", b(3), -3);
+  var rots = [-8, 6, 5, -5, -3, 9, -9, 4];
+  gsap.utils.toArray(".stk").forEach(function (s, i) {
+    var t = b(3, i);
+    tl.fromTo(s, { scale: 1.8, opacity: 0, rotation: rots[i] * 3 }, { scale: 1, opacity: 1, rotation: rots[i], duration: 0.16, ease: SL, immediateRender: false }, t);
+    tl.set(s, { opacity: 0 }, 0);
+    tl.set("#t" + i, { opacity: 1 }, t); if (i < 7) tl.set("#t" + i, { opacity: 0 }, b(3, i + 1));
+    shake(t, "#s3in", 0.25);
+  });
+  tl.set("#sold", { opacity: 0 }, 0);
+  tl.fromTo("#sold", { scale: 2, opacity: 0, rotation: -18 }, { scale: 1, opacity: 1, rotation: -8, duration: 0.14, ease: SL, immediateRender: false }, b(4, 3) + 0.2);
+
+  /* 4 · shop by category — a tile on every beat */
+  flash(b(5), 0.25);
+  slam("#h4", b(5), -2);
+  gsap.utils.toArray(".cat").forEach(function (c, i) { tl.fromTo(c, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.2, ease: SL, immediateRender: false }, b(5, i)); tl.set(c, { opacity: 0 }, 0); });
+
+  /* 5 · next drop: the clock counts down a second on every beat */
+  flash(b(6), 0.25);
+  tl.from("#kick5", { opacity: 0, duration: 0.2 }, b(6));
+  slam("#h5", b(6), 2);
+  tl.from("#clock", { opacity: 0, y: 40, duration: 0.25, ease: SL }, b(6, 1));
+  var secs = [0, 59, 58, 57, 56, 55, 54, 53];
+  secs.forEach(function (s, i) { tl.call(function () { document.getElementById("cs").textContent = String(s).padStart(2, "0"); document.getElementById("cm").textContent = i === 0 ? "30" : "29"; }, [], b(6, i)); });
+  tl.call(function () { document.getElementById("cs").textContent = "00"; document.getElementById("cm").textContent = "30"; }, [], 0);
+  tl.from("#nlab", { opacity: 0, duration: 0.2 }, b(7));
+  tl.from("#notify", { opacity: 0, y: 30, duration: 0.25, ease: SL }, b(7));
+  tl.to("#nbtn", { scale: 0.94, duration: 0.07, yoyo: true, repeat: 1 }, b(7, 2));
+  tl.to("#s5in", { opacity: 0, duration: 0.05 }, b(7, 3)); /* the stop-down: a beat of black before the vote */
+
+  /* 6 · crew vote */
+  flash(b(8), 0.6); shake(b(8), "#s6in", 1);
+  slam("#h6", b(8), -2);
+  tl.from("#sub6", { opacity: 0, duration: 0.2 }, b(8, 0.5));
+  tl.from("#pkA", { x: -400, opacity: 0, duration: 0.22, ease: SL }, b(8));
+  tl.from("#pkB", { x: 400, opacity: 0, duration: 0.22, ease: SL }, b(8));
+  tl.from("#vs", { scale: 2, opacity: 0, duration: 0.18, ease: SL }, b(8, 1));
+  tl.set("#vA", { xPercent: -50, yPercent: -50, rotation: -6 }, 0); tl.set("#vB", { xPercent: -50, yPercent: -50, rotation: 6 }, 0);
+  tl.to("#barA", { width: "53%", duration: 0.5, ease: "power3.out" }, b(8, 2));
+  tl.to("#barB", { width: "47%", duration: 0.5, ease: "power3.out" }, b(8, 2));
+  tl.from(["#pctA", "#pctB"], { opacity: 0, duration: 0.15 }, b(8, 2));
+  tl.to("#pkA", { borderColor: "#F8C038", duration: 0.1 }, b(8, 3));
+  tl.set("#rest", { opacity: 0 }, 0);
+  tl.fromTo("#rest", { scale: 2, opacity: 0, rotation: -20 }, { scale: 1, opacity: 1, rotation: -9, duration: 0.14, ease: SL, immediateRender: false }, b(8, 3));
+
+  /* 7 · sell your pair */
+  flash(b(9), 0.3);
+  tl.fromTo("#h7", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: SL, immediateRender: false }, b(9)); tl.set("#h7", { opacity: 0 }, 0);
+  shake(b(9), "#s7in", 0.7);
+  tl.from("#sub7", { opacity: 0, y: 20, duration: 0.2 }, b(9, 1));
+  tl.from("#sell", { opacity: 0, y: 30, duration: 0.2, ease: SL }, b(9, 1));
+  tl.fromTo("#cur", { x: 1500, y: 1000, opacity: 0 }, { x: 1170, y: 845, opacity: 1, duration: 0.35, ease: "power2.inOut" }, b(9, 1.2));
+  tl.to("#sell", { scale: 0.94, background: "#1A1611", duration: 0.07, yoyo: true, repeat: 1 }, b(9, 2));
+  tl.to("#cur", { scale: 0.85, duration: 0.07, yoyo: true, repeat: 1 }, b(9, 2));
+
+  /* 8 · outro — the mark again, then the drop */
+  flash(b(10), 0.7); shake(b(10), "#s8in", 1);
+  tl.fromTo("#wm8", { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.2, ease: SL, immediateRender: false }, b(10)); tl.set("#wm8", { opacity: 0 }, 0);
+  tl.fromTo("#wm8 .wm-r", { x: 30 }, { x: 0, duration: 0.8, ease: "power3.out" }, b(10));
+  tl.fromTo("#wm8 .wm-b", { x: -30 }, { x: 0, duration: 0.8, ease: "power3.out" }, b(10));
+  tl.from("#o1", { opacity: 0, y: 30, duration: 0.25, ease: SL }, b(11));
+  gsap.utils.toArray("#o2 span").forEach(function (s, i) { tl.fromTo(s, { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.16, ease: SL, immediateRender: false }, b(12) + i * BT); tl.set(s, { opacity: 0 }, 0); });
+  flash(b(12), 0.3); shake(b(12), "#s8in", 0.6);
+  tl.to("#wm8", { skewX: -8, duration: 0.05, yoyo: true, repeat: 1 }, b(11, 2));
+  tl.to("#wm8", { skewX: 8, duration: 0.05, yoyo: true, repeat: 1 }, b(12, 2));
+
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
