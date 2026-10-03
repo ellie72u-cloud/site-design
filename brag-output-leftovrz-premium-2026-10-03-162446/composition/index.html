@@ -32,10 +32,11 @@ body{margin:0;background:var(--bg);font-family:'Barlow',sans-serif}
 .pplus em{font-style:normal;color:#E8352A}
 #s1 .pplus em,#s6 .pplus em{color:#A3121A}
 /* intro */
-#intro{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-left:150px;color:#fff}
-#intro b{display:block;font:400 150px/1.05 var(--tag)}
+#intro{position:absolute;left:0;right:0;top:70px;display:flex;flex-direction:column;align-items:center;color:#fff;z-index:2}
+#intro b{display:block;font:400 118px/1.02 var(--tag)}
+#deck{position:absolute;left:0;top:400px;overflow:visible}
 #intro b#i2{color:var(--acc)}
-#i3{margin-top:40px;color:rgba(255,255,255,.75)}
+#i3{margin-top:22px;color:rgba(255,255,255,.75)}
 /* drop */
 #pp{position:absolute;left:0;right:0;top:200px;text-align:center;font-size:330px;color:#000}
 .wm{position:absolute;-webkit-mask:url('assets/img/wordmark-1.png') center/contain no-repeat;mask:url('assets/img/wordmark-1.png') center/contain no-repeat}
@@ -81,8 +82,47 @@ body{margin:0;background:var(--bg);font-family:'Barlow',sans-serif}
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="25.2">
-  <section id="s0" class="clip" data-start="0" data-duration="3.927" data-track-index="1" style="background:#0A0806">
-    <div id="s0in" class="in"><div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ ↓</span></div></div>
+  <section id="s0" class="clip" data-start="0" data-duration="4.027" data-track-index="1" style="background:radial-gradient(ellipse 70% 60% at 50% 70%,#23201c,#0A0806)">
+    <div id="s0in" class="in"><div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ</span></div>
+<svg id="deck" viewBox="230 430 1460 500" width="1920" height="658">
+ <defs>
+  <linearGradient id="plat" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9d6d0"/><stop offset=".5" stop-color="#8d8a85"/><stop offset="1" stop-color="#4a4844"/></linearGradient>
+  <linearGradient id="plin" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2a2622"/><stop offset="1" stop-color="#110f0d"/></linearGradient>
+  <radialGradient id="vin" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#1b1917"/><stop offset="1" stop-color="#070605"/></radialGradient>
+  <linearGradient id="tube" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f1efea"/><stop offset=".6" stop-color="#9c9993"/><stop offset="1" stop-color="#5d5b57"/></linearGradient>
+ </defs>
+ <ellipse cx="960" cy="900" rx="760" ry="40" fill="#000" opacity=".55"/>
+ <rect x="300" y="710" width="1320" height="150" rx="14" fill="url(#plin)"/>
+ <rect x="300" y="710" width="1320" height="6" rx="3" fill="#4a443d"/>
+ <rect x="340" y="860" width="90" height="26" rx="6" fill="#0c0b0a"/><rect x="1490" y="860" width="90" height="26" rx="6" fill="#0c0b0a"/>
+ <circle cx="1500" cy="785" r="16" fill="#F8C038"/><text x="1530" y="792" fill="#8a847b" font-family="Space Mono" font-size="20" letter-spacing="3">33 · 45</text>
+ <g id="rec">
+  <rect x="440" y="668" width="840" height="44" fill="url(#plat)"/>
+  <g id="strobe" fill="#2b2926" opacity=".7"></g>
+  <ellipse cx="860" cy="668" rx="420" ry="44" fill="#5d5b57"/>
+  <ellipse cx="860" cy="652" rx="410" ry="42" fill="url(#vin)"/>
+  <ellipse cx="860" cy="652" rx="370" ry="37" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="320" ry="32" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="265" ry="26.5" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="210" ry="21" fill="none" stroke="#24211e" stroke-width="2"/>
+  <path d="M520 640 Q 700 618 900 618" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="860" cy="652" rx="130" ry="13" fill="#F8C038"/>
+  <circle id="dust" cx="860" cy="652" r="5" fill="#d8d3c8" opacity=".8"/>
+  <rect id="lmark" x="855" y="648" width="22" height="7" rx="2" fill="#141210"/>
+  <ellipse cx="860" cy="651" rx="9" ry="3" fill="#cfcac0"/>
+ </g>
+ <g id="spark" opacity="0"><ellipse id="ring" cx="975" cy="642" rx="20" ry="4" fill="none" stroke="#F8C038" stroke-width="6"/><circle cx="975" cy="642" r="14" fill="#fff6d6"/><g stroke="#F8C038" stroke-width="5" stroke-linecap="round"><line x1="975" y1="620" x2="975" y2="590"/><line x1="950" y1="628" x2="925" y2="608"/><line x1="1000" y1="628" x2="1025" y2="608"/><line x1="940" y1="640" x2="905" y2="638"/><line x1="1010" y1="640" x2="1045" y2="638"/></g></g>
+ <rect x="1404" y="560" width="52" height="150" rx="8" fill="#8d8a85"/>
+ <rect x="1394" y="690" width="72" height="20" rx="6" fill="#4a4844"/>
+ <g id="tarm">
+  <circle cx="1430" cy="560" r="30" fill="#c9c6c0" stroke="#3a3835" stroke-width="3"/>
+  <rect x="1470" y="546" width="70" height="30" rx="8" fill="#3a3835"/>
+  <path d="M1430 560 L1080 572 L1000 596" fill="none" stroke="url(#tube)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1012 586 L944 604 L948 620 L1018 602 Z" fill="#141210"/>
+  <rect x="955" y="612" width="40" height="18" rx="3" fill="#F8C038"/>
+  <line x1="975" y1="628" x2="975" y2="641" stroke="#e8e4dc" stroke-width="3"/>
+ </g>
+</svg></div>
   </section>
   <section id="s1" class="clip" data-start="3.927" data-duration="1.519" data-track-index="2" style="background:#F8C038">
     <div id="s1in" class="in"><div class="dots"></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div class="wm" id="wm1"></div></div>
@@ -148,10 +188,34 @@ body{margin:0;background:var(--bg);font-family:'Barlow',sans-serif}
   }
 
   /* intro: the lines land on the intro's own hits */
+  /* the side-on deck: the record spins, the needle kisses it on each intro hit, then drops on the kick */
+  var HITS = [0.13, 1.269, 1.649, 2.408, 3.548], DROP = k(10), ARMS = "1430 560";
+  var spin = { a: 0 };
+  tl.to(spin, { a: Math.PI * 2 * 0.75 * (DROP + 0.1), duration: DROP + 0.1, ease: "none",
+    onUpdate: function () {
+      gsap.set("#lmark", { attr: { x: 849 + Math.cos(spin.a) * 108, y: 648 + Math.sin(spin.a) * 9 } });
+      gsap.set("#dust", { attr: { cx: 860 + Math.cos(spin.a + 2.1) * 300, cy: 652 + Math.sin(spin.a + 2.1) * 30 } });
+    } }, 0);
+  var st = document.getElementById("strobe");
+  for (var s = 0; s < 28; s++) { var r = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r.setAttribute("x", 446 + s * 30); r.setAttribute("y", 676); r.setAttribute("width", 10); r.setAttribute("height", 8); st.appendChild(r); }
+  tl.fromTo("#strobe", { x: 0 }, { x: -30, duration: 0.1, ease: "none", repeat: Math.ceil((DROP + 0.1) / 0.1), immediateRender: false }, 0);
+  tl.set("#tarm", { rotation: 9, svgOrigin: ARMS }, 0);
+  function kiss(t, hard) {
+    // land just before the hit so the needle sits on the groove on the hit frame, hold, then lift
+    tl.to("#tarm", { rotation: 0, svgOrigin: ARMS, duration: hard ? 0.12 : 0.09, ease: "power3.in" }, t - (hard ? 0.13 : 0.10));
+    if (!hard) tl.to("#tarm", { rotation: 9, svgOrigin: ARMS, duration: 0.17, ease: "power2.out" }, t + 0.10);
+    tl.fromTo("#spark", { opacity: 1, scale: 0.6, svgOrigin: "975 640" }, { opacity: 0, scale: 1.3, svgOrigin: "975 640", duration: hard ? 0.4 : 0.28, ease: "power2.out", immediateRender: false }, t);
+    tl.fromTo("#ring", { attr: { rx: 14, ry: 3 } }, { attr: { rx: hard ? 300 : 110, ry: hard ? 30 : 11 }, duration: hard ? 0.35 : 0.22, ease: "power2.out", immediateRender: false }, t);
+    tl.fromTo("#rec", { y: 0 }, { y: hard ? 6 : 3, duration: 0.05, yoyo: true, repeat: 1, immediateRender: false }, t);
+    tl.fromTo("#deck", { y: 0 }, { y: hard ? 10 : 4, duration: 0.06, yoyo: true, repeat: 1, immediateRender: false }, t);
+  }
+  tl.set("#spark", { opacity: 0 }, 0);
+  HITS.forEach(function (h, i) { kiss(i === 0 ? 0.2 : h, false); });
+  kiss(DROP, true);
+  tl.fromTo("#deck", { scale: 1 }, { scale: 1.1, transformOrigin: "1080px 300px", duration: DROP, ease: "none", immediateRender: false }, 0);
   tl.from("#i1", { opacity: 0, y: 40, duration: 0.25, ease: SL }, 1.269);
   tl.from("#i2", { opacity: 0, y: 40, duration: 0.25, ease: SL }, 1.649);
   tl.from("#i3", { opacity: 0, duration: 0.3 }, 2.408);
-  tl.to("#intro", { scale: 1.05, duration: 1.4, ease: "none" }, 2.5);
 
   /* the drop */
   flash(k(10), 0.75); shake(k(10), "#s1in", 1);

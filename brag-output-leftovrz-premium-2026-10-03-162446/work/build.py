@@ -11,7 +11,46 @@ secs=[]; js=[]
 def sec(i,a,e,body,style=''):
     secs.append(f'  <section id="s{i}" class="clip" data-start="{a}" data-duration="{round(e-a,3)}" data-track-index="{i+1}" style="{style}">\n    <div id="s{i}in" class="in">{body}</div>\n  </section>')
 # 0 intro
-sec(0,0,k(10),'<div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ ↓</span></div>','background:#0A0806')
+sec(0,0,round(k(10)+0.1,3),'''<div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ</span></div>
+<svg id="deck" viewBox="230 430 1460 500" width="1920" height="658">
+ <defs>
+  <linearGradient id="plat" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9d6d0"/><stop offset=".5" stop-color="#8d8a85"/><stop offset="1" stop-color="#4a4844"/></linearGradient>
+  <linearGradient id="plin" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2a2622"/><stop offset="1" stop-color="#110f0d"/></linearGradient>
+  <radialGradient id="vin" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#1b1917"/><stop offset="1" stop-color="#070605"/></radialGradient>
+  <linearGradient id="tube" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f1efea"/><stop offset=".6" stop-color="#9c9993"/><stop offset="1" stop-color="#5d5b57"/></linearGradient>
+ </defs>
+ <ellipse cx="960" cy="900" rx="760" ry="40" fill="#000" opacity=".55"/>
+ <rect x="300" y="710" width="1320" height="150" rx="14" fill="url(#plin)"/>
+ <rect x="300" y="710" width="1320" height="6" rx="3" fill="#4a443d"/>
+ <rect x="340" y="860" width="90" height="26" rx="6" fill="#0c0b0a"/><rect x="1490" y="860" width="90" height="26" rx="6" fill="#0c0b0a"/>
+ <circle cx="1500" cy="785" r="16" fill="#F8C038"/><text x="1530" y="792" fill="#8a847b" font-family="Space Mono" font-size="20" letter-spacing="3">33 · 45</text>
+ <g id="rec">
+  <rect x="440" y="668" width="840" height="44" fill="url(#plat)"/>
+  <g id="strobe" fill="#2b2926" opacity=".7"></g>
+  <ellipse cx="860" cy="668" rx="420" ry="44" fill="#5d5b57"/>
+  <ellipse cx="860" cy="652" rx="410" ry="42" fill="url(#vin)"/>
+  <ellipse cx="860" cy="652" rx="370" ry="37" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="320" ry="32" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="265" ry="26.5" fill="none" stroke="#24211e" stroke-width="2"/>
+  <ellipse cx="860" cy="652" rx="210" ry="21" fill="none" stroke="#24211e" stroke-width="2"/>
+  <path d="M520 640 Q 700 618 900 618" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="860" cy="652" rx="130" ry="13" fill="#F8C038"/>
+  <circle id="dust" cx="860" cy="652" r="5" fill="#d8d3c8" opacity=".8"/>
+  <rect id="lmark" x="855" y="648" width="22" height="7" rx="2" fill="#141210"/>
+  <ellipse cx="860" cy="651" rx="9" ry="3" fill="#cfcac0"/>
+ </g>
+ <g id="spark" opacity="0"><ellipse id="ring" cx="975" cy="642" rx="20" ry="4" fill="none" stroke="#F8C038" stroke-width="6"/><circle cx="975" cy="642" r="14" fill="#fff6d6"/><g stroke="#F8C038" stroke-width="5" stroke-linecap="round"><line x1="975" y1="620" x2="975" y2="590"/><line x1="950" y1="628" x2="925" y2="608"/><line x1="1000" y1="628" x2="1025" y2="608"/><line x1="940" y1="640" x2="905" y2="638"/><line x1="1010" y1="640" x2="1045" y2="638"/></g></g>
+ <rect x="1404" y="560" width="52" height="150" rx="8" fill="#8d8a85"/>
+ <rect x="1394" y="690" width="72" height="20" rx="6" fill="#4a4844"/>
+ <g id="tarm">
+  <circle cx="1430" cy="560" r="30" fill="#c9c6c0" stroke="#3a3835" stroke-width="3"/>
+  <rect x="1470" y="546" width="70" height="30" rx="8" fill="#3a3835"/>
+  <path d="M1430 560 L1080 572 L1000 596" fill="none" stroke="url(#tube)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1012 586 L944 604 L948 620 L1018 602 Z" fill="#141210"/>
+  <rect x="955" y="612" width="40" height="18" rx="3" fill="#F8C038"/>
+  <line x1="975" y1="628" x2="975" y2="641" stroke="#e8e4dc" stroke-width="3"/>
+ </g>
+</svg>''','background:radial-gradient(ellipse 70% 60% at 50% 70%,#23201c,#0A0806)')
 # 1 drop
 sec(1,k(10),k(14),'<div class="dots"></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div class="wm" id="wm1"></div>','background:#F8C038')
 for n,(pid,s0,bg,fg,ac,brand,name,pr,sz,photos,sw) in enumerate(PAIRS):
