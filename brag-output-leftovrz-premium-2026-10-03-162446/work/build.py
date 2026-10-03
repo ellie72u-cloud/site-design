@@ -1,3 +1,5 @@
+import sys
+V=len(sys.argv)>1 and sys.argv[1]=='vertical'
 fonts=open('assets/fonts/fonts.css').read()
 P=60/158
 def k(n): return round(0.13+n*P,3)
@@ -12,7 +14,7 @@ def sec(i,a,e,body,style=''):
     secs.append(f'  <section id="s{i}" class="clip" data-start="{a}" data-duration="{round(e-a,3)}" data-track-index="{i+1}" style="{style}">\n    <div id="s{i}in" class="in">{body}</div>\n  </section>')
 # 0 intro
 sec(0,0,round(k(10)+0.1,3),'''<div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ</span></div>
-<svg id="deck" viewBox="230 430 1460 500" width="1920" height="658">
+<svg id="deck" viewBox="230 430 1460 500" width="{DW}" height="{DH}">
  <defs>
   <linearGradient id="plat" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9d6d0"/><stop offset=".5" stop-color="#8d8a85"/><stop offset="1" stop-color="#4a4844"/></linearGradient>
   <linearGradient id="plin" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2a2622"/><stop offset="1" stop-color="#110f0d"/></linearGradient>
@@ -77,4 +79,30 @@ sec(7,k(51),k(58),'<div id="lh">THE <span class="pplus sm">PREMIUM<em>+</em></sp
 sec(8,k(58),D,'<div class="wm" id="wm8"></div><div id="o1"><span class="pplus">PREMIUM<em>+</em></span></div><div id="o2">BRANDED SHOES, GRADED HONEST.</div><div id="o3" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div>','background:#0A0806')
 tpl=open('../work/template.html').read()
 tpl=tpl.replace('{{FONTS}}',fonts).replace('{{SECS}}','\n'.join(secs)).replace('{{PAIRJS}}','\n  '.join(js)).replace('{{D}}',str(D)).replace('{{FRAMES}}',str(int(D*30)))
-open('index.html','w').write(tpl); print('ok')
+VCSS='''
+/* ---- 9:16 short ---- */
+#intro{top:520px}#intro b{font-size:112px}
+#deck{left:-110px;top:1060px}#deck text{display:none}
+#pp{top:640px;font-size:210px}
+#wm1{left:140px;top:1000px;width:800px;height:185px}
+.marq{top:auto;bottom:-40px}
+.info{left:80px;top:110px;width:920px}
+.info h2{font-size:200px;margin-top:40px}
+.info h2.long{font-size:130px;margin-top:30px}
+.meta{margin-top:28px}.sw{position:absolute;right:0;top:0;margin:0;gap:14px}.sw i{width:60px;height:60px}
+.win{left:150px;top:830px;width:780px;height:1040px}
+#more{top:120px;font-size:130px}
+.mp{width:560px}.mp img{width:560px;height:340px}.mp b{font-size:50px}
+#lh{top:110px;left:60px;right:60px;font-size:100px;line-height:1.05}
+#lineup{left:60px;top:400px;width:960px;flex-wrap:wrap;justify-content:center;gap:34px 30px}
+.lc{width:300px}.lc img{width:300px;height:400px}.lc b{font-size:34px}.lc span{font-size:24px}
+#wm8{left:90px;top:470px;width:900px;height:210px}
+#o1{top:760px;font-size:170px}
+#o2{top:1010px;left:60px;right:60px;font-size:84px;line-height:1.1}
+#o3{top:1300px;font-size:22px}
+''' if V else ''
+W,H,DW,DH,DORG=(1080,1920,1300,445,'1000px 200px') if V else (1920,1080,1920,658,'1080px 300px')
+if V:
+    tpl=tpl.replace('id="mp0" style="left:160px;top:420px"','id="mp0" style="left:60px;top:330px"').replace('id="mp1" style="left:720px;top:470px"','id="mp1" style="left:460px;top:830px"').replace('id="mp2" style="left:1280px;top:420px"','id="mp2" style="left:60px;top:1330px"')
+tpl=tpl.replace('{{VCSS}}',VCSS).replace('{{W}}',str(W)).replace('{{H}}',str(H)).replace('{DW}',str(DW)).replace('{DH}',str(DH)).replace('{{DORG}}',DORG)
+open('index.html','w').write(tpl); print('ok', 'vertical' if V else 'landscape')
