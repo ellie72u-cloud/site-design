@@ -1,19 +1,19 @@
 import sys
 V=len(sys.argv)>1 and sys.argv[1]=='vertical'
 fonts=open('assets/fonts/fonts.css').read()
-P=60/158
-def k(n): return round(0.13+n*P,3)
+B=0.5458  # JET SET is ~110 BPM; beat 7 (3.838s) is the drop, the big kick lands every 4 beats
+def k(n): return round(0.017+n*B,3)
 D=25.2
 PAIRS=[  # id, start beat, bg, fg, accent, brand, name, price, size, photos with the beat each lands on, swatches
- ('hoka', 14,'#F2894A','#141210','#141210','HOKA ONE ONE','BONDI 7','RS.6,500','41.5',[('i06',14),('i07',16),('i35',18),('i36',20)],['#AEB9B2','#F6B48F','#F2F2EE']),
- ('cloud',22,'#C7A6F2','#141210','#141210','ADIDAS','CLOUDFOAM PURE SPW','RS.6,500','42.5',[('i27',22),('i72',25),('i73',26),('i71',27)],['#F7F5EF','#BFD7EE','#8A5A3B']),
- ('stan', 30,'#1E2A47','#F3E9D8','#D49A5B','ADIDAS','STAN SMITH CREPE','RS.6,500','46',[('i10',30),('i11',32),('i39',34),('i40',36)],['#3B4257','#C58A4E','#F2F2EE']),
- ('zoom', 38,'#0A0806','#FFFFFF','#F8C038','NIKE','ZOOM FLY','RS.6,500','42',[('i16',38),('i17',40),('i45',42),('i46',44)],['#111111','#F2F2EE','#8A8D91'])]
+ ('hoka', 11,'#F2894A','#141210','#141210','HOKA ONE ONE','BONDI 7','RS.6,500','41.5',[('i06',11),('i07',12),('i35',13),('i36',14)],['#AEB9B2','#F6B48F','#F2F2EE']),
+ ('cloud',15,'#C7A6F2','#141210','#141210','ADIDAS','CLOUDFOAM PURE SPW','RS.6,500','42.5',[('i27',15),('i72',16),('i73',17),('i71',18)],['#F7F5EF','#BFD7EE','#8A5A3B']),
+ ('stan', 19,'#1E2A47','#F3E9D8','#D49A5B','ADIDAS','STAN SMITH CREPE','RS.6,500','46',[('i10',19),('i11',20),('i39',21),('i40',22)],['#3B4257','#C58A4E','#F2F2EE']),
+ ('zoom', 23,'#0A0806','#FFFFFF','#F8C038','NIKE','ZOOM FLY','RS.6,500','42',[('i16',23),('i17',24.5),('i45',25),('i46',26)],['#111111','#F2F2EE','#8A8D91'])]
 secs=[]; js=[]
 def sec(i,a,e,body,style=''):
     secs.append(f'  <section id="s{i}" class="clip" data-start="{a}" data-duration="{round(e-a,3)}" data-track-index="{i+1}" style="{style}">\n    <div id="s{i}in" class="in">{body}</div>\n  </section>')
 # 0 intro
-sec(0,0,round(k(10)+0.1,3),'''<div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ</span></div>
+sec(0,0,round(k(7)+0.1,3),'''<div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ</span></div>
 <svg id="deck" viewBox="230 430 1460 500" width="{DW}" height="{DH}">
  <defs>
   <linearGradient id="plat" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d9d6d0"/><stop offset=".5" stop-color="#8d8a85"/><stop offset="1" stop-color="#4a4844"/></linearGradient>
@@ -54,7 +54,7 @@ sec(0,0,round(k(10)+0.1,3),'''<div id="intro"><b id="i1">Branded shoes,</b><b id
  </g>
 </svg>''','background:radial-gradient(ellipse 70% 60% at 50% 70%,#23201c,#0A0806)')
 # 1 drop
-sec(1,k(10),k(14),'<div class="dots"></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div class="wm" id="wm1"></div>','background:#F8C038')
+sec(1,k(7),k(11),'<div class="dots"></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div class="wm" id="wm1"></div>','background:#F8C038')
 for n,(pid,s0,bg,fg,ac,brand,name,pr,sz,photos,sw) in enumerate(PAIRS):
     imgs=''.join(f'<img class="ang" id="{pid}-{j}" src="assets/ph/{p}.png" alt="">' for j,(p,_) in enumerate(photos))
     sws=''.join(f'<i id="{pid}-sw{j}" style="background:{c}"></i>' for j,c in enumerate(sw))
@@ -64,19 +64,19 @@ for n,(pid,s0,bg,fg,ac,brand,name,pr,sz,photos,sw) in enumerate(PAIRS):
           f'<div class="brand" id="{pid}-br">{brand}</div><h2 id="{pid}-n" class="{"long" if len(name)>10 else ""}">{name}</h2>'
           f'<div class="meta" id="{pid}-m"><b>{pr}</b><span>SIZE {sz}</span></div><div class="sw">{sws}</div></div>'
           f'<div class="win" id="{pid}-w">{imgs}</div>')
-    e=s0+8
+    e=s0+4
     sec(2+n,k(s0),k(e),body,f'background:{bg}')
     js.append(f'pair("{pid}",{s0},{[b for _,b in photos]},{len(sw)});')
 # 6 more premium+
 cuts=[('i02','HOKA ONE ONE BONDI 7','RS.5,500 · 40',48,(160,420)),('i24','NIKE AIR WINFLO 9','RS.6,500 · 44',49,(720,470)),('i25','ADIDAS PUREMOTION','RS.6,500 · 38.5',50,(1280,420))]
 mb=''.join(f'<div class="mp" id="mp{j}" style="left:{x}px;top:{y}px"><img src="assets/cut/{c}.png" alt=""><b>{nm}</b><span>{pr}</span></div>' for j,(c,nm,pr,b,(x,y)) in enumerate(cuts))
-sec(6,k(46),k(51),'<div class="dots"></div><div id="more">MORE <span class="pplus sm">PREMIUM<em>+</em></span></div>'+mb,'background:#F8C038')
+sec(6,k(27),k(31),'<div class="dots"></div><div id="more">MORE <span class="pplus sm">PREMIUM<em>+</em></span></div>'+mb,'background:#F8C038')
 # 7 line-up
 line=[('i06','HOKA BONDI 7','RS.6,500'),('i27','CLOUDFOAM PURE SPW','RS.6,500'),('i10','STAN SMITH CREPE','RS.6,500'),('i16','ZOOM FLY','RS.6,500'),('i02','HOKA BONDI 7','RS.5,500'),('i24','AIR WINFLO 9','RS.6,500'),('i25','PUREMOTION','RS.6,500')]
 lb=''.join(f'<div class="lc" id="lc{j}"><img src="assets/ph/{p}.png" alt=""><b>{nm}</b><span>{pr}</span></div>' for j,(p,nm,pr) in enumerate(line))
-sec(7,k(51),k(58),'<div id="lh">THE <span class="pplus sm">PREMIUM<em>+</em></span> LINE-UP</div><div id="lineup">'+lb+'</div>','background:#0A0806')
+sec(7,k(31),k(39),'<div id="lh">THE <span class="pplus sm">PREMIUM<em>+</em></span> LINE-UP</div><div id="lineup">'+lb+'</div>','background:#0A0806')
 # 8 outro
-sec(8,k(58),D,'<div class="wm" id="wm8"></div><div id="o1"><span class="pplus">PREMIUM<em>+</em></span></div><div id="o2">BRANDED SHOES, GRADED HONEST.</div><div id="o3" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div>','background:#0A0806')
+sec(8,k(39),D,'<div class="wm" id="wm8"></div><div id="o1"><span class="pplus">PREMIUM<em>+</em></span></div><div id="o2">BRANDED SHOES, GRADED HONEST.</div><div id="o3" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div>','background:#0A0806')
 tpl=open('../work/template.html').read()
 tpl=tpl.replace('{{FONTS}}',fonts).replace('{{SECS}}','\n'.join(secs)).replace('{{PAIRJS}}','\n  '.join(js)).replace('{{D}}',str(D)).replace('{{FRAMES}}',str(int(D*30)))
 VCSS='''

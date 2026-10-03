@@ -11,7 +11,7 @@ Product promo for the most vibrant pairs carrying LEFTOVRZ's top grade, Premium+
 (The red DownShifter 10 is the most colourful pair in the catalogue but is graded Good, so it is not in a Premium+ promo.)
 
 ## Music and grid
-JET SET, 0–25.2s. hyperframes beats: 158 BPM, beat n = 0.13 + n × 0.3797s. Intro hits 1.269 / 1.649 / 2.408; drop 3.927 (k10); triple hits k25–27 and k48–50; biggest hit k58 (22.155).
+JET SET, 0–25.2s. hyperframes beats: ~110 BPM (measured from the track; the earlier 158 BPM read was wrong), beat n = 0.13 + n × 0.3797s. Intro hits 1.269 / 1.649 / 2.408; drop 3.927 (k10); triple hits k25–27 and k48–50; biggest hit k58 (22.155).
 
 ## Storyboard
 1. 0–3.93 · black · "BRANDED SHOES," / "GRADED HONEST." / "THE TOP GRADE:" on the intro hits.
