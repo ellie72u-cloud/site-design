@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>LEFTOVRZ — Premium+</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Barlow';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-400.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-700.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-800.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:900;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-900.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-400.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-700.woff2') format('woff2')}
+@font-face{font-family:'DM Serif Display';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/DMSerifDisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Permanent Marker';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/PermanentMarker-400.woff2') format('woff2')}
+@font-face{font-family:'Rubik Spray Paint';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/RubikSprayPaint-400.woff2') format('woff2')}
+@font-face{font-family:'Sedgwick Ave';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SedgwickAve-400.woff2') format('woff2')}
+@font-face{font-family:'Sedgwick Ave Display';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SedgwickAveDisplay-400.woff2') format('woff2')}
+:root{--ink:#141210;--bg:#0A0806;--acc:#F8C038;--disp:'Barlow Condensed',Impact,sans-serif;--mono:'Space Mono',monospace;--tag:'Sedgwick Ave Display',cursive}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--bg);font-family:'Barlow',sans-serif}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg)}
+.clip{position:absolute;inset:0;overflow:hidden}
+.in{position:absolute;inset:0}
+.mono{font:700 24px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+.dots{position:absolute;inset:0;background-image:radial-gradient(#000 26%,transparent 29%);background-size:14px 14px;opacity:.08}
+.pplus{font:900 1em/1 var(--disp);letter-spacing:-.01em}
+.pplus em{font-style:normal;color:#E8352A}
+#s1 .pplus em,#s6 .pplus em{color:#A3121A}
+/* intro */
+#intro{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding-left:150px;color:#fff}
+#intro b{display:block;font:400 150px/1.05 var(--tag)}
+#intro b#i2{color:var(--acc)}
+#i3{margin-top:40px;color:rgba(255,255,255,.75)}
+/* drop */
+#pp{position:absolute;left:0;right:0;top:200px;text-align:center;font-size:330px;color:#000}
+.wm{position:absolute;-webkit-mask:url('assets/img/wordmark-1.png') center/contain no-repeat;mask:url('assets/img/wordmark-1.png') center/contain no-repeat}
+#wm1{left:560px;top:700px;width:800px;height:185px;background:#000}
+/* pair scenes */
+.marq{position:absolute;left:0;top:-30px;white-space:nowrap;font:900 360px/1 var(--disp);color:transparent;-webkit-text-stroke:3px;opacity:.16}
+.info{position:absolute;left:110px;top:150px;width:880px}
+.badge{display:inline-block;font:700 30px/1 var(--mono);letter-spacing:.14em;padding:12px 18px;border:4px solid}
+.brand{margin-top:40px;font:700 34px/1 var(--mono);letter-spacing:.24em}
+.info h2{margin-top:58px;font:900 230px/.86 var(--disp);letter-spacing:-.01em}
+.info h2.long{font-size:150px;line-height:.9;margin-top:30px}
+.meta{margin-top:34px;display:flex;align-items:center;gap:26px}
+.meta b{font:900 80px/1 var(--disp)}
+.meta span{font:700 34px/1 var(--mono);letter-spacing:.12em;padding:12px 16px;border:3px solid currentColor}
+.sw{margin-top:36px;display:flex;gap:18px}
+.sw i{width:74px;height:74px;border-radius:50%;box-shadow:0 0 0 5px rgba(0,0,0,.2),0 10px 20px rgba(0,0,0,.25)}
+/* the lookbook window: the whole studio photo, never cropped (3:4 photo in a 3:4 frame) */
+.win{position:absolute;left:1120px;top:90px;width:675px;height:900px;border-radius:26px;overflow:hidden;background:#EDE9E3;box-shadow:0 40px 90px -20px rgba(0,0,0,.6)}
+.ang{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+/* more premium+ */
+#more{position:absolute;left:0;right:0;top:70px;text-align:center;font:900 150px/1 var(--disp);color:#000}
+.pplus.sm{font-size:1em}
+.mp{position:absolute;width:480px;display:flex;flex-direction:column;align-items:center}
+.mp img{width:480px;height:300px;object-fit:contain;filter:drop-shadow(0 22px 26px rgba(0,0,0,.35))}
+.mp b{margin-top:16px;font:900 44px/1 var(--disp);color:#000;text-align:center}
+.mp span{margin-top:10px;font:700 26px/1 var(--mono);background:#000;color:var(--acc);padding:10px 14px}
+/* line-up */
+#lh{position:absolute;left:0;right:0;top:80px;text-align:center;font:900 120px/1 var(--disp);color:#fff}
+#lineup{position:absolute;left:130px;top:300px;display:flex;gap:20px}
+.lc{width:220px;display:flex;flex-direction:column}
+.lc img{width:220px;height:293px;object-fit:contain;background:#EDE9E3;border-radius:14px}
+.lc b{margin-top:14px;font:900 30px/1 var(--disp);color:#fff}
+.lc span{margin-top:8px;font:700 22px/1 var(--mono);color:var(--acc)}
+/* outro */
+#wm8{left:310px;top:180px;width:1300px;height:300px;background:#fff}
+#o1{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:170px;color:var(--acc)}
+#o2{position:absolute;left:0;right:0;top:720px;text-align:center;font:400 80px/1 var(--tag);color:#fff}
+#o3{position:absolute;left:0;right:0;top:880px;text-align:center;color:rgba(255,255,255,.85)}
+/* fx */
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#grain{position:absolute;inset:-80px;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="25.2">
+  <section id="s0" class="clip" data-start="0" data-duration="3.927" data-track-index="1" style="background:#0A0806">
+    <div id="s0in" class="in"><div id="intro"><b id="i1">Branded shoes,</b><b id="i2">graded honest.</b><span id="i3" class="mono">THE TOP GRADE AT LEFTOVRZ ↓</span></div></div>
+  </section>
+  <section id="s1" class="clip" data-start="3.927" data-duration="1.519" data-track-index="2" style="background:#F8C038">
+    <div id="s1in" class="in"><div class="dots"></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div class="wm" id="wm1"></div></div>
+  </section>
+  <section id="s2" class="clip" data-start="5.446" data-duration="3.038" data-track-index="3" style="background:#F2894A">
+    <div id="s2in" class="in"><div class="marq" data-layout-ignore aria-hidden="true" id="hoka-mq" style="-webkit-text-stroke-color:#141210">BONDI 7 · BONDI 7 · BONDI 7 · BONDI 7</div><div class="info" style="color:#141210"><span class="badge" id="hoka-b" style="border-color:#141210;color:#141210">PREMIUM+</span><div class="brand" id="hoka-br">HOKA ONE ONE</div><h2 id="hoka-n" class="">BONDI 7</h2><div class="meta" id="hoka-m"><b>RS.6,500</b><span>SIZE 41.5</span></div><div class="sw"><i id="hoka-sw0" style="background:#AEB9B2"></i><i id="hoka-sw1" style="background:#F6B48F"></i><i id="hoka-sw2" style="background:#F2F2EE"></i></div></div><div class="win" id="hoka-w"><img class="ang" id="hoka-0" src="assets/ph/i06.png" alt=""><img class="ang" id="hoka-1" src="assets/ph/i07.png" alt=""><img class="ang" id="hoka-2" src="assets/ph/i35.png" alt=""><img class="ang" id="hoka-3" src="assets/ph/i36.png" alt=""></div></div>
+  </section>
+  <section id="s3" class="clip" data-start="8.484" data-duration="3.038" data-track-index="4" style="background:#C7A6F2">
+    <div id="s3in" class="in"><div class="marq" data-layout-ignore aria-hidden="true" id="cloud-mq" style="-webkit-text-stroke-color:#141210">CLOUDFOAM PURE SPW · CLOUDFOAM PURE SPW · CLOUDFOAM PURE SPW · CLOUDFOAM PURE SPW</div><div class="info" style="color:#141210"><span class="badge" id="cloud-b" style="border-color:#141210;color:#141210">PREMIUM+</span><div class="brand" id="cloud-br">ADIDAS</div><h2 id="cloud-n" class="long">CLOUDFOAM PURE SPW</h2><div class="meta" id="cloud-m"><b>RS.6,500</b><span>SIZE 42.5</span></div><div class="sw"><i id="cloud-sw0" style="background:#F7F5EF"></i><i id="cloud-sw1" style="background:#BFD7EE"></i><i id="cloud-sw2" style="background:#8A5A3B"></i></div></div><div class="win" id="cloud-w"><img class="ang" id="cloud-0" src="assets/ph/i27.png" alt=""><img class="ang" id="cloud-1" src="assets/ph/i72.png" alt=""><img class="ang" id="cloud-2" src="assets/ph/i73.png" alt=""><img class="ang" id="cloud-3" src="assets/ph/i71.png" alt=""></div></div>
+  </section>
+  <section id="s4" class="clip" data-start="11.522" data-duration="3.038" data-track-index="5" style="background:#1E2A47">
+    <div id="s4in" class="in"><div class="marq" data-layout-ignore aria-hidden="true" id="stan-mq" style="-webkit-text-stroke-color:#F3E9D8">STAN SMITH CREPE · STAN SMITH CREPE · STAN SMITH CREPE · STAN SMITH CREPE</div><div class="info" style="color:#F3E9D8"><span class="badge" id="stan-b" style="border-color:#D49A5B;color:#D49A5B">PREMIUM+</span><div class="brand" id="stan-br">ADIDAS</div><h2 id="stan-n" class="long">STAN SMITH CREPE</h2><div class="meta" id="stan-m"><b>RS.6,500</b><span>SIZE 46</span></div><div class="sw"><i id="stan-sw0" style="background:#3B4257"></i><i id="stan-sw1" style="background:#C58A4E"></i><i id="stan-sw2" style="background:#F2F2EE"></i></div></div><div class="win" id="stan-w"><img class="ang" id="stan-0" src="assets/ph/i10.png" alt=""><img class="ang" id="stan-1" src="assets/ph/i11.png" alt=""><img class="ang" id="stan-2" src="assets/ph/i39.png" alt=""><img class="ang" id="stan-3" src="assets/ph/i40.png" alt=""></div></div>
+  </section>
+  <section id="s5" class="clip" data-start="14.56" data-duration="3.038" data-track-index="6" style="background:#0A0806">
+    <div id="s5in" class="in"><div class="marq" data-layout-ignore aria-hidden="true" id="zoom-mq" style="-webkit-text-stroke-color:#FFFFFF">ZOOM FLY · ZOOM FLY · ZOOM FLY · ZOOM FLY</div><div class="info" style="color:#FFFFFF"><span class="badge" id="zoom-b" style="border-color:#F8C038;color:#F8C038">PREMIUM+</span><div class="brand" id="zoom-br">NIKE</div><h2 id="zoom-n" class="">ZOOM FLY</h2><div class="meta" id="zoom-m"><b>RS.6,500</b><span>SIZE 42</span></div><div class="sw"><i id="zoom-sw0" style="background:#111111"></i><i id="zoom-sw1" style="background:#F2F2EE"></i><i id="zoom-sw2" style="background:#8A8D91"></i></div></div><div class="win" id="zoom-w"><img class="ang" id="zoom-0" src="assets/ph/i16.png" alt=""><img class="ang" id="zoom-1" src="assets/ph/i17.png" alt=""><img class="ang" id="zoom-2" src="assets/ph/i45.png" alt=""><img class="ang" id="zoom-3" src="assets/ph/i46.png" alt=""></div></div>
+  </section>
+  <section id="s6" class="clip" data-start="17.598" data-duration="1.899" data-track-index="7" style="background:#F8C038">
+    <div id="s6in" class="in"><div class="dots"></div><div id="more">MORE <span class="pplus sm">PREMIUM<em>+</em></span></div><div class="mp" id="mp0" style="left:160px;top:420px"><img src="assets/cut/i02.png" alt=""><b>HOKA ONE ONE BONDI 7</b><span>RS.5,500 · 40</span></div><div class="mp" id="mp1" style="left:720px;top:470px"><img src="assets/cut/i24.png" alt=""><b>NIKE AIR WINFLO 9</b><span>RS.6,500 · 44</span></div><div class="mp" id="mp2" style="left:1280px;top:420px"><img src="assets/cut/i25.png" alt=""><b>ADIDAS PUREMOTION</b><span>RS.6,500 · 38.5</span></div></div>
+  </section>
+  <section id="s7" class="clip" data-start="19.497" data-duration="2.658" data-track-index="8" style="background:#0A0806">
+    <div id="s7in" class="in"><div id="lh">THE <span class="pplus sm">PREMIUM<em>+</em></span> LINE-UP</div><div id="lineup"><div class="lc" id="lc0"><img src="assets/ph/i06.png" alt=""><b>HOKA BONDI 7</b><span>RS.6,500</span></div><div class="lc" id="lc1"><img src="assets/ph/i27.png" alt=""><b>CLOUDFOAM PURE SPW</b><span>RS.6,500</span></div><div class="lc" id="lc2"><img src="assets/ph/i10.png" alt=""><b>STAN SMITH CREPE</b><span>RS.6,500</span></div><div class="lc" id="lc3"><img src="assets/ph/i16.png" alt=""><b>ZOOM FLY</b><span>RS.6,500</span></div><div class="lc" id="lc4"><img src="assets/ph/i02.png" alt=""><b>HOKA BONDI 7</b><span>RS.5,500</span></div><div class="lc" id="lc5"><img src="assets/ph/i24.png" alt=""><b>AIR WINFLO 9</b><span>RS.6,500</span></div><div class="lc" id="lc6"><img src="assets/ph/i25.png" alt=""><b>PUREMOTION</b><span>RS.6,500</span></div></div></div>
+  </section>
+  <section id="s8" class="clip" data-start="22.155" data-duration="3.045" data-track-index="9" style="background:#0A0806">
+    <div id="s8in" class="in"><div class="wm" id="wm8"></div><div id="o1"><span class="pplus">PREMIUM<em>+</em></span></div><div id="o2">BRANDED SHOES, GRADED HONEST.</div><div id="o3" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div></div>
+  </section>
+  <section id="fx" class="clip" data-start="0" data-duration="25.2" data-track-index="14" style="background:transparent"><div id="grain"></div><div id="flash"></div></section>
+  <audio id="music" data-timeline-role="music" src="assets/music/jet-set.mp3" data-start="0" data-duration="25.2" data-track-index="20" data-volume="0.9"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":24.3,"v":1},{"t":25.2,"v":0}]}]}'></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var P = 60 / 158;
+  function k(n) { return +(0.13 + n * P).toFixed(3); }        /* beat n of JET SET (hyperframes beats, 158 BPM) */
+  var SL = "power4.out", E = "power3.out";
+  function slap(sel, t, s, rot) { tl.fromTo(sel, { opacity: 0, scale: s || 1.7, rotation: rot || 0 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.14, ease: SL, immediateRender: false }, t); tl.set(sel, { opacity: 0 }, 0); }
+  function flash(t, o) { tl.fromTo("#flash", { opacity: o }, { opacity: 0, duration: 0.16, ease: "power2.out", immediateRender: false }, t); }
+  var SH = [[14, -9], [-11, 7], [8, 9], [-5, -6], [3, 4], [0, 0]];
+  function shake(t, w, m) { SH.forEach(function (p, i) { tl.set(w, { x: p[0] * m, y: p[1] * m }, t + i * 0.035); }); }
+  tl.set("#flash", { opacity: 0 }, 0);
+  var seed = 9; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var f = 0; f < 756; f++) { (function (x, y) { tl.call(function () { gsap.set("#grain", { x: x, y: y }); }, [], f / 30); })(Math.round(rnd() * 80 - 40), Math.round(rnd() * 80 - 40)); }
+  /* the kick breathes the lookbook windows */
+  var AB = window.AUDIO_B || [];
+  for (var g = 0; g < AB.length; g++) { (function (v) { tl.call(function () { gsap.set(".win", { scale: 1 + v * 0.018 }); }, [], g / 30); })(AB[g]); }
+
+  /* a pair: badge and name on the first beat, price on the next, a swatch per beat, a new angle on each listed beat */
+  function pair(id, s0, beats, nsw) {
+    flash(k(s0), 0.35); shake(k(s0), "#" + id + "-w", 0.6);
+    tl.fromTo("#" + id + "-mq", { x: 0 }, { x: -900, duration: k(s0 + 8) - k(s0), ease: "none" }, k(s0));
+    tl.fromTo("#" + id + "-w", { x: 260, opacity: 0, rotation: 6 }, { x: 0, opacity: 1, rotation: 0, duration: 0.28, ease: SL, immediateRender: false }, k(s0));
+    slap("#" + id + "-b", k(s0), 1.6, -8);
+    tl.from("#" + id + "-br", { opacity: 0, x: -40, duration: 0.2, ease: E }, k(s0));
+    tl.from("#" + id + "-n", { opacity: 0, x: -80, duration: 0.24, ease: SL }, k(s0) + 0.04);
+    tl.from("#" + id + "-m", { opacity: 0, y: 30, duration: 0.2, ease: SL }, k(s0 + 1));
+    for (var j = 0; j < nsw; j++) slap("#" + id + "-sw" + j, k(s0 + 2 + j), 2);
+    beats.forEach(function (b, j) {
+      var el = "#" + id + "-" + j;
+      tl.set(el, { opacity: 0 }, 0);
+      tl.fromTo(el, { opacity: 1, scale: 1.12, rotation: j % 2 ? 2 : -2 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.3, ease: E, immediateRender: false }, k(b));
+      if (j < beats.length - 1) tl.set(el, { opacity: 0 }, k(beats[j + 1]));
+    });
+  }
+
+  /* intro: the lines land on the intro's own hits */
+  tl.from("#i1", { opacity: 0, y: 40, duration: 0.25, ease: SL }, 1.269);
+  tl.from("#i2", { opacity: 0, y: 40, duration: 0.25, ease: SL }, 1.649);
+  tl.from("#i3", { opacity: 0, duration: 0.3 }, 2.408);
+  tl.to("#intro", { scale: 1.05, duration: 1.4, ease: "none" }, 2.5);
+
+  /* the drop */
+  flash(k(10), 0.75); shake(k(10), "#s1in", 1);
+  slap("#pp", k(10), 1.6, -4);
+  slap("#wm1", k(12), 1.5);
+  shake(k(12), "#s1in", 0.5);
+
+  pair("hoka",14,[14, 16, 18, 20],3);
+  pair("cloud",22,[22, 25, 26, 27],3);
+  pair("stan",30,[30, 32, 34, 36],3);
+  pair("zoom",38,[38, 40, 42, 44],3);
+
+  /* more premium+: three pairs on the second triple hit */
+  flash(k(46), 0.4);
+  slap("#more", k(46), 1.4, -2);
+  [48, 49, 50].forEach(function (b, j) { slap("#mp" + j, k(b), 1.8, j % 2 ? 6 : -6); shake(k(b), "#s6in", 0.5); });
+
+  /* the line-up, a pair a beat */
+  flash(k(51), 0.3);
+  tl.from("#lh", { opacity: 0, y: -30, duration: 0.22, ease: SL }, k(51));
+  for (var c = 0; c < 7; c++) slap("#lc" + c, k(51 + c), 1.4);
+
+  /* the biggest hit */
+  flash(k(58), 0.8); shake(k(58), "#s8in", 1);
+  slap("#wm8", k(58), 1.4);
+  slap("#o1", k(59), 1.6, -3);
+  tl.from("#o2", { opacity: 0, y: 30, duration: 0.25, ease: SL }, k(60));
+  tl.from("#o3", { opacity: 0, duration: 0.3 }, k(62));
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
