@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, height=1920">
+<title>LEFTOVRZ — The Premium+ Mixtape</title>
+<script src="assets/gsap.min.js"></script>
+<script src="assets/audio-energy.js"></script>
+<style>
+@font-face{font-family:'Barlow';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-400.woff2') format('woff2')}
+@font-face{font-family:'Barlow';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/Barlow-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:600;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-600.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-700.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:800;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-800.woff2') format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-weight:900;font-style:normal;font-display:block;src:url('assets/fonts/BarlowCondensed-900.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-400.woff2') format('woff2')}
+@font-face{font-family:'Space Mono';font-weight:700;font-style:normal;font-display:block;src:url('assets/fonts/SpaceMono-700.woff2') format('woff2')}
+@font-face{font-family:'DM Serif Display';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/DMSerifDisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Permanent Marker';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/PermanentMarker-400.woff2') format('woff2')}
+@font-face{font-family:'Rubik Spray Paint';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/RubikSprayPaint-400.woff2') format('woff2')}
+@font-face{font-family:'Sedgwick Ave';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SedgwickAve-400.woff2') format('woff2')}
+@font-face{font-family:'Sedgwick Ave Display';font-weight:400;font-style:normal;font-display:block;src:url('assets/fonts/SedgwickAveDisplay-400.woff2') format('woff2')}
+:root{--ink:#141210;--bg:#0A0806;--acc:#F8C038;--cream:#F3E9D8;--disp:'Barlow Condensed',Impact,sans-serif;--mono:'Space Mono',monospace;--tag:'Sedgwick Ave Display',cursive}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--bg);font-family:'Barlow',sans-serif}
+#root{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg)}
+.clip{position:absolute;inset:0;overflow:hidden;background:transparent}
+.in{position:absolute;inset:0;overflow:hidden}
+.mono{font:700 28px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase}
+.tag{font:400 76px/1.1 var(--tag)}
+.dots{position:absolute;inset:0;background-image:radial-gradient(var(--dot) 24%,transparent 27%);background-size:13px 13px;opacity:.09}
+.bokeh{position:absolute;inset:0;opacity:.45;filter:blur(9px);background:
+ radial-gradient(circle 26px at 12% 9%,#ffb347 60%,transparent 72%),radial-gradient(circle 18px at 30% 5%,#ffd27a 60%,transparent 72%),
+ radial-gradient(circle 30px at 55% 11%,#ff9f3a 60%,transparent 72%),radial-gradient(circle 20px at 76% 6%,#ffc46b 60%,transparent 72%),
+ radial-gradient(circle 34px at 92% 12%,#ffb347 60%,transparent 72%)}
+.pplus{font:900 1em/1 var(--disp);letter-spacing:-.01em}
+.pplus em{font-style:normal;color:#E8352A}
+.note{position:absolute;font-family:'Barlow',serif;line-height:1;opacity:0;text-shadow:0 0 18px rgba(255,200,120,.55)}
+.tp{position:absolute;width:150px;height:46px;background:rgba(246,236,206,.78);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+/* vinyl: the disc spins, the sheen stays put */
+.vin{position:absolute;border-radius:50%}
+.vin .disc{position:absolute;inset:0;border-radius:50%;background:
+  radial-gradient(circle,transparent 0 31.5%,rgba(0,0,0,.4) 31.8% 32.6%,transparent 33%),
+  repeating-radial-gradient(circle,rgba(0,0,0,0) 0 5px,rgba(0,0,0,.17) 5px 6px),
+  radial-gradient(circle,rgba(255,255,255,.1),rgba(0,0,0,.28)),var(--v);
+  box-shadow:inset 0 0 0 8px rgba(0,0,0,.35),0 30px 70px rgba(0,0,0,.5)}
+.lab{position:absolute;left:34%;top:34%;width:32%;height:32%;border-radius:50%;background:var(--l);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8%;overflow:hidden;color:#141210}
+.lab img{width:66%}
+.lab small{font:700 1em/1 var(--mono);letter-spacing:.08em;white-space:nowrap}
+.lab .ltxt{font:900 3em/1 var(--disp);letter-spacing:.02em;color:#141210;opacity:.85}
+.lsplit{position:absolute;inset:14% 0;display:flex;flex-direction:column;align-items:center;justify-content:space-between}
+.vin .sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;opacity:.8;background:conic-gradient(from 0deg,transparent 0 5%,rgba(255,255,255,.3) 10%,transparent 15% 52%,rgba(255,255,255,.22) 58%,transparent 64%)}
+.vin .hole{position:absolute;left:49%;top:49%;width:2%;height:2%;border-radius:50%;background:#d9d9d9}
+
+/* 0 intro */
+#i-top{position:absolute;left:0;right:0;top:250px;display:flex;flex-direction:column;align-items:center;color:#fff;text-align:center}
+#i1{color:rgba(243,233,216,.85)}
+#i2{margin-top:26px;font:400 140px/1 var(--tag)}
+#i3{font:400 176px/1 var(--tag);color:var(--acc);margin-top:-6px}
+#persp{position:absolute;left:0;top:830px;width:1080px;height:1180px;perspective:1300px}
+#plane{position:absolute;left:-50px;top:0;width:1180px;height:1180px;transform:rotateX(62deg);transform-style:preserve-3d}
+#platter{position:absolute;inset:-34px;border-radius:50%;background:radial-gradient(circle,#2a2a2a 60%,#111 70%,#3a3a3a 71%,#0b0b0b 74%);transform:translateZ(-36px)}
+#v0{left:0;top:0;font-size:26px}
+#clamp{position:absolute;left:420px;top:1250px;opacity:0}
+#i1,#i2,#i3{opacity:0}
+#arm0{position:absolute;left:550px;top:630px}
+#spark0{position:absolute;left:700px;top:1330px;width:0;height:0}
+#spark0 i{position:absolute;left:-60px;top:-22px;width:120px;height:44px;border-radius:50%;border:6px solid #FFE9A8;opacity:0}
+
+/* 1 title */
+#biglab{position:absolute;left:140px;top:170px;width:800px;height:800px}
+#ringsvg{position:absolute;inset:0;filter:drop-shadow(0 30px 40px rgba(0,0,0,.35))}
+#pp{position:absolute;left:0;right:0;top:470px;text-align:center;font-size:190px;color:#141210}
+#tl{position:absolute;left:90px;right:90px;top:1070px;color:#141210}
+#tl .side{margin:28px 0 8px;font:700 28px/1 var(--mono);letter-spacing:.3em;opacity:.75}
+#tl .tr{display:flex;align-items:baseline;gap:22px;padding:8px 0;border-bottom:3px dotted rgba(20,18,16,.45)}
+#tl .tr b{font:900 56px/1 var(--disp);width:70px}
+#tl .tr span{flex:1;font:800 56px/1 var(--disp);white-space:nowrap}
+#tl .tr em{font:700 30px/1 var(--mono);font-style:normal}
+#heavy{position:absolute;left:0;right:0;top:1660px;text-align:center;font-size:118px;color:var(--cream);transform:rotate(-4deg);text-shadow:0 6px 0 rgba(0,0,0,.25)}
+
+/* tracks */
+.hdr{position:absolute;left:60px;right:60px;top:90px;display:flex;justify-content:space-between;font:700 28px/1 var(--mono);letter-spacing:.18em}
+.recw .vin{left:280px;top:220px;font-size:18px}
+.sleeve{position:absolute;left:60px;top:190px;width:660px;height:880px;background:var(--cream);box-shadow:0 30px 60px rgba(0,0,0,.45);transform:rotate(-2deg)}
+.sleeve .ph{position:absolute;left:30px;top:30px;width:600px;height:800px;overflow:hidden;background:#EDE9E3}
+.ang{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.slv{position:absolute;left:30px;right:30px;top:844px;font:700 18px/1 var(--mono);letter-spacing:.2em;color:#141210}
+.tp1{left:-46px;top:-6px;transform:rotate(-35deg)}.tp2{right:-46px;top:-6px;transform:rotate(35deg)}
+.stk{position:absolute;left:560px;top:880px;width:240px;height:240px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#141210;box-shadow:0 12px 24px rgba(0,0,0,.35)}
+.stk small{font:700 30px/1 var(--mono)}
+.stk b{font:900 84px/.95 var(--disp)}
+.info{position:absolute;left:60px;right:60px;top:1130px}
+.info h2{font:900 170px/.86 var(--disp);margin-top:8px}
+.info h2.long{font-size:104px;line-height:.92}
+.meta{margin-top:28px;display:flex;gap:28px;align-items:center}
+.sz{font:700 34px/1 var(--mono);letter-spacing:.12em;padding:12px 16px;border:3px solid currentColor}
+.stamp{font:900 46px/1 var(--disp);letter-spacing:.06em;padding:8px 16px;border:6px double currentColor;transform:rotate(-6deg)}
+.prog{position:absolute;left:60px;right:60px;top:1600px;display:flex;align-items:center;gap:22px;font:700 30px/1 var(--mono)}
+.prog .bar{position:relative;flex:1;height:6px;background:rgba(128,128,128,.45)}
+.prog .fill{position:absolute;left:0;top:0;bottom:0;width:100%;transform-origin:0 50%;transform:scaleX(0)}
+.prog .knob{position:absolute;left:0;top:-9px;width:24px;height:24px;border-radius:50%;margin-left:-12px}
+.tape{position:absolute;left:-60px;right:-60px;top:1724px;height:106px;background:#0A0806;transform:rotate(-3deg);overflow:hidden;display:flex;align-items:center}
+.tape span{white-space:nowrap;font:900 60px/1 var(--disp);color:var(--acc);letter-spacing:.04em;padding-left:20px}
+#t4 .tape{background:#E8352A}#t4 .tape span{color:#0A0806}
+
+/* 6 crate */
+#ch{position:absolute;top:110px;left:0;right:0;text-align:center;color:var(--cream)}
+#ch b{display:block;font:900 112px/1 var(--disp)}
+#ch span{display:block;margin-top:18px;color:var(--acc)}
+#crate{position:absolute;inset:0;perspective:1600px}
+.back{position:absolute;left:230px;width:620px;height:1000px;box-shadow:0 -6px 20px rgba(0,0,0,.45)}
+#bk2{top:368px;background:#1E2A47}#bk1{top:404px;background:#B78BF0}
+.card{position:absolute;left:200px;top:440px;width:680px;height:1060px;background:var(--cream);box-shadow:0 -10px 40px rgba(0,0,0,.5);transform-origin:50% 100%}
+.card img{position:absolute;left:40px;top:40px;width:600px;height:800px;object-fit:contain;background:#EDE9E3}
+#cfront{position:absolute;left:0;right:0;top:1460px;bottom:0;background:linear-gradient(#a8743f,#7a4f27);border-top:12px solid #5a3818;box-shadow:0 -20px 40px rgba(0,0,0,.45)}
+#cfront .plank{position:absolute;left:0;right:0;height:4px;background:rgba(0,0,0,.25)}
+#cfront .plank:nth-child(1){top:150px}#cfront .plank:nth-child(2){top:300px}#cfront .plank:nth-child(3){top:420px}
+.stencil{position:absolute;left:0;right:0;top:34px;text-align:center;color:rgba(20,18,16,.8);font-size:24px}
+.ctag{position:absolute;left:40px;right:40px;top:96px;text-align:center;color:var(--cream)}
+.ctag b{display:block;font:900 92px/1 var(--disp);text-shadow:0 4px 0 rgba(0,0,0,.35)}
+.ctag span{display:inline-block;margin-top:16px;font:700 36px/1 var(--mono);color:#141210;background:var(--acc);padding:10px 16px}
+
+/* 7 side B record */
+#o-top{position:absolute;top:90px;left:0;right:0;text-align:center;color:var(--cream)}
+#o-top b{display:block;font:900 104px/1 var(--disp)}
+#o-top .tag{font:400 112px/1 var(--tag);color:var(--acc);margin-top:-4px}
+#ring2{position:absolute;left:-50px;top:370px}
+#v7{left:40px;top:460px;font-size:16px}
+#clamp7{position:absolute;left:485px;top:905px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#fff,#d3d6da 30%,#868b91 62%,#45494e);box-shadow:0 12px 26px rgba(0,0,0,.6),inset 0 0 0 8px rgba(255,255,255,.22)}
+#o-bot{position:absolute;top:1660px;left:0;right:0;text-align:center;color:var(--cream)}
+
+/* 8 poster */
+#v8{left:-380px;top:1620px;font-size:16px}
+.wm{position:absolute;-webkit-mask:url('assets/img/wordmark-1.png') center/contain no-repeat;mask:url('assets/img/wordmark-1.png') center/contain no-repeat}
+#wm8{left:90px;top:330px;width:900px;height:208px;background:#141210}
+#p1{position:absolute;left:0;right:0;top:610px;text-align:center;font-size:200px;color:#141210}
+#p2{position:absolute;left:60px;right:60px;top:850px;text-align:center;font-size:88px;color:#141210}
+#p3{left:560px;top:1080px;width:320px;height:320px;background:var(--acc)}
+#p3 b{font-size:110px}
+#p4{position:absolute;left:0;right:0;top:1470px;text-align:center;color:#141210}
+.tpA{left:40px;top:330px;transform:rotate(-30deg)}.tpB{right:40px;top:330px;transform:rotate(30deg)}
+
+/* fx */
+#fx{z-index:50}
+#disc{left:-1150px;top:-190px;font-size:40px}
+#sideb{position:absolute;left:0;right:0;top:760px;text-align:center;font:900 300px/1 var(--disp);color:var(--acc);-webkit-text-stroke:8px #0A0806;opacity:0}
+#torn{position:absolute;left:0;top:-70px;width:1080px;height:70px;opacity:0}
+#flash{position:absolute;inset:0;background:#fff;opacity:0}
+#grain{position:absolute;inset:-80px;opacity:.13;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="25.2">
+  <section id="s0" class="clip" data-start="0" data-duration="4.238" data-track-index="1" style="z-index:1">
+    <div id="s0in" class="in" style="background:radial-gradient(ellipse 90% 50% at 50% 72%,#2a1a12,#0A0806 70%)"><div class="bokeh"></div><div id="i-top"><span id="i1" class="mono">LEFTOVRZ RECORDS PRESENTS</span><b id="i2">the premium+</b><b id="i3">mixtape</b></div><span class="note" id="n0-0" data-layout-ignore aria-hidden="true" style="left:391px;top:837px;font-size:89px;color:#FFFFFF">♪</span><span class="note" id="n0-1" data-layout-ignore aria-hidden="true" style="left:726px;top:784px;font-size:68px;color:#F3E9D8">♫</span><span class="note" id="n0-2" data-layout-ignore aria-hidden="true" style="left:900px;top:1034px;font-size:70px;color:#F8C038">♬</span><span class="note" id="n0-3" data-layout-ignore aria-hidden="true" style="left:434px;top:1058px;font-size:67px;color:#FFFFFF">♩</span><span class="note" id="n0-4" data-layout-ignore aria-hidden="true" style="left:579px;top:869px;font-size:66px;color:#F3E9D8">♪</span><span class="note" id="n0-5" data-layout-ignore aria-hidden="true" style="left:148px;top:982px;font-size:90px;color:#F8C038">♫</span><span class="note" id="n0-6" data-layout-ignore aria-hidden="true" style="left:131px;top:883px;font-size:69px;color:#FFFFFF">♬</span><span class="note" id="n0-7" data-layout-ignore aria-hidden="true" style="left:624px;top:977px;font-size:67px;color:#F3E9D8">♩</span><span class="note" id="n0-8" data-layout-ignore aria-hidden="true" style="left:906px;top:1049px;font-size:71px;color:#F8C038">♪</span><span class="note" id="n0-9" data-layout-ignore aria-hidden="true" style="left:288px;top:1082px;font-size:104px;color:#FFFFFF">♫</span><span class="note" id="n0-10" data-layout-ignore aria-hidden="true" style="left:656px;top:791px;font-size:100px;color:#F3E9D8">♬</span><span class="note" id="n0-11" data-layout-ignore aria-hidden="true" style="left:659px;top:963px;font-size:67px;color:#F8C038">♩</span><span class="note" id="n0-12" data-layout-ignore aria-hidden="true" style="left:286px;top:783px;font-size:99px;color:#FFFFFF">♪</span><span class="note" id="n0-13" data-layout-ignore aria-hidden="true" style="left:939px;top:828px;font-size:82px;color:#F3E9D8">♫</span><span class="note" id="n0-14" data-layout-ignore aria-hidden="true" style="left:489px;top:833px;font-size:98px;color:#F8C038">♬</span><span class="note" id="n0-15" data-layout-ignore aria-hidden="true" style="left:180px;top:1052px;font-size:83px;color:#FFFFFF">♩</span><div id="persp"><div id="plane"><div id="platter"></div><div class="vin" id="v0" style="width:1180px;height:1180px;--v:#FF5A14;--l:#FF5A14"><div class="disc" id="v0-d"><div class="lab"><b class="ltxt">LEFTOVRZ</b></div></div><div class="sheen"></div><i class="hole"></i></div></div></div><svg id="clamp" viewBox="0 0 240 190" width="240" height="190"><defs><linearGradient id="cyl" x1="0" x2="1"><stop offset="0" stop-color="#5d6268"/><stop offset=".3" stop-color="#f4f6f8"/><stop offset=".55" stop-color="#9aa0a6"/><stop offset=".8" stop-color="#e3e6e9"/><stop offset="1" stop-color="#4b4f54"/></linearGradient><radialGradient id="topc" cx=".45" cy=".4" r=".6"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#c9cdd1"/><stop offset="1" stop-color="#7c8187"/></radialGradient></defs><path d="M20 70 L20 150 A100 30 0 0 0 220 150 L220 70 Z" fill="url(#cyl)"/><ellipse cx="120" cy="70" rx="100" ry="30" fill="url(#topc)"/><g fill="none" stroke="#8a9096" stroke-width="2"><ellipse cx="120" cy="70" rx="80" ry="24"/><ellipse cx="120" cy="70" rx="56" ry="17"/></g><ellipse cx="120" cy="66" rx="34" ry="10" fill="#3fbf6a"/><ellipse cx="120" cy="64" rx="22" ry="6" fill="#c6f5d3"/><g stroke="#6d7379" stroke-width="3"><line x1="36" y1="120" x2="36" y2="173"/><line x1="50" y1="114" x2="50" y2="178"/><line x1="64" y1="109" x2="64" y2="181"/><line x1="78" y1="105" x2="78" y2="183"/><line x1="92" y1="102" x2="92" y2="185"/><line x1="106" y1="101" x2="106" y2="186"/><line x1="120" y1="100" x2="120" y2="186"/><line x1="134" y1="101" x2="134" y2="186"/><line x1="148" y1="102" x2="148" y2="185"/><line x1="162" y1="105" x2="162" y2="183"/><line x1="176" y1="109" x2="176" y2="181"/><line x1="190" y1="114" x2="190" y2="178"/><line x1="204" y1="120" x2="204" y2="173"/></g></svg><svg id="arm0" viewBox="0 0 520 760" width="520" height="760"><defs><linearGradient id="tube0" x1="0" x2="1"><stop offset="0" stop-color="#8b9096"/><stop offset=".4" stop-color="#ffffff"/><stop offset="1" stop-color="#6e737a"/></linearGradient></defs><circle cx="420" cy="90" r="64" fill="#2a2a2a" stroke="#555" stroke-width="4"/><circle cx="420" cy="90" r="30" fill="url(#tube0)"/><path d="M420 90 C 420 300, 330 470, 205 600" fill="none" stroke="url(#tube0)" stroke-width="22" stroke-linecap="round"/><path d="M222 572 L150 660 L188 690 L252 602 Z" fill="#1c1c1c" stroke="#666" stroke-width="3"/><rect x="150" y="652" width="44" height="34" rx="4" fill="#F8C038" transform="rotate(38 172 669)"/><line x1="160" y1="684" x2="150" y2="700" stroke="#eee" stroke-width="4"/></svg><div id="spark0"><i></i></div></div>
+  </section>
+  <section id="s1" class="clip" data-start="3.818" data-duration="2.553" data-track-index="2" style="z-index:2">
+    <div id="s1in" class="in" style="background:#FF5A14"><div class="dots" style="--dot:#000"></div><div id="biglab"><svg viewBox="0 0 800 800" width="800" height="800" id="ringsvg"><defs><path id="rp" d="M400 400 m-330 0 a330 330 0 1 1 660 0 a330 330 0 1 1 -660 0"/></defs><circle cx="400" cy="400" r="398" fill="#F3E9D8"/><circle cx="400" cy="400" r="380" fill="none" stroke="#141210" stroke-width="3"/><circle cx="400" cy="400" r="290" fill="none" stroke="#141210" stroke-width="2" stroke-dasharray="6 10"/><text font-family="Space Mono" font-weight="700" font-size="34" fill="#141210" textLength="2060" lengthAdjust="spacing"><textPath href="#rp" textLength="2060" lengthAdjust="spacing">BRANDED SHOES · GRADED HONEST · THE TOP GRADE AT LEFTOVRZ · </textPath></text><circle cx="400" cy="400" r="16" fill="#141210"/></svg></div><div id="pp"><span class="pplus">PREMIUM<em>+</em></span></div><div id="tl"><div class="side" id="sa">SIDE A</div><div class="tr" id="tr0"><b>A1</b><span>HOKA BONDI 7</span><em>RS.6,500</em></div><div class="tr" id="tr1"><b>A2</b><span>CLOUDFOAM PURE SPW</span><em>RS.6,500</em></div><div class="side" id="sb">SIDE B</div><div class="tr" id="tr2"><b>B1</b><span>ADIDAS STAN SMITH CREPE</span><em>RS.6,500</em></div><div class="tr" id="tr3"><b>B2</b><span>NIKE ZOOM FLY</span><em>RS.6,500</em></div></div><div id="heavy" class="tag">heavy rotation</div></div>
+  </section>
+  <section id="t1" class="clip" data-start="5.661" data-duration="2.703" data-track-index="3" style="z-index:3">
+    <div id="t1in" class="in" style="background:#141210"><div class="dots" style="--dot:#F3E9D8"></div><div class="hdr" style="color:#F3E9D8"><span>SIDE A · TRACK A1</span><span>33⅓ RPM</span></div><div class="recw" id="t1-rw"><div class="vin" id="t1-v" style="width:820px;height:820px;--v:#FF6A1A;--l:#F3E9D8"><div class="disc" id="t1-v-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""><small>PREMIUM+ · A1</small></div></div><div class="sheen"></div><i class="hole"></i></div></div><div class="sleeve" id="t1-sl"><div class="ph"><img class="ang" id="t1-p0" src="assets/ph/i06.png" alt=""><img class="ang" id="t1-p1" src="assets/ph/i07.png" alt=""><img class="ang" id="t1-p2" src="assets/ph/i35.png" alt=""></div><div class="slv">LEFTOVRZ · PREMIUM+ SERIES · A1</div><i class="tp tp1"></i><i class="tp tp2"></i></div><div class="stk" id="t1-st" style="background:#F8C038"><small>RS.</small><b>6,500</b></div><div class="info" style="color:#F3E9D8"><div class="tag" id="t1-br">Hoka One One</div><h2 id="t1-n" class="">BONDI 7</h2><div class="meta" id="t1-m"><span class="sz">SIZE 41.5</span><span class="stamp" style="color:#F3E9D8">PREMIUM+</span></div></div><div class="prog" style="color:#F3E9D8"><b>A1</b><i class="bar"><i class="fill" id="t1-f" style="background:#F3E9D8"></i><i class="knob" id="t1-k" style="background:#F3E9D8"></i></i><b>▶</b></div><div class="tape" data-layout-ignore aria-hidden="true"><span id="t1-tp">LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST</span></div></div>
+  </section>
+  <section id="t2" class="clip" data-start="8.194" data-duration="2.213" data-track-index="4" style="z-index:4">
+    <div id="t2in" class="in" style="background:#EFE6D2"><div class="dots" style="--dot:#141210"></div><div class="hdr" style="color:#141210"><span>SIDE A · TRACK A2</span><span>33⅓ RPM</span></div><div class="recw" id="t2-rw"><div class="vin" id="t2-v" style="width:820px;height:820px;--v:#B78BF0;--l:#F8E36B"><div class="disc" id="t2-v-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""><small>PREMIUM+ · A2</small></div></div><div class="sheen"></div><i class="hole"></i></div></div><div class="sleeve" id="t2-sl"><div class="ph"><img class="ang" id="t2-p0" src="assets/ph/i27.png" alt=""><img class="ang" id="t2-p1" src="assets/ph/i71.png" alt=""><img class="ang" id="t2-p2" src="assets/ph/i72.png" alt=""></div><div class="slv">LEFTOVRZ · PREMIUM+ SERIES · A2</div><i class="tp tp1"></i><i class="tp tp2"></i></div><div class="stk" id="t2-st" style="background:#E8352A"><small>RS.</small><b>6,500</b></div><div class="info" style="color:#141210"><div class="tag" id="t2-br">Adidas</div><h2 id="t2-n" class=" long">CLOUDFOAM PURE SPW</h2><div class="meta" id="t2-m"><span class="sz">SIZE 42.5</span><span class="stamp" style="color:#141210">PREMIUM+</span></div></div><div class="prog" style="color:#141210"><b>A2</b><i class="bar"><i class="fill" id="t2-f" style="background:#141210"></i><i class="knob" id="t2-k" style="background:#141210"></i></i><b>▶</b></div><div class="tape" data-layout-ignore aria-hidden="true"><span id="t2-tp">LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST</span></div></div>
+  </section>
+  <section id="t3" class="clip" data-start="10.387" data-duration="2.543" data-track-index="5" style="z-index:5">
+    <div id="t3in" class="in" style="background:#1E2A47"><div class="dots" style="--dot:#F3E9D8"></div><div class="hdr" style="color:#F3E9D8"><span>SIDE B · TRACK B1</span><span>33⅓ RPM</span></div><div class="recw" id="t3-rw"><div class="vin" id="t3-v" style="width:820px;height:820px;--v:#D49A5B;--l:#F3E9D8"><div class="disc" id="t3-v-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""><small>PREMIUM+ · B1</small></div></div><div class="sheen"></div><i class="hole"></i></div></div><div class="sleeve" id="t3-sl"><div class="ph"><img class="ang" id="t3-p0" src="assets/ph/i10.png" alt=""><img class="ang" id="t3-p1" src="assets/ph/i11.png" alt=""><img class="ang" id="t3-p2" src="assets/ph/i39.png" alt=""></div><div class="slv">LEFTOVRZ · PREMIUM+ SERIES · B1</div><i class="tp tp1"></i><i class="tp tp2"></i></div><div class="stk" id="t3-st" style="background:#F8C038"><small>RS.</small><b>6,500</b></div><div class="info" style="color:#F3E9D8"><div class="tag" id="t3-br">Adidas</div><h2 id="t3-n" class=" long">STAN SMITH CREPE</h2><div class="meta" id="t3-m"><span class="sz">SIZE 46</span><span class="stamp" style="color:#F3E9D8">PREMIUM+</span></div></div><div class="prog" style="color:#F3E9D8"><b>B1</b><i class="bar"><i class="fill" id="t3-f" style="background:#F3E9D8"></i><i class="knob" id="t3-k" style="background:#F3E9D8"></i></i><b>▶</b></div><div class="tape" data-layout-ignore aria-hidden="true"><span id="t3-tp">LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST</span></div></div>
+  </section>
+  <section id="t4" class="clip" data-start="12.27" data-duration="2.784" data-track-index="6" style="z-index:7">
+    <div id="t4in" class="in" style="background:#F8C038"><div class="dots" style="--dot:#0A0806"></div><div class="hdr" style="color:#0A0806"><span>SIDE B · TRACK B2</span><span>33⅓ RPM</span></div><div class="recw" id="t4-rw"><div class="vin" id="t4-v" style="width:820px;height:820px;--v:#161616;--l:#FFFFFF"><div class="disc" id="t4-v-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""><small>PREMIUM+ · B2</small></div></div><div class="sheen"></div><i class="hole"></i></div></div><div class="sleeve" id="t4-sl"><div class="ph"><img class="ang" id="t4-p0" src="assets/ph/i16.png" alt=""><img class="ang" id="t4-p1" src="assets/ph/i17.png" alt=""><img class="ang" id="t4-p2" src="assets/ph/i45.png" alt=""></div><div class="slv">LEFTOVRZ · PREMIUM+ SERIES · B2</div><i class="tp tp1"></i><i class="tp tp2"></i></div><div class="stk" id="t4-st" style="background:#E8352A"><small>RS.</small><b>6,500</b></div><div class="info" style="color:#0A0806"><div class="tag" id="t4-br">Nike</div><h2 id="t4-n" class="">ZOOM FLY</h2><div class="meta" id="t4-m"><span class="sz">SIZE 42</span><span class="stamp" style="color:#0A0806">PREMIUM+</span></div></div><div class="prog" style="color:#0A0806"><b>B2</b><i class="bar"><i class="fill" id="t4-f" style="background:#0A0806"></i><i class="knob" id="t4-k" style="background:#0A0806"></i></i><b>▶</b></div><div class="tape" data-layout-ignore aria-hidden="true"><span id="t4-tp">LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST · LEFTOVRZ · PREMIUM+ · GRADED HONEST</span></div></div>
+  </section>
+  <section id="s6" class="clip" data-start="14.414" data-duration="5.206" data-track-index="7" style="z-index:6">
+    <div id="s6in" class="in" style="background:radial-gradient(ellipse 80% 60% at 50% 40%,#4a2f1e,#1f140d)"><div class="dots" style="--dot:#000"></div><div id="ch"><b>MORE IN THE CRATE</b><span class="mono">PREMIUM+ · DIG IN</span></div><div id="crate"><div class="back" id="bk2"></div><div class="back" id="bk1"></div><div class="card" id="c0" style="z-index:10"><img src="assets/ph/i02.png" alt=""></div><div class="card" id="c1" style="z-index:9"><img src="assets/ph/i24.png" alt=""></div><div class="card" id="c2" style="z-index:8"><img src="assets/ph/i25.png" alt=""></div></div><div id="cfront"><i class="plank"></i><i class="plank"></i><i class="plank"></i><span class="mono stencil">LEFTOVRZ RECORDS · PREMIUM+</span><div class="ctag" id="ct0"><b>HOKA BONDI 7</b><span>RS.5,500 · SIZE 40</span></div><div class="ctag" id="ct1"><b>NIKE AIR WINFLO 9</b><span>RS.6,500 · SIZE 44</span></div><div class="ctag" id="ct2"><b>ADIDAS PUREMOTION</b><span>RS.6,500 · SIZE 38.5</span></div></div></div>
+  </section>
+  <section id="s7" class="clip" data-start="18.87" data-duration="2.483" data-track-index="8" style="z-index:5">
+    <div id="s7in" class="in" style="background:radial-gradient(ellipse 80% 60% at 50% 50%,#2a160d,#0A0806 75%)"><div class="bokeh"></div><div id="o-top"><b id="ob1">THE PREMIUM+</b><b id="ob2" class="tag">mixtape</b></div><svg id="ring2" viewBox="0 0 1180 1180" width="1180" height="1180"><defs><path id="rp2" d="M590 590 m-516 0 a516 516 0 1 1 1032 0 a516 516 0 1 1 -1032 0"/></defs><text font-family="Space Mono" font-weight="700" font-size="28" fill="#F3E9D8" textLength="3220" lengthAdjust="spacing"><textPath href="#rp2" textLength="3220" lengthAdjust="spacing">PREMIUM+ · BRANDED SHOES · GRADED HONEST · EVERY FRIDAY, 6PM · PREMIUM+ · BRANDED SHOES · GRADED HONEST · EVERY FRIDAY, 6PM · </textPath></text></svg><div class="vin" id="v7" style="width:1000px;height:1000px;--v:#FF5A14;--l:#F8C038"><div class="disc" id="v7-d"><div class="lab"><div class="lsplit"><img src="assets/img/logo-0.png" alt=""><small>THE PREMIUM+ MIXTAPE</small></div></div></div><div class="sheen"></div><i class="hole"></i></div><div id="clamp7"></div><span class="note" id="n7-0" data-layout-ignore aria-hidden="true" style="left:613px;top:790px;font-size:70px;color:#FFFFFF">♪</span><span class="note" id="n7-1" data-layout-ignore aria-hidden="true" style="left:635px;top:804px;font-size:87px;color:#F8C038">♫</span><span class="note" id="n7-2" data-layout-ignore aria-hidden="true" style="left:139px;top:548px;font-size:100px;color:#FF7A3A">♬</span><span class="note" id="n7-3" data-layout-ignore aria-hidden="true" style="left:101px;top:841px;font-size:95px;color:#FFFFFF">♩</span><span class="note" id="n7-4" data-layout-ignore aria-hidden="true" style="left:736px;top:1295px;font-size:113px;color:#F8C038">♪</span><span class="note" id="n7-5" data-layout-ignore aria-hidden="true" style="left:361px;top:1373px;font-size:101px;color:#FF7A3A">♫</span><span class="note" id="n7-6" data-layout-ignore aria-hidden="true" style="left:504px;top:1160px;font-size:83px;color:#FFFFFF">♬</span><span class="note" id="n7-7" data-layout-ignore aria-hidden="true" style="left:294px;top:788px;font-size:108px;color:#F8C038">♩</span><span class="note" id="n7-8" data-layout-ignore aria-hidden="true" style="left:838px;top:919px;font-size:69px;color:#FF7A3A">♪</span><span class="note" id="n7-9" data-layout-ignore aria-hidden="true" style="left:628px;top:1034px;font-size:97px;color:#FFFFFF">♫</span><span class="note" id="n7-10" data-layout-ignore aria-hidden="true" style="left:546px;top:1123px;font-size:110px;color:#F8C038">♬</span><span class="note" id="n7-11" data-layout-ignore aria-hidden="true" style="left:499px;top:1009px;font-size:102px;color:#FF7A3A">♩</span><span class="note" id="n7-12" data-layout-ignore aria-hidden="true" style="left:114px;top:661px;font-size:96px;color:#FFFFFF">♪</span><span class="note" id="n7-13" data-layout-ignore aria-hidden="true" style="left:468px;top:757px;font-size:112px;color:#F8C038">♫</span><div id="o-bot" class="mono">OUT NOW · LEFTOVRZ.COM</div></div>
+  </section>
+  <section id="s8" class="clip" data-start="21.083" data-duration="4.117" data-track-index="9" style="z-index:10">
+    <div id="s8in" class="in" style="background:#EFE6D2"><div class="dots" style="--dot:#000"></div><div class="vin" id="v8" style="width:760px;height:760px;--v:#FF5A14;--l:#F3E9D8"><div class="disc" id="v8-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""></div></div><div class="sheen"></div><i class="hole"></i></div><div class="wm" id="wm8"></div><div id="p1"><span class="pplus">PREMIUM<em>+</em></span></div><div id="p2" class="tag">branded shoes,<br>graded honest.</div><div id="p3" class="stk big"><small>FROM RS.</small><b>5,500</b></div><div id="p4" class="mono">EVERY FRIDAY, 6PM · LEFTOVRZ.COM</div><i class="tp tpA"></i><i class="tp tpB"></i></div>
+  </section>
+  <section id="fx" class="clip" data-start="0" data-duration="25.2" data-track-index="14">
+    <div class="vin" id="disc" data-layout-allow-overflow data-layout-ignore style="width:2300px;height:2300px;--v:#FF6A1A;--l:#F3E9D8"><div class="disc" id="disc-d"><div class="lab"><img src="assets/img/logo-0.png" alt=""><small>PREMIUM+ · A1</small></div></div><div class="sheen"></div><i class="hole"></i></div>
+    <div id="sideb" data-layout-ignore aria-hidden="true">SIDE B</div>
+    <svg id="torn" viewBox="0 0 1080 70" preserveAspectRatio="none"><path d="M0 0 H1080 V34 L1050 52 L1020 30 L985 58 L950 36 L915 62 L880 34 L842 54 L806 28 L770 60 L735 38 L700 56 L662 30 L628 62 L590 36 L556 54 L520 26 L484 58 L450 34 L414 60 L378 32 L342 56 L306 30 L270 62 L234 38 L198 54 L162 28 L126 58 L90 34 L54 60 L18 36 L0 50 Z" fill="#EFE6D2"/></svg>
+    <div id="grain"></div><div id="flash"></div>
+  </section>
+  <audio id="music" data-timeline-role="music" src="assets/music/jet-set.mp3" data-start="0" data-duration="25.2" data-track-index="20" data-volume="0.9"
+    data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":1},{"t":24.3,"v":1},{"t":25.2,"v":0}]}]}'></audio>
+</div>
+<script>
+(function () {
+  var tl = gsap.timeline({ paused: true });
+  var B = 0.5458;
+  function k(n) { return +(0.017 + n * B).toFixed(3); }        /* beat n of JET SET (~110 BPM, measured); the drop is beat 7 */
+  var TAPS = [0.04, 0.564, 1.112, 1.651, 2.205, 2.469, 3.218, 3.482];
+  var SL = "power4.out", E = "power3.out";
+  function slap(sel, t, s, rot, endRot) { tl.set(sel, { opacity: 0 }, 0); tl.fromTo(sel, { opacity: 0, scale: s || 1.7, rotation: rot || 0 }, { opacity: 1, scale: 1, rotation: endRot || 0, duration: 0.15, ease: SL, immediateRender: false }, t); }
+  function rise(sel, t, dy) { tl.set(sel, { opacity: 0 }, 0); tl.fromTo(sel, { opacity: 0, y: dy || 40 }, { opacity: 1, y: 0, duration: 0.24, ease: SL, immediateRender: false }, t); }
+  function flash(t, o) { tl.fromTo("#flash", { opacity: o }, { opacity: 0, duration: 0.18, ease: "power2.out", immediateRender: false }, t); }
+  var SH = [[14, -9], [-11, 7], [8, 9], [-5, -6], [3, 4], [0, 0]];
+  function shake(t, w, m) { SH.forEach(function (p, i) { tl.set(w, { x: p[0] * m, y: p[1] * m }, t + i * 0.035); }); }
+  function spin(sel, a, b, degPerSec) { tl.fromTo(sel, { rotation: 0 }, { rotation: (degPerSec || 250) * (b - a), duration: b - a, ease: "none", immediateRender: false }, a); }
+  function note(sel, t) { tl.fromTo(sel, { opacity: 0, y: 0, rotation: -12, scale: 0.6 }, { opacity: 1, y: -90, rotation: 0, scale: 1, duration: 0.16, ease: "power2.out", immediateRender: false }, t);
+                          tl.to(sel, { opacity: 0, y: -420, rotation: 16, duration: 0.9, ease: "power1.in" }, t + 0.16); }
+  tl.set("#flash", { opacity: 0 }, 0);
+  var seed = 9; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var f = 0; f < 756; f++) { (function (x, y) { tl.call(function () { gsap.set("#grain", { x: x, y: y }); }, [], f / 30); })(Math.round(rnd() * 80 - 40), Math.round(rnd() * 80 - 40)); }
+  /* the kick lights up the vinyl sheen */
+  var AB = window.AUDIO_B || [];
+  for (var g = 0; g < AB.length; g++) { (function (v) { tl.call(function () { gsap.set(".sheen", { opacity: 0.55 + v * 0.45 }); }, [], g / 30); })(AB[g]); }
+
+  /* ---------- 0 intro: the clamp steps down on each hit, the arm swings in, the needle drops on the kick ---------- */
+  var DROP = k(7);
+  spin("#v0-d", 0, DROP + 0.4, 230);
+  rise("#i1", TAPS[1], 20); slap("#i2", TAPS[3], 1.5, -4); slap("#i3", TAPS[4], 1.7, 5, -3);
+  tl.set("#clamp", { y: -420, opacity: 0 }, 0);
+  tl.fromTo("#clamp", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(2)", immediateRender: false }, TAPS[0]);
+  for (var c = 1; c <= 4; c++) {
+    tl.to("#clamp", { y: -420 + c * 105, duration: 0.09, ease: "power3.in" }, TAPS[c] - 0.09);
+    tl.fromTo("#clamp", { scaleY: 0.86 }, { scaleY: 1, transformOrigin: "50% 100%", duration: 0.2, ease: "back.out(3)", immediateRender: false }, TAPS[c]);
+  }
+  tl.fromTo("#clamp", { filter: "brightness(1.9)" }, { filter: "brightness(1)", duration: 0.35, immediateRender: false }, TAPS[5]);
+  TAPS.forEach(function (t, i) {
+    note("#n0-" + (2 * i), t); note("#n0-" + (2 * i + 1), t + 0.03);
+    tl.fromTo("#persp", { y: 0 }, { y: 7, duration: 0.05, yoyo: true, repeat: 1, immediateRender: false }, t);
+  });
+  tl.set("#arm0", { rotation: -34, svgOrigin: "420 90" }, 0);
+  tl.to("#arm0", { rotation: -16, svgOrigin: "420 90", duration: 0.14, ease: "power3.out" }, TAPS[6] - 0.03);
+  tl.to("#arm0", { rotation: -6, svgOrigin: "420 90", duration: 0.14, ease: "power3.out" }, TAPS[7] - 0.03);
+  tl.to("#arm0", { rotation: 0, svgOrigin: "420 90", duration: 0.11, ease: "power3.in" }, DROP - 0.12);
+  tl.fromTo("#spark0 i", { opacity: 1, scale: 0.3 }, { opacity: 0, scale: 3.4, duration: 0.4, ease: "power2.out", immediateRender: false }, DROP);
+  flash(DROP, 0.6); shake(DROP, "#persp", 1);
+  /* transition: dive through the label */
+  tl.to("#s0in", { scale: 5, transformOrigin: "540px 1420px", duration: 0.45, ease: "power3.in" }, DROP - 0.03);
+  tl.set("#s1in", { clipPath: "circle(0px at 540px 1420px)" }, 0);
+  tl.to("#s1in", { clipPath: "circle(2300px at 540px 1420px)", duration: 0.42, ease: "power2.in" }, DROP);
+
+  /* ---------- 1 title ---------- */
+  spin("#ringsvg", DROP - 0.02, k(11) + 0.35, 40);
+  slap("#pp", k(8), 1.8, -6);
+  rise("#sa", k(8.5), 20); rise("#tr0", k(8.5), 30); rise("#tr1", k(9), 30);
+  rise("#sb", k(9.5), 20); rise("#tr2", k(9.5), 30); rise("#tr3", k(10), 30);
+  slap("#heavy", k(10.5), 1.6, 6, -4);
+
+  /* transition: a giant record rolls across and wipes in track A1 */
+  var V = 6145, R = 1150, t0 = k(11) - 0.36;
+  tl.set("#disc", { x: 2230 }, 0);
+  tl.set("#t1in", { clipPath: "inset(0px 0px 0px 1080px)" }, 0);
+  tl.to("#disc", { x: 1080, duration: 1150 / V, ease: "none" }, t0);
+  tl.to("#disc", { x: 0, duration: 1080 / V, ease: "none" }, t0 + 1150 / V);
+  tl.to("#t1in", { clipPath: "inset(0px 0px 0px 0px)", duration: 1080 / V, ease: "none" }, t0 + 1150 / V);
+  tl.to("#disc", { x: -1150, duration: 1150 / V, ease: "none" }, t0 + 2230 / V);
+  tl.fromTo("#disc-d", { rotation: 0 }, { rotation: -3380 / R * 57.3, duration: 3380 / V, ease: "none", immediateRender: false }, t0);
+
+  /* ---------- the tracks ---------- */
+  var SEC = {};
+  ["t1", "t2", "t3", "t4"].forEach(function (id) { var el = document.getElementById(id); SEC[id] = [+el.dataset.start, +el.dataset.start + +el.dataset.duration]; });
+  function track(id, s0, beats, stick) {
+    var a = SEC[id][0], b = SEC[id][1];
+    if (id !== "t4") spin("#" + id + "-v-d", a, b, 260);
+    tl.set("#" + id + "-v", { x: -300 }, 0);
+    tl.to("#" + id + "-v", { x: 0, duration: 0.36, ease: "power3.out" }, k(s0 + 0.5));
+    rise("#" + id + "-br", k(s0 + 0.5), 0);
+    tl.from("#" + id + "-br", { x: -40, duration: 0.22, ease: E, immediateRender: false }, k(s0 + 0.5));
+    rise("#" + id + "-n", k(s0 + 0.5) + 0.04, 50);
+    tl.set("#" + id + "-st", { opacity: 0 }, 0);
+    tl.fromTo("#" + id + "-st", { opacity: 0, scale: 2.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 10, duration: 0.16, ease: SL, immediateRender: false }, k(s0 + stick));
+    shake(k(s0 + stick), "#" + id + "-sl", 0.4);
+    rise("#" + id + "-m", k(s0 + 2.5), 24);
+    beats.forEach(function (bt, j) {
+      var el = "#" + id + "-p" + j;
+      tl.set(el, { opacity: j === 0 ? 1 : 0 }, 0);
+      if (j > 0) tl.fromTo(el, { opacity: 1, scale: 1.14, rotation: j % 2 ? 2 : -2 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.3, ease: E, immediateRender: false }, k(bt));
+      if (j < beats.length - 1) tl.set(el, { opacity: 0 }, k(beats[j + 1]));
+    });
+    tl.fromTo("#" + id + "-f", { scaleX: 0 }, { scaleX: 1, duration: k(s0 + 4) - k(s0), ease: "none", immediateRender: false }, k(s0));
+    var bw = document.querySelector("#" + id + " .bar").offsetWidth;
+    tl.fromTo("#" + id + "-k", { x: 0 }, { x: bw, duration: k(s0 + 4) - k(s0), ease: "none", immediateRender: false }, k(s0));
+    tl.fromTo("#" + id + "-tp", { x: 0 }, { x: -700, duration: b - a, ease: "none", immediateRender: false }, a);
+  }
+  track("t1", 11, [11, 13, 14], 1.5);
+  track("t2", 15, [15, 17, 18], 1.5);
+  track("t3", 19, [19, 21, 22], 1.5);
+  track("t4", 23, [23, 25, 26], 2.0);
+
+  /* transition A1 -> A2: scratch it back and forth on the 16ths, then whip */
+  var sc = k(14.5);
+  [[-56, 9], [40, -7], [-74, 11], [30, -5]].forEach(function (p, i) { tl.to("#t1in", { x: p[0], skewX: p[1], duration: 0.06, ease: "power2.inOut" }, sc + i * 0.068); });
+  tl.to("#t1in", { x: 1150, skewX: -24, duration: 0.13, ease: "power2.in" }, k(15) - 0.12);
+  tl.set("#t2in", { x: -1150, skewX: 24 }, 0);
+  tl.to("#t2in", { x: 0, skewX: 0, duration: 0.22, ease: "power3.out" }, k(15) - 0.01);
+  flash(k(15), 0.25);
+
+  /* transition A2 -> B1: flip the record over to side B */
+  tl.to("#t2in", { rotationY: 90, transformPerspective: 1400, duration: 0.2, ease: "power2.in" }, k(19) - 0.2);
+  tl.set("#t3in", { rotationY: -90, transformPerspective: 1400 }, 0);
+  tl.to("#t3in", { rotationY: 0, transformPerspective: 1400, duration: 0.26, ease: "power2.out" }, k(19));
+  tl.fromTo("#sideb", { opacity: 1, scale: 1.8, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.16, ease: SL, immediateRender: false }, k(19));
+  tl.to("#sideb", { opacity: 0, scale: 1.15, duration: 0.25, ease: "power2.in" }, k(19) + 0.5);
+  flash(k(19), 0.45);
+
+  /* transition B1 -> B2: dive into the spinning label */
+  tl.to("#t3in", { scale: 4.5, transformOrigin: "690px 630px", duration: 0.4, ease: "power3.in" }, k(23) - 0.38);
+  tl.set("#t4in", { clipPath: "circle(0px at 690px 630px)" }, 0);
+  tl.to("#t4in", { clipPath: "circle(2300px at 690px 630px)", duration: 0.32, ease: "power2.in" }, k(23) - 0.3);
+  flash(k(23), 0.3);
+
+  /* B2 spins, the track drops out on beat 24 and the record stops; it slams back on 25 */
+  var a4 = SEC.t4[0], b4 = SEC.t4[1];
+  tl.fromTo("#t4-v-d", { rotation: 0 }, { rotation: 260 * (k(24) - a4), duration: k(24) - a4, ease: "none", immediateRender: false }, a4);
+  tl.to("#t4-v-d", { rotation: "+=70", duration: 0.5, ease: "power2.out" }, k(24));
+  tl.to("#t4-v-d", { rotation: "+=" + Math.round(260 * (b4 - k(25))), duration: b4 - k(25), ease: "none" }, k(25));
+  tl.to("#t4in", { filter: "grayscale(1) brightness(0.72)", rotation: -2.5, scale: 0.95, duration: 0.45, ease: "power2.out" }, k(24));
+  tl.to("#t4in", { filter: "grayscale(0) brightness(1)", rotation: 0, scale: 1, duration: 0.12, ease: "power3.out" }, k(25));
+  flash(k(25), 0.4); shake(k(25), "#t4-sl", 1);
+
+  /* transition B2 -> crate: the sleeve tips forward into the crate */
+  tl.to("#t4in", { rotationX: -95, transformOrigin: "50% 100%", transformPerspective: 1500, duration: 0.36, ease: "power2.in" }, k(27) - 0.34);
+
+  /* ---------- 6 the crate: flip through, a pair a flip ---------- */
+  rise("#ch", k(27) + 0.12, -40);
+  rise("#ct0", k(28), 30);
+  [[0, 29], [1, 31]].forEach(function (p) {
+    tl.to("#c" + p[0], { rotationX: -78, transformOrigin: "50% 100%", duration: 0.26, ease: "power2.in" }, k(p[1]) - 0.2);
+    tl.to("#c" + p[0], { opacity: 0, duration: 0.08 }, k(p[1]) + 0.04);
+    tl.set("#ct" + p[0], { opacity: 0 }, k(p[1]));
+    slap("#ct" + (p[0] + 1), k(p[1]), 1.5, -3);
+  });
+
+  /* transition crate -> side B record: the crate shrinks into the record's label */
+  tl.fromTo("#s6in", { clipPath: "circle(1400px at 540px 960px)" }, { clipPath: "circle(552px at 540px 960px)", duration: 0.36, ease: "power3.in", immediateRender: false }, k(35) - 0.22);
+  tl.to("#s6in", { scale: 0.29, transformOrigin: "540px 960px", duration: 0.36, ease: "power3.in" }, k(35) - 0.22);
+  tl.to("#s6in", { opacity: 0, duration: 0.3 }, k(35) + 0.2);
+
+  /* ---------- 7 the mixtape record ---------- */
+  spin("#v7-d", k(35) - 0.25, k(39) + 0.05, 230);
+  spin("#ring2", k(35) - 0.25, k(39) + 0.05, -14);
+  tl.set("#clamp7", { opacity: 0 }, 0);
+  tl.fromTo("#clamp7", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power3.in", immediateRender: false }, k(36) - 0.14);
+  rise("#ob1", k(36), -30); slap("#ob2", k(36.5), 1.6, -5);
+  rise("#o-bot", k(37.5), 20);
+  for (var n = 0; n < 14; n++) note("#n7-" + n, k(35.5 + Math.floor(n / 2) * 0.5) + (n % 2) * 0.04);
+
+  /* transition: a wheat-pasted poster tears down over it */
+  tl.set("#s8in", { clipPath: "inset(0px 0px 1920px 0px)" }, 0);
+  tl.to("#s8in", { clipPath: "inset(0px 0px 0px 0px)", duration: 0.22, ease: "power2.in" }, k(39) - 0.22);
+  tl.set("#torn", { y: 0, opacity: 1 }, k(39) - 0.22);
+  tl.to("#torn", { y: 1990, duration: 0.22, ease: "power2.in" }, k(39) - 0.22);
+  tl.set("#torn", { opacity: 0 }, k(39) + 0.01);
+
+  /* ---------- 8 the poster ---------- */
+  spin("#v8-d", k(39) - 0.22, 25.2, 120);
+  flash(k(39), 0.7); shake(k(39), "#s8in", 1);
+  slap("#wm8", k(39), 1.5);
+  slap("#p1", k(40), 1.7, -4);
+  rise("#p2", k(41), 30);
+  tl.set("#p3", { opacity: 0 }, 0);
+  tl.fromTo("#p3", { opacity: 0, scale: 2.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.16, ease: SL, immediateRender: false }, k(42));
+  rise("#p4", k(43), 16);
+  window.__timelines["main"] = tl;
+})();
+</script>
+</body>
+</html>
